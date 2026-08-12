@@ -16,7 +16,7 @@ struct FoloversApp: App {
   }
     var body: some Scene {
         WindowGroup {
-			 LoadingView()
+			 AppRoute()
         }
     }
 }

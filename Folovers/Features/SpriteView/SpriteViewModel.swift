@@ -29,23 +29,29 @@ final class SpriteViewModel {
   func initialize(){
 	 switch action {
 	 case .idle:
-		startLoadingAnimation()
+		startIdleAnimation()
 	 case .walk:
 		animateWalk()
 	 case .jump:
 		animateJump()
 	 case .loading:
 		startLoadingAnimation()
+	 case .idleLoading:
+		startIdleAnimation()
 	 }
   }
   
 }
 
 extension SpriteViewModel{
+  func startIdleAnimation() {
+	 controller.play(.idle)
+  }
+  
   func startLoadingAnimation(){
 	 Task{
 		controller.play(.walk(.right))
-		for i in 1...10 {
+		for i in 1...SpriteActions.loading.sprites {
 		  if i % 2 == 0 {
 			 controller.play(.walk(.right))
 		  }

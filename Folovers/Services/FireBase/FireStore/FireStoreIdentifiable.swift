@@ -8,7 +8,7 @@
 import Foundation
 
 
-public protocol FirestoreIdentifiable: Hashable, Codable, Identifiable {
+public protocol FirestoreIdentifiable: Codable, Identifiable {
 	 var id: String { get set }
 }
 

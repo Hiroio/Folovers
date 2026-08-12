@@ -10,7 +10,7 @@ import FirebaseFirestore
 
 public final class FirestoreService {
 
-	 private init() {}
+	 init() {}
 
 	 public static func request<T>(_ endpoint: FirestoreEndpoint) async throws -> T where T: Codable {
 		  guard let ref = endpoint.path as? DocumentReference else {

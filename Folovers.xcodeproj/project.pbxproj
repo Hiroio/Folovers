@@ -13,6 +13,7 @@
 		CEB48618302B945400FC1F1E /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = CEB48617302B945400FC1F1E /* FirebaseCore */; };
 		CEB4861A302B945400FC1F1E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = CEB48619302B945400FC1F1E /* FirebaseFirestore */; };
 		CEB4861C302B945400FC1F1E /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CEB4861B302B945400FC1F1E /* FirebaseStorage */; };
+		CEB48638302BD0EF00FC1F1E /* AuthLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = CEB48637302BD0EF00FC1F1E /* AuthLibrary */; };
 		CEB4F8DE302B503200FC1F1E /* SpritePackage in Frameworks */ = {isa = PBXBuildFile; productRef = CEB4F8DD302B503200FC1F1E /* SpritePackage */; };
 /* End PBXBuildFile section */
 
@@ -24,21 +25,29 @@
 		CEB48602302B56DA00FC1F1E /* Exceptions for "Folovers" folder in "Folovers" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				App/ContentView.swift,
+				App/AppRoute.swift,
 				App/FoloversApp.swift,
 				Assets.xcassets,
+				Features/AuthView/AuthView.swift,
+				Features/AuthView/AuthViewModel.swift,
+				Features/AuthView/Components/PasswordField.swift,
 				Features/LoadingScreen/LoadingView.swift,
 				Features/SpriteView/SpriteView.swift,
 				Features/SpriteView/SpriteViewModel.swift,
 				"GoogleService-Info.plist",
 				Models/SpritePackageModels/SpriteActions.swift,
-				Packages/SpritePackage/.swiftpm/xcode/xcuserdata/user.xcuserdatad/xcschemes/xcschememanagement.plist,
+				Models/User/UserModel.swift,
+				Services/Auth/AuthManager.swift,
 				Services/FireBase/FireStorage/FireStorageManager.swift,
-				Services/FireBase/FireStore/FireStoreEndpoint.swift,
+				Services/FireBase/FireStore/FireStoreEndpoints/FireStoreEndpoint.swift,
+				Services/FireBase/FireStore/FireStoreEndpoints/UserEndpoint.swift,
 				Services/FireBase/FireStore/FireStoreError.swift,
 				Services/FireBase/FireStore/FireStoreIdentifiable.swift,
 				Services/FireBase/FireStore/FireStoreManager.swift,
 				Services/FireBase/FireStore/FireStoreParser.swift,
+				Services/NavigationManager/NavigationEnum.swift,
+				Services/NavigationManager/NavigationManager.swift,
+				Services/User/UserManager.swift,
 			);
 			target = CEB4CC35302A4E7300FC1F1E /* Folovers */;
 		};
@@ -62,6 +71,7 @@
 			files = (
 				CEB48612302B945400FC1F1E /* FirebaseAnalytics in Frameworks */,
 				CEB48618302B945400FC1F1E /* FirebaseCore in Frameworks */,
+				CEB48638302BD0EF00FC1F1E /* AuthLibrary in Frameworks */,
 				CEB48614302B945400FC1F1E /* FirebaseAnalyticsCore in Frameworks */,
 				CEB4F8DE302B503200FC1F1E /* SpritePackage in Frameworks */,
 				CEB4861C302B945400FC1F1E /* FirebaseStorage in Frameworks */,
@@ -113,6 +123,7 @@
 				CEB48617302B945400FC1F1E /* FirebaseCore */,
 				CEB48619302B945400FC1F1E /* FirebaseFirestore */,
 				CEB4861B302B945400FC1F1E /* FirebaseStorage */,
+				CEB48637302BD0EF00FC1F1E /* AuthLibrary */,
 			);
 			productName = Folovers;
 			productReference = CEB4CC36302A4E7300FC1F1E /* Folovers.app */;
@@ -145,6 +156,7 @@
 			packageReferences = (
 				CEB4F8DC302B503200FC1F1E /* XCLocalSwiftPackageReference "Folovers/Packages/SpritePackage" */,
 				CEB48610302B945400FC1F1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				CEB48636302BD0EF00FC1F1E /* XCLocalSwiftPackageReference "../AuthLibrary" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CEB4CC37302A4E7300FC1F1E /* Products */;
@@ -303,11 +315,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Folovers/Folovers.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WU276H25JQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Folovers/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -340,11 +354,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Folovers/Folovers.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = WU276H25JQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Folovers/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -396,6 +412,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
+		CEB48636302BD0EF00FC1F1E /* XCLocalSwiftPackageReference "../AuthLibrary" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../AuthLibrary;
+		};
 		CEB4F8DC302B503200FC1F1E /* XCLocalSwiftPackageReference "Folovers/Packages/SpritePackage" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Folovers/Packages/SpritePackage;
@@ -443,6 +463,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CEB48610302B945400FC1F1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		CEB48637302BD0EF00FC1F1E /* AuthLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AuthLibrary;
 		};
 		CEB4F8DD302B503200FC1F1E /* SpritePackage */ = {
 			isa = XCSwiftPackageProductDependency;
