@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct AppRoute: View {
+  @Environment(\.theme) var theme
   @State private var navigation: NavigationManager = .shared
   var body: some View {
 	 ZStack{
+		theme.background.ignoresSafeArea()
 		switch navigation.state {
 		case .longLoading:
 		  LoadingView(state: .longLoading)
@@ -18,9 +20,9 @@ struct AppRoute: View {
 			 .allowsHitTesting(false)
 			 .transition(.opacity)
 		case .shortLoading:
-		  LoadingView(state: .longLoading)
+		  LoadingView(state: .shortLoading)
 			 .zIndex(1)
-			 .allowsHitTesting(false)
+			 .allowsHitTesting(true)
 			 .transition(.opacity)
 		case .unauthenticated:
 		  AuthView()
@@ -33,10 +35,12 @@ struct AppRoute: View {
 		}
 	 }
 	 .animation(.easeInOut(duration: 0.8), value: navigation.state)
+	 .animation(.easeInOut(duration: 0.5), value: theme.background)
 	 .environment(navigation)
   }
 }
 
 #Preview {
     AppRoute()
+	 .environment(\.theme, .basic)
 }

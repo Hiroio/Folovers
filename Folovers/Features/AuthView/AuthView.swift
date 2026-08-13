@@ -9,48 +9,41 @@ import SwiftUI
 import AuthLibrary
 
 struct AuthView: View {
+  @Environment(\.theme) var theme
   @State private var vm: AuthViewModel = .init()
   var body: some View {
 	 VStack(spacing: 15){
 		
 		Spacer()
-		Image(systemName: "heart.fill")
-		  .font(.largeTitle)
-		  .foregroundStyle(.red)
-		  .padding(.bottom, 40)
-		
+		Button{
+		  let themeColor: AppThemeColor = ThemeManager.shared.selectedColor == .red ? .blue : .red
+		  withAnimation(.easeInOut(duration: 0.5)){
+			 ThemeManager.shared.selectedColor = themeColor
+		  }
+		}label: {
+		  Image(systemName: "heart")
+			 .font(.largeTitle)
+			 .foregroundStyle(theme.primary)
+			 .padding(.bottom, 40)
+		}
 		Group{
 		  TextField("", text: $vm.email, prompt:
 						  Text("Email")
-			 .foregroundStyle(.red.opacity(0.4))
+			 .foregroundStyle(theme.primary.opacity(0.4))
 		  )
 		  .textContentType(.emailAddress)
 		  
-		  PasswordField(password: $vm.password)
+		  PasswordField(password: $vm.password, primaryColor: theme.primary)
 		}
-		.foregroundStyle(.red.opacity(0.4))
-		.frame(maxWidth: .infinity)
-		.padding()
-		.background(
-		  RoundedRectangle(cornerRadius: 15)
-			 .fill(.gray.opacity(0.2))
-		)
-		.fontDesign(.monospaced)
+		.textFieldModifier()
 		
 		
 		Button{
-		  
+		  ThemeManager.shared.selectedColor = .blue
 		}label: {
 		  Text("Continue")
-			 .foregroundStyle(.red)
-			 .fontDesign(.monospaced)
-			 .frame(maxWidth: .infinity)
-			 .padding()
-			 .background(
-				RoundedRectangle(cornerRadius: 15)
-				  .stroke(.red, lineWidth: 2)
-			 )
 		}
+		.buttonStyle(ButtonStyleBorder())
 		.disabled(!vm.isValid)
 		.opacity(vm.isValid ? 1 : 0.5)
 		

@@ -47,7 +47,12 @@
 				Services/FireBase/FireStore/FireStoreParser.swift,
 				Services/NavigationManager/NavigationEnum.swift,
 				Services/NavigationManager/NavigationManager.swift,
+				Services/ThemeManager/Models/AppThemeColor.swift,
+				Services/ThemeManager/Models/ThemePalette.swift,
+				Services/ThemeManager/ThemeManager.swift,
 				Services/User/UserManager.swift,
+				Utility/Helpers/ButtonStyle/ButtonStyleBorder.swift,
+				Utility/Helpers/Modifiers/TextFieldModifier.swift,
 			);
 			target = CEB4CC35302A4E7300FC1F1E /* Folovers */;
 		};

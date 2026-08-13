@@ -34,7 +34,11 @@ final class AuthManager{
   
   
   func logOut(){
-	 try? service.logout()
+	 do {
+		try service.logout()
+	 }catch{
+		print("failed")
+	 }
   }
 }
 

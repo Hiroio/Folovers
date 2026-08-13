@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PasswordField: View {
   @Binding var password: String
+  let primaryColor: Color
   @State var showPassword: Bool = false
   @FocusState var focus1: Bool
   @FocusState var focus2: Bool
@@ -18,7 +19,7 @@ struct PasswordField: View {
 		  Group{
 			 TextField("Password", text: $password, prompt:
 							 Text("Password")
-				.foregroundStyle(.red.opacity(0.4))
+				.foregroundStyle(primaryColor.opacity(0.4))
 			 )
 				.textContentType(.password)
 				.focused($focus1)
@@ -26,7 +27,7 @@ struct PasswordField: View {
 			 
 			 SecureField("", text: $password, prompt:
 								Text("Password")
-				.foregroundStyle(.red.opacity(0.4))
+				.foregroundStyle(primaryColor.opacity(0.4))
 			 )
 				.textContentType(.password)
 				.focused($focus2)
@@ -42,7 +43,7 @@ struct PasswordField: View {
 		}label: {
 		  Image(systemName: !showPassword ? "eye.slash.fill" : "eye.fill")
 			 .font(.headline)
-			 .foregroundStyle(.red)
+			 .foregroundStyle(primaryColor)
 		}
 	 }
 	 .animation(.easeInOut, value: showPassword)
@@ -50,5 +51,5 @@ struct PasswordField: View {
 }
 
 #Preview {
-  PasswordField(password: .constant(""))
+  PasswordField(password: .constant(""), primaryColor: .red)
 }
