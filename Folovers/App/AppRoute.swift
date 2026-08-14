@@ -28,7 +28,7 @@ struct AppRoute: View {
 		  AuthView()
 			 .transition(.move(edge: .bottom).combined(with: .opacity))
 		case .needsOnboarding:
-		  Text("OnBoarding")
+		  CharacterAppearanceView()
 		  
 		case .ready:
 		  Text("MainApp")

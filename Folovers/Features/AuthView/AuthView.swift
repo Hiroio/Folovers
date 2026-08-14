@@ -42,6 +42,7 @@ struct AuthView: View {
 		  ThemeManager.shared.selectedColor = .blue
 		}label: {
 		  Text("Continue")
+			 .frame(maxWidth: .infinity)
 		}
 		.buttonStyle(ButtonStyleBorder())
 		.disabled(!vm.isValid)

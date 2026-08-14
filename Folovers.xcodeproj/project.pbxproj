@@ -32,6 +32,12 @@
 				Features/AuthView/AuthViewModel.swift,
 				Features/AuthView/Components/PasswordField.swift,
 				Features/LoadingScreen/LoadingView.swift,
+				Features/OnBoarding/CharacterCreationViewModel.swift,
+				Features/OnBoarding/Components/CharacterCreation/CharacterAppearanceView.swift,
+				Features/OnBoarding/Components/CharacterCreation/Components/FemaleIcon.swift,
+				Features/OnBoarding/Components/CharacterCreation/Components/ItemsSelection.swift,
+				Features/OnBoarding/Components/CharacterCreation/Components/MaleIcon.swift,
+				Features/OnBoarding/OnBoardingView.swift,
 				Features/SpriteView/SpriteView.swift,
 				Features/SpriteView/SpriteViewModel.swift,
 				"GoogleService-Info.plist",
@@ -52,6 +58,7 @@
 				Services/ThemeManager/ThemeManager.swift,
 				Services/User/UserManager.swift,
 				Utility/Helpers/ButtonStyle/ButtonStyleBorder.swift,
+				Utility/Helpers/Modifiers/BorderViewModifier.swift,
 				Utility/Helpers/Modifiers/TextFieldModifier.swift,
 			);
 			target = CEB4CC35302A4E7300FC1F1E /* Folovers */;

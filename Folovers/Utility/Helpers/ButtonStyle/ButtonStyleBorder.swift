@@ -14,8 +14,8 @@ struct ButtonStyleBorder: ButtonStyle {
   func makeBody(configuration: Self.Configuration) -> some View {
 	 configuration.label
 		.foregroundStyle(theme.primary)
+		.font(.headline.weight(.bold))
 		.fontDesign(.monospaced)
-		.frame(maxWidth: .infinity)
 		.padding()
 		.background(
 		  RoundedRectangle(cornerRadius: 15)
@@ -23,6 +23,7 @@ struct ButtonStyleBorder: ButtonStyle {
 			 .shadow(color: configuration.isPressed ? .clear : theme.primary, radius: 1, y: 1)
 		)
 		.offset(y: configuration.isPressed ? 5 : 0)
+		.contentShape(.rect)
   }
 }
 

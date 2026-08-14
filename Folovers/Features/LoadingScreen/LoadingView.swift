@@ -9,30 +9,29 @@ import SwiftUI
 
 struct LoadingView: View {
   @Environment(NavigationManager.self) var navigation
-  
+  @State private var step: Int = 0
+
   let state: StartNavigationFlow
     var body: some View {
 		VStack(spacing: 0){
-		  if state == .shortLoading {
-			 Button{
-				AuthManager.shared.logOut()
-			 }label: {
-				Text("Log out")
-				  .foregroundStyle(.red)
-			 }
-		  }
 		  Spacer()
 		  Image(systemName: "heart.fill")
 			 .font(.largeTitle)
 			 .foregroundStyle(.red)
 			 .fontDesign(.monospaced)
-		  
-		  
-		  SpriteView(action: action)
-			 .frame(maxWidth: .infinity)
-			 .frame(height: 10)
+
+		  GeometryReader { geo in
+			 SpriteView(action: action, step: $step)
+				.position(
+				  x: action.xPosition(step: step, containerWidth: geo.size.width, spriteWidth: SpriteViewModel.displaySize.width),
+				  y: 0
+				)
+				.animation(.easeInOut(duration: action.animationDuration), value: step)
+		  }
+		  .frame(maxWidth: .infinity)
+		  .frame(height: 10)
 		  Spacer()
-		  
+
 		}
 		.onAppear{
 		  Task{

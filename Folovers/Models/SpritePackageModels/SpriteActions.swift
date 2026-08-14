@@ -43,10 +43,10 @@ enum SpriteActions{
   }
   
   func xPosition(step: Int, containerWidth: CGFloat, spriteWidth: CGFloat) -> CGFloat {
-	 let half = containerWidth / 2 + 48
+	 let half = containerWidth / 2 + 96
 	 switch self {
 	 case .idle:
-		return 0
+		return half
 	 case .walk:
 		let start = 0.0
 		let value = (containerWidth + 96) / Double(sprites)

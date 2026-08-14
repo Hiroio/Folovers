@@ -25,6 +25,9 @@ final class AuthManager{
 	 initializeCheck()
   }
   
+  var id: String?{
+	 self.currentUser?.uid
+  }
   
   func initializeCheck() {
 	 if let user = service.getCurrentUser(){

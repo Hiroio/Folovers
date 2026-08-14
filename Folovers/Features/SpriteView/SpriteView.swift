@@ -10,25 +10,34 @@ import SpritePackage
 
 struct SpriteView: View {
   @State private var vm: SpriteViewModel
-  
-  init(action: SpriteActions){
-	 self._vm = State(wrappedValue: SpriteViewModel(config: .default, action: action))
+  private var step: Binding<Int>?
+
+  init(
+	 action: SpriteActions,
+	 config: CharacterConfig = .default,
+	 controller: CharacterController? = nil,
+	 step: Binding<Int>? = nil
+  ){
+	 self._vm = State(
+		wrappedValue: SpriteViewModel(
+		  config: .default,
+		  action: action,
+		  controller: controller
+		)
+	 )
+	 self.step = step
   }
-  
+
   var body: some View {
-	 GeometryReader { geo in
-		  CharacterView(controller: vm.controller)
-			 .scaleEffect(SpriteViewModel.displayScale)
-			 .frame(width: SpriteViewModel.displaySize.width, height: SpriteViewModel.displaySize.height)
-			 .position(
-				x: vm.action.xPosition(step: vm.number, containerWidth: geo.size.width, spriteWidth: SpriteViewModel.displaySize.width),
-				y: geo.size.height / 2)
-	 }
-	 .animation(.easeInOut(duration: vm.action.animationDuration), value: vm.number)
-	 .frame(maxHeight: .infinity)
+	 CharacterView(controller: vm.controller)
+		.scaleEffect(SpriteViewModel.displayScale)
+		.frame(width: SpriteViewModel.displaySize.width, height: SpriteViewModel.displaySize.height)
+		.onChange(of: vm.number) { _, newValue in
+		  step?.wrappedValue = newValue
+		}
   }
 }
 
 #Preview {
-  SpriteView(action: .walk)
+  SpriteView(action: .idle)
 }

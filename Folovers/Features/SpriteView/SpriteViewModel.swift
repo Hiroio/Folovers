@@ -18,9 +18,14 @@ final class SpriteViewModel {
   var number: Int = 0
   var action: SpriteActions
 
-  init(config: CharacterConfig, action: SpriteActions){
-	 self.controller = CharacterController(config: config, sceneSize: Self.nativeSize)
-	 self.action = action
+  init(config: CharacterConfig, action: SpriteActions, controller: CharacterController?){
+	 if let controller{
+		self.controller = controller
+		self.action = action
+	 }else{
+		self.controller = CharacterController(config: config, sceneSize: Self.nativeSize)
+		self.action = action
+	 }
 	 initialize()
   }
 
