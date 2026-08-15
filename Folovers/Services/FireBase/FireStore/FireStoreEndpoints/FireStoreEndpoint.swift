@@ -46,8 +46,7 @@ public protocol FirestoreReference {
 }
 
 extension DocumentReference: FirestoreReference { }
-extension CollectionReference: FirestoreReference { }
-
+extension Query: FirestoreReference {}
 
 
 

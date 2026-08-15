@@ -23,6 +23,9 @@ final class NavigationManager {
 	 return .ready
   }
   
+  
+  var mainState: MainNavigationFlow = .home
+  
   init(){
   }
 }

@@ -29,9 +29,8 @@ struct AppRoute: View {
 			 .transition(.move(edge: .bottom).combined(with: .opacity))
 		case .needsOnboarding:
 		  CharacterAppearanceView()
-		  
 		case .ready:
-		  Text("MainApp")
+		  MainRouter()
 		}
 	 }
 	 .animation(.easeInOut(duration: 0.8), value: navigation.state)

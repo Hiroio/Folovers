@@ -11,6 +11,7 @@ import SwiftUI
 struct BorderViewModifier: ViewModifier{
   @Environment(\.theme) var theme
   let padding: CGFloat
+  let lineWidth: CGFloat
   func body(content: Content) -> some View {
 	 content
 		.padding(padding)
@@ -24,6 +25,7 @@ struct BorderViewModifier: ViewModifier{
 struct CardViewModifier: ViewModifier{
   @Environment(\.theme) var theme
   let padding: CGFloat
+  let lineWidth: CGFloat
   func body(content: Content) -> some View {
 	 content
 		.padding(padding)
@@ -31,17 +33,17 @@ struct CardViewModifier: ViewModifier{
 		  RoundedRectangle(cornerRadius: 15)
 			 .fill(theme.surface)
 		)
-		.border()
+		.border(lineWidth: lineWidth)
   }
 }
 
 
 extension View{
-  func border(_ padding: CGFloat = 0) -> some View{
-	 modifier(BorderViewModifier(padding: padding))
+  func border(_ padding: CGFloat = 0, lineWidth: CGFloat = 2) -> some View{
+	 modifier(BorderViewModifier(padding: padding, lineWidth: lineWidth))
   }
   
-  func card(_ padding: CGFloat = 0) -> some View{
-	 modifier(CardViewModifier(padding: padding))
+  func card(_ padding: CGFloat = 0, lineWidth: CGFloat = 2) -> some View{
+	 modifier(CardViewModifier(padding: padding, lineWidth: lineWidth))
   }
 }

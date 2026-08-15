@@ -14,7 +14,7 @@ struct ThemePalette{
   let background: Color
   let surface: Color
   let primary: Color
-  let primarryDark: Color
+  let primaryDark: Color
   let text: Color
   let secondaryText: Color
 }
@@ -25,7 +25,7 @@ extension ThemePalette{
 	 background: Color("red-background"),
 	 surface: Color("red-surface"),
 	 primary: Color("red-primary"),
-	 primarryDark: Color("red-primarryDark"),
+	 primaryDark: Color("red-primaryDark"),
 	 text: Color("red-text"),
 	 secondaryText: Color("red-secondaryText")
   )

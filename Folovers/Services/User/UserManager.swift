@@ -25,16 +25,16 @@ final class UserManager{
   
   func tryToFetchUser(with id: String?){
 	 guard let id else { return }
-	 
+	 print(id)
 	 Task{
 		do{
 		  let endpoint = UserEndpoint.getUser(id: id)
 		  self.currentUser = try await FirestoreService.request(endpoint)
 		  print("DEBUG User successfully fetched")
 		}catch{
-		  isInitialized.toggle()
 		  print("DEBUG: -trying fetch user failed with error: \(error.localizedDescription)")
 		}
+		isInitialized.toggle()
 	 }
   }
   

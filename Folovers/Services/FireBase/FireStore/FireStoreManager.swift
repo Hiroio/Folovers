@@ -35,7 +35,7 @@ public final class FirestoreService {
 	 }
 
 	 public static func request<T>(_ endpoint: FirestoreEndpoint) async throws -> [T] where T: Codable {
-		  guard let ref = endpoint.path as? CollectionReference else {
+		  guard let ref = endpoint.path as? Query else {
 				throw FirestoreError.collectionNotFound
 		  }
 		  switch endpoint.method {

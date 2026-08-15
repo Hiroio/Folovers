@@ -17,7 +17,7 @@ enum AppThemeColor: String, CaseIterable, Codable {
 		  background: Color("\(self.rawValue)-background"),
 		  surface: Color("\(self.rawValue)-surface"),
 		  primary: Color("\(self.rawValue)-primary"),
-		  primarryDark: Color("\(self.rawValue)-primarryDark"),
+		  primaryDark: Color("\(self.rawValue)-primaryDark"),
 		  text: Color("\(self.rawValue)-text"),
 		  secondaryText: Color("\(self.rawValue)-secondaryText")
 		)
