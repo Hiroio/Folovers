@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PhotoSelection: View {
   @Environment(\.theme) var theme
+  let photoAttachments: [PhotoAttachment]
     var body: some View {
 		VStack{
 		  HStack{
@@ -35,6 +36,6 @@ struct PhotoSelection: View {
 }
 
 #Preview {
-    PhotoSelection()
+    PhotoSelection(photoAttachments: [])
 	 .environment(\.theme, .basic)
 }

@@ -17,8 +17,12 @@ struct FoloversApp: App {
   }
     var body: some Scene {
         WindowGroup {
-			 AppRoute()
-				.environment(\.theme, themeManager.palette)
+			 ZStack {
+				ThemePalette.basic.background.ignoresSafeArea()
+				PlansSliderView(plans: PlanCard.plans(), state: .plans)
+				  .padding()
+			 }
+			 .environment(\.theme, themeManager.palette)
         }
     }
 }

@@ -12,7 +12,7 @@ struct NoteTextEditor: View {
   init(){
 	 UITextView.appearance().backgroundColor = .clear
   }
-  @State private var noteText: String = ""
+  @State private var noteText: String = "Чисто для тесту щоб знати як воно виглядає треба багато тексту в пару ліній"
     var body: some View {
 		VStack{
 		  HStack{
@@ -25,7 +25,9 @@ struct NoteTextEditor: View {
 		  .padding(5)
 		  TextEditor(text: $noteText)
 			 .scrollContentBackground(.hidden)
-			 .font(.footnote)
+			 .font(.subheadline)
+			 .lineSpacing(5)
+			 .foregroundStyle(theme.text)
 		}
 		  .padding(5)
 		  .background(

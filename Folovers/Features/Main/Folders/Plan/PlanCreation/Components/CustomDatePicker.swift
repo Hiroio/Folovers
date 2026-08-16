@@ -8,28 +8,44 @@
 import SwiftUI
 
 struct CustomDatePicker: View {
-  @State private var selectedDate: Date = .now
+  @Binding var selectedDate: Date?
   @Environment(\.theme) var theme
   var body: some View {
 		HStack{
 		  Text("Date")
 			 .frame(maxWidth: .infinity, alignment: .leading)
 			 .font(.headline.weight(.bold))
-		  
+			 .foregroundStyle(theme.primaryDark)
 		  HStack{
-			 DatePicker("", selection: $selectedDate,
+			 DatePicker("", selection: date,
 							in: ...Date(),
 							displayedComponents: .date,
 			 )
+			 .accentColor(theme.primary)
 			 Image(systemName: "chevron.left")
 		  }
+		  .accentColor(theme.primary)
+		  .foregroundStyle(theme.primary)
 		}
-		.border(5)
+		.border(10)
     }
+  
+  var date: Binding<Date>{
+	 Binding {
+		if let selectedDate{
+		  return selectedDate
+		}else{
+		  return Date.now
+		}
+	 } set: { newValue in
+		selectedDate = newValue
+	 }
+
+  }
 }
 
 #Preview {
-    CustomDatePicker()
+  CustomDatePicker(selectedDate: .constant(.now))
 	 .environment(\.theme, .basic)
 	 .foregroundStyle(.redPrimaryDark)
 }

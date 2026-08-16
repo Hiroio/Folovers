@@ -12,7 +12,7 @@ struct TextFieldModifier: ViewModifier {
   @Environment(\.theme) var theme
   func body(content: Content) -> some View {
 	 content
-		.foregroundStyle(theme.primary.opacity(0.6))
+		.foregroundStyle(theme.primary)
 		.frame(maxWidth: .infinity)
 		.padding()
 		.background(

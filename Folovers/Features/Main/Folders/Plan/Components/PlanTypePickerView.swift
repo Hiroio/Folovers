@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PlanTypePickerView: View {
   @Environment(\.theme) var theme
-  @State private var planState: PlanType = .plans
+  @Binding var planState: PlanType
     var body: some View {
 		HStack{
 		  ForEach(PlanType.allCases){item in
@@ -34,7 +34,7 @@ struct PlanTypePickerView: View {
 }
 
 #Preview {
-    PlanTypePickerView()
+  PlanTypePickerView(planState: .constant(.plans))
 	 .environment(\.theme, .basic)
 }
 
@@ -56,6 +56,15 @@ enum PlanType: String, Identifiable ,CaseIterable{
 		  .leading
 	 case .memories:
 		  .trailing
+	 }
+  }
+  
+  var transition: AnyTransition{
+	 switch self {
+	 case .plans:
+		  .move(edge: .leading)
+	 case .memories:
+		  .move(edge: .trailing)
 	 }
   }
 }

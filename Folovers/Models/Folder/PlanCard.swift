@@ -13,7 +13,7 @@ struct PlanCard: FirestoreIdentifiable {
   var folderId: String        // = uid для personal, = spaceId для shared
   var title: String
   var note: String?
-  var date: Date?        // опціонально — не календар
+  var date: Date?
   var location: String?       // опціонально, поки просто рядок; географічні координати — пізніше
   var photos: [PhotoAttachment]
   var isCompleted: Bool
@@ -33,4 +33,28 @@ extension PlanCard{
 	 self.createdBy = createdBy
 	 self.createdAt = .now
   }
+  
+  
+  static func plans() -> [PlanCard]{
+	 let planstitles: [String] = ["Some plan to traver", "Some food to try", "Some places to visit", "Some people to meet"]
+	 return planstitles.map({PlanCard(id: UUID().uuidString, folderId: "", title: $0, photos: [], isCompleted: false, createdBy: "", createdAt: .now)})
+  }
+}
+
+
+
+struct PhotoAttachment: Codable {
+  var localPath: String?
+  var remoteUrl: String?
+  var thumbnailUrl: String?
+  var status: UploadStatus
+  var uploadedBy: String
+}
+
+
+enum UploadStatus: String, Codable {
+  case pending
+  case uploading
+  case uploaded
+  case failed
 }
