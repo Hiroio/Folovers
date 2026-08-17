@@ -56,7 +56,7 @@ enum SpriteActions{
 		let value = (containerWidth + 96) / Double(sprites)
 		return CGFloat(start + value * Double(step))
 	 case .loading:
-		let start = 0.0
+		let start = -96.0
 		let value = Double(half / Double(sprites))
 		return CGFloat(start + Double(step) * value)
 	 case .idleLoading:

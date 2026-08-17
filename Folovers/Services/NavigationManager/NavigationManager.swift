@@ -14,6 +14,7 @@ final class NavigationManager {
   static let shared = NavigationManager()
   
   var startLoading: Bool = false
+  var secondaryView: [SecondaryViewsEnum] = []
   
   var state: StartNavigationFlow {
 	 guard startLoading else { return .longLoading}
@@ -27,5 +28,12 @@ final class NavigationManager {
   var mainState: MainNavigationFlow = .home
   
   init(){
+  }
+}
+
+
+extension NavigationManager{
+  func popSecondary(){
+	 let _ = self.secondaryView.popLast()
   }
 }

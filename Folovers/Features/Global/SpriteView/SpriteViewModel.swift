@@ -23,7 +23,7 @@ final class SpriteViewModel {
 		self.controller = controller
 		self.action = action
 	 }else{
-		self.controller = CharacterController(config: config, sceneSize: Self.nativeSize)
+		self.controller = CharacterController(config: config, sceneSize: Self.displaySize)
 		self.action = action
 	 }
 	 initialize()

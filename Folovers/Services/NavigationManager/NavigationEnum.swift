@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 enum StartNavigationFlow{
 		case longLoading
@@ -34,6 +35,18 @@ enum MainNavigationFlow: String, Identifiable, CaseIterable{
 		"folder"
 	 case .profile:
 		"person"
+	 }
+  }
+}
+
+
+enum SecondaryViewsEnum{
+  case plan(folderId: String)
+  
+  var transition: AnyTransition{
+	 switch self {
+	 case .plan(_):
+		  .move(edge: .bottom).combined(with: .opacity)
 	 }
   }
 }

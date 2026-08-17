@@ -13,26 +13,26 @@ struct LoadingView: View {
 
   let state: StartNavigationFlow
     var body: some View {
-		VStack(spacing: 0){
-		  Spacer()
-		  Image(systemName: "heart.fill")
-			 .font(.largeTitle)
-			 .foregroundStyle(.red)
-			 .fontDesign(.monospaced)
-
-		  GeometryReader { geo in
+		GeometryReader { geo in
+		  VStack(spacing: 0){
+			 Spacer()
+			 Image(systemName: "heart.fill")
+				.font(.largeTitle)
+				.foregroundStyle(.red)
+				.fontDesign(.monospaced)
+			 
+			 
 			 SpriteView(action: action, step: $step)
 				.position(
-				  x: action.xPosition(step: step, containerWidth: geo.size.width, spriteWidth: SpriteViewModel.displaySize.width),
-				  y: 0
+				  x: action.xPosition(step: step, containerWidth: geo.size.width, spriteWidth: SpriteViewModel.displaySize.width)
 				)
 				.animation(.easeInOut(duration: action.animationDuration), value: step)
+			 
+			 Spacer()
 		  }
-		  .frame(maxWidth: .infinity)
-		  .frame(height: 10)
-		  Spacer()
-
+		  .frame(maxHeight: .infinity)
 		}
+		.frame(maxWidth: .infinity, maxHeight: .infinity)
 		.onAppear{
 		  Task{
 			 try? await Task.sleep(for: .seconds(3.5))

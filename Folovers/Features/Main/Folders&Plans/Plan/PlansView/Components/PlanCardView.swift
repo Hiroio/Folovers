@@ -33,12 +33,12 @@ struct PlanCardView: View {
 		  
 		  HStack(spacing: 10){
 			 PlanBlankCard(image: "note.text")
-				.containerRelativeFrame(.horizontal, count: 2, spacing: 60)
+				.frame(maxWidth: .infinity)
 			 VStack(spacing: 10){
 				PlanBlankCard(image: "photo")
 				PlanBlankCard(image: "map")
 			 }
-			 .containerRelativeFrame(.horizontal, count: 2, spacing: 60)
+			 .frame(maxWidth: .infinity)
 		  }
 		  .foregroundStyle(theme.primary)
 		  .aspectRatio(1.3, contentMode: .fit)

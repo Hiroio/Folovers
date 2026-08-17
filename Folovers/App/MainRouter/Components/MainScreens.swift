@@ -1,13 +1,13 @@
 //
-//  MainRouter.swift
+//  MainScreens.swift
 //  Folovers
 //
-//  Created by user on 14.08.2026.
+//  Created by user on 17.08.2026.
 //
 
 import SwiftUI
 
-struct MainRouter: View {
+struct MainScreens: View {
   @Environment(NavigationManager.self) var navigationManager
     var body: some View {
 		ZStack{
@@ -17,18 +17,16 @@ struct MainRouter: View {
 		  case .folders:
 			 FoldersView()
 		  case .profile:
-			 Text("Profile")
+			 ProfileView()
 		  }
-		  
+		}
+		.safeAreaInset(edge: .bottom, content: {
 		  CustomNavigationBar()
 			 .padding(.bottom)
-		}
-		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+		})
     }
 }
 
 #Preview {
-    MainRouter()
-	 .environment(NavigationManager.shared)
-	 .environment(\.theme, .basic)
+    MainScreens()
 }

@@ -46,13 +46,13 @@ extension CustomNavigationBar{
 			 RoundedRectangle(cornerRadius: 15)
 				.fill(theme.primaryDark.opacity(0.5))
 			 RoundedRectangle(cornerRadius: 15)
-				.stroke(theme.primaryDark, lineWidth: 3)
+				.stroke(theme.primaryDark, lineWidth: 2)
 		  }
 		  .matchedGeometryEffect(id: "nav", in: navNamespace)
 		}
 		Image(systemName: item.icon)
-		  .font(.title2.weight(.bold))
-		  .padding(13)
+		  .font(.headline.weight(.semibold))
+		  .padding(10)
 		  .foregroundStyle(selected ? theme.background : theme.primaryDark)
 		
 	 }
