@@ -15,6 +15,8 @@ final class NavigationManager {
   
   var startLoading: Bool = false
   var secondaryView: [SecondaryViewsEnum] = []
+  var plan: PlanCard? = nil
+  var thirdScreen: ThirdTypeScreenEnum? = nil
   
   var state: StartNavigationFlow {
 	 guard startLoading else { return .longLoading}
@@ -35,5 +37,9 @@ final class NavigationManager {
 extension NavigationManager{
   func popSecondary(){
 	 let _ = self.secondaryView.popLast()
+  }
+
+  func popThird(){
+	 self.thirdScreen = nil
   }
 }

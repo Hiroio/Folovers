@@ -13,7 +13,7 @@ final class PlansViewModel{
   var plans: [PlanCard] = []
   let folderId: String
   var plansState: PlanType = .plans
-  
+  var creationState: Bool = false
   
   init(folderId: String){
 	 self.folderId = folderId

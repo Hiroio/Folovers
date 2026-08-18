@@ -18,7 +18,7 @@ struct CustomDatePicker: View {
 			 .foregroundStyle(theme.primaryDark)
 		  HStack{
 			 DatePicker("", selection: date,
-							in: ...Date(),
+							in: Date.distantPast...,
 							displayedComponents: .date,
 			 )
 			 .accentColor(theme.primary)

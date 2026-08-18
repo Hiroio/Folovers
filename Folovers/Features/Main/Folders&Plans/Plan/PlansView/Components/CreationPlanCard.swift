@@ -15,7 +15,7 @@ struct CreationPlanCard: View {
 			 .font(.footnote)
 			 .foregroundStyle(theme.primaryDark)
 		  Spacer()
-		  Image(systemName: "plus")
+		  Image(systemName: "plus.circle")
 			 .font(.largeTitle)
 			 .foregroundStyle(theme.primaryDark)
 		 

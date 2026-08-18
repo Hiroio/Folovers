@@ -47,6 +47,15 @@ struct PlansView: View {
 				}
 			 }
 		)
+		.fullScreenCover(isPresented: $vm.creationState) {
+		  ZStack{
+			 theme.background.ignoresSafeArea()
+			 PlanCreationView(folderId: vm.folderId){
+				vm.fetchAllPlans()
+			 }
+			 .ignoresSafeArea(edges: .bottom)
+		  }
+		}
     }
 }
 
@@ -78,9 +87,15 @@ extension PlansView{
 		}
 		.frame(maxWidth: .infinity, alignment: .leading)
 		
-		Image(systemName: "plus")
-		  .font(.title2)
-		  .foregroundStyle(theme.primaryDark)
+		Button{
+		  withAnimation {
+			 vm.creationState = true
+		  }
+		}label:{
+		  Image(systemName: "plus")
+			 .font(.title2)
+			 .foregroundStyle(theme.primaryDark)
+		}
 	 }
 	 .padding(.horizontal)
 	 .fontDesign(.monospaced)

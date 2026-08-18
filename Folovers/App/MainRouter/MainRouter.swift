@@ -18,10 +18,20 @@ struct MainRouter: View {
 		MainScreens()
 		
 		if let secondary = navigationManager.secondaryView.last{
-		  SecondaryScreen(secondaryScreen: secondary)
+		  SecondaryScreen(screen: secondary)
 			 .transition(secondary.transition)
 			 .zIndex(1)
 			 .allowsHitTesting(!navigationManager.secondaryView.isEmpty)
+		}
+		
+		if let plan = navigationManager.plan{
+		  
+		}
+
+		if let third = navigationManager.thirdScreen{
+		  ThirdScreen(screen: third)
+			 .transition(third.transition)
+			 .zIndex(2)
 		}
 	 }
 	 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)

@@ -44,6 +44,7 @@ extension PlanCard{
 
 
 struct PhotoAttachment: Codable {
+  let id: String
   var localPath: String?
   var remoteUrl: String?
   var thumbnailUrl: String?

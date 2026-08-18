@@ -40,9 +40,38 @@ enum MainNavigationFlow: String, Identifiable, CaseIterable{
 }
 
 
-enum SecondaryViewsEnum{
-  case plan(folderId: String)
+enum SecondaryViewsEnum: Identifiable{
+  case plans(folderId: String)
+
+  var id: Int{
+	 switch self {
+	 case .plans(_):
+		1
+	 }
+  }
+
+  var transition: AnyTransition{
+	 switch self {
+	 case .plans(_):
+		  .move(edge: .bottom).combined(with: .opacity)
+	 }
+  }
   
+}
+
+
+
+
+enum ThirdTypeScreenEnum: Identifiable{
+  case plan(plan: PlanCard)
+
+  var id: Int{
+	 switch self {
+	 case .plan(_):
+		1
+	 }
+  }
+
   var transition: AnyTransition{
 	 switch self {
 	 case .plan(_):

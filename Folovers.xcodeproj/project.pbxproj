@@ -29,6 +29,7 @@
 				App/FoloversApp.swift,
 				App/MainRouter/Components/MainScreens.swift,
 				App/MainRouter/Components/SecondaryScreen.swift,
+				App/MainRouter/Components/ThirdScreen.swift,
 				App/MainRouter/MainRouter.swift,
 				Assets.xcassets,
 				Features/Global/AuthView/AuthView.swift,
@@ -49,6 +50,7 @@
 				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/NoteBorder.swift",
 				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/NoteTextEditor.swift",
 				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/PhotoSelection.swift",
+				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/PhotoSelectorRepresentable.swift",
 				"Features/Main/Folders&Plans/Plan/PlanCreation/PlanCreationView.swift",
 				"Features/Main/Folders&Plans/Plan/PlanCreation/PlanCreationViewModel.swift",
 				"Features/Main/Folders&Plans/Plan/PlansView/Components/CreationPlanCard.swift",
@@ -72,7 +74,7 @@
 				Models/Folder/PlanCard.swift,
 				Models/SpritePackageModels/SpriteActions.swift,
 				Models/User/UserModel.swift,
-				Services/Auth/AuthManager.swift,
+				Services/FileManager/FileManager.swift,
 				Services/FireBase/FireStorage/FireStorageManager.swift,
 				Services/FireBase/FireStore/FireStoreEndpoints/FireStoreEndpoint.swift,
 				Services/FireBase/FireStore/FireStoreEndpoints/FolderEndpoint.swift,
@@ -82,14 +84,16 @@
 				Services/FireBase/FireStore/FireStoreIdentifiable.swift,
 				Services/FireBase/FireStore/FireStoreManager.swift,
 				Services/FireBase/FireStore/FireStoreParser.swift,
-				Services/Folder/Folder/FolderManager.swift,
-				Services/Folder/Plan/PlanManager.swift,
 				Services/NavigationManager/NavigationEnum.swift,
 				Services/NavigationManager/NavigationManager.swift,
+				Services/System/Auth/AuthManager.swift,
+				Services/System/Folder/Folder/FolderManager.swift,
+				Services/System/Folder/Plan/PlanManager.swift,
+				Services/System/Storage/StorageManager.swift,
+				Services/System/User/UserManager.swift,
 				Services/ThemeManager/Models/AppThemeColor.swift,
 				Services/ThemeManager/Models/ThemePalette.swift,
 				Services/ThemeManager/ThemeManager.swift,
-				Services/User/UserManager.swift,
 				Utility/Helpers/ButtonStyle/ButtonStyleBorder.swift,
 				Utility/Helpers/Modifiers/BorderViewModifier.swift,
 				Utility/Helpers/Modifiers/TextFieldModifier.swift,
@@ -367,6 +371,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Folovers/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -406,6 +411,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Folovers/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

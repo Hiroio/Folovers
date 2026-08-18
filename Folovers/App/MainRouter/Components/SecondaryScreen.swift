@@ -8,19 +8,22 @@
 import SwiftUI
 
 struct SecondaryScreen: View {
-  let secondaryScreen: SecondaryViewsEnum
+  let screen: SecondaryViewsEnum
   @Environment(\.theme) var theme
     var body: some View {
 		ZStack{
 		  theme.background.ignoresSafeArea()
-		  switch secondaryScreen {
-		  case .plan(let folderId):
+		  switch screen {
+		  case .plans(let folderId):
 			 PlansView(folderId: folderId)
+				.transition(screen.transition)
+		  
 		  }
 		}
+		.animation(.easeInOut, value: screen.id)
     }
 }
 
 #Preview {
-  SecondaryScreen(secondaryScreen: .plan(folderId: ""))
+  SecondaryScreen(screen: .plans(folderId: ""))
 }

@@ -34,13 +34,18 @@ struct PlansSliderView: View {
 		  ForEach(renderedIndices, id: \.self) { index in
 			 let position = effectivePosition(for: index)
 
-			 PlanCardView(plan: plans[index])
-				.scaleEffect(scale(for: position))
-				.offset(y: offset(for: position))
-				.opacity(opacity(for: position))
-				.zIndex(Double(-position))
-				.allowsHitTesting(index == currentIndex)
-				.gesture(index == currentIndex ? dragGesture : nil)
+				PlanCardView(plan: plans[index])
+				  .scaleEffect(scale(for: position))
+				  .offset(y: offset(for: position))
+				  .opacity(opacity(for: position))
+				  .zIndex(Double(-position))
+				  .allowsHitTesting(index == currentIndex)
+				  .gesture(index == currentIndex ? dragGesture : nil)
+				  .onTapGesture {
+					 withAnimation {
+						NavigationManager.shared.thirdScreen = .plan(plan: plans[index])
+					 }
+				  }
 		  }
 		}
 	 }
