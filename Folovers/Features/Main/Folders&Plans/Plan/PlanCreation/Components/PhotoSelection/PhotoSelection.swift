@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct PhotoSelection: View {
-  @State private var photoSelectorActive: Bool = false
-  @State private var photos: [UIImage] = []
   @Environment(\.theme) var theme
-  let photoAttachments: [PhotoAttachment]
+  @State private var photoSelectorActive: Bool = false
+  @Binding var photos: [UIImage]
+  @Binding var photoAttachments: [PhotoAttachment]
   var body: some View {
 	 VStack{
 		HStack{
@@ -45,7 +46,38 @@ struct PhotoSelection: View {
 				  .aspectRatio(1, contentMode: .fill)
 				  .clipShape(.rect(cornerRadius: 15))
 				  .border(0)
-				  
+				  .overlay(alignment: .topTrailing){
+					 Button{
+						photos.removeAll(where: {$0 == photo})
+					 }label:{
+						Image(systemName: "minus.circle.fill")
+						  .font(.title)
+						  .foregroundStyle(theme.primary)
+					 }
+				  }
+			 }
+		  }else{
+			 ForEach(photoAttachments, id: \.id){ photo in
+				if let stringUrl = photo.remoteUrl{
+				  KFImage(URL(string: stringUrl)!)
+					 .placeholder({ _ in
+						placeHolder
+					 })
+					 .resizable()
+					 .containerRelativeFrame(.horizontal, count: 3, spacing: 25)
+					 .aspectRatio(1, contentMode: .fill)
+					 .clipShape(.rect(cornerRadius: 15))
+					 .border(0)
+					 .overlay(alignment: .topTrailing){
+						Button{
+						  photoAttachments.removeAll(where: {$0.id == photo.id})
+						}label:{
+						  Image(systemName: "minus.circle.fill")
+							 .font(.title)
+							 .foregroundStyle(theme.primary)
+						}
+					 }
+				}
 			 }
 		  }
 		}
@@ -53,6 +85,7 @@ struct PhotoSelection: View {
 		
 	 }
 	 .animation(.easeInOut, value: photos)
+	 .animation(.easeInOut, value: photoAttachments)
 	 .foregroundStyle(theme.primaryDark)
 	 .border(10)
 	 .sheet(isPresented: $photoSelectorActive) {
@@ -64,7 +97,8 @@ struct PhotoSelection: View {
 }
 
 #Preview {
-  PhotoSelection(photoAttachments: [])
+  @Previewable @State var testPhotos = PhotoAttachment.example()
+  PhotoSelection(photos: .constant([]), photoAttachments: $testPhotos)
 	 .environment(\.theme, .basic)
 }
 
@@ -82,5 +116,14 @@ extension PhotoSelection{
 	 .frame(maxWidth: .infinity, maxHeight: .infinity)
 	 .aspectRatio(1, contentMode: .fit)
 	 .card(15)
+  }
+  
+  var placeHolder: some View{
+	 Image(systemName: "photo")
+		.font(.largeTitle)
+		.foregroundStyle(theme.primaryDark)
+		.frame(maxWidth: .infinity, maxHeight: .infinity)
+		.aspectRatio(1, contentMode: .fit)
+		.card(15)
   }
 }

@@ -10,11 +10,11 @@ import Foundation
 
 struct PlanCard: FirestoreIdentifiable {
   var id: String
-  var folderId: String        // = uid для personal, = spaceId для shared
+  var folderId: String       
   var title: String
   var note: String?
   var date: Date?
-  var location: String?       // опціонально, поки просто рядок; географічні координати — пізніше
+  var location: PlanLocation?
   var photos: [PhotoAttachment]
   var isCompleted: Bool
   var createdBy: String
@@ -43,7 +43,7 @@ extension PlanCard{
 
 
 
-struct PhotoAttachment: Codable {
+struct PhotoAttachment: Codable, Equatable {
   let id: String
   var localPath: String?
   var remoteUrl: String?
@@ -52,10 +52,23 @@ struct PhotoAttachment: Codable {
   var uploadedBy: String
 }
 
+extension PhotoAttachment{
+  static func example() -> [PhotoAttachment]{
+	 (0...5).map({PhotoAttachment(id: UUID().uuidString, localPath: "", remoteUrl: "https://picsum.photos/id/\(237 + $0)/200/300", thumbnailUrl: "", status: .uploaded, uploadedBy: "") })
+  }
+}
+
 
 enum UploadStatus: String, Codable {
   case pending
   case uploading
   case uploaded
   case failed
+}
+
+
+struct PlanLocation: Codable, Equatable {
+  var name: String
+  var latitude: Double
+  var longitude: Double
 }

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-final class Filemanager{
+final class FMmanager{
 
   var appDirectory: URL?{
 	 FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first?.appendingPathComponent("Folovers")

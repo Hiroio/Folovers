@@ -15,6 +15,7 @@
 		CEB4861C302B945400FC1F1E /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CEB4861B302B945400FC1F1E /* FirebaseStorage */; };
 		CEB48638302BD0EF00FC1F1E /* AuthLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = CEB48637302BD0EF00FC1F1E /* AuthLibrary */; };
 		CEB4F8DE302B503200FC1F1E /* SpritePackage in Frameworks */ = {isa = PBXBuildFile; productRef = CEB4F8DD302B503200FC1F1E /* SpritePackage */; };
+		CECA5CC83035CFE1006E525A /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = CECA5CC73035CFE1006E525A /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,11 +47,15 @@
 				"Features/Main/Folders&Plans/Plan/Components/PlanHeader.swift",
 				"Features/Main/Folders&Plans/Plan/Components/PlanTypePickerView.swift",
 				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/CustomDatePicker.swift",
-				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/LocationSelectionView.swift",
+				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/LocationSelection/Components/LocationActionSearchView.swift",
+				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/LocationSelection/Components/LocationSelectionView.swift",
+				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/LocationSelection/Components/MapFrameView.swift",
+				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/LocationSelection/LocationSearchViewModel.swift",
+				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/LocationSelection/LocationSelectionSheet.swift",
 				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/NoteBorder.swift",
 				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/NoteTextEditor.swift",
-				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/PhotoSelection.swift",
-				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/PhotoSelectorRepresentable.swift",
+				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/PhotoSelection/PhotoSelection.swift",
+				"Features/Main/Folders&Plans/Plan/PlanCreation/Components/PhotoSelection/PhotoSelectorRepresentable.swift",
 				"Features/Main/Folders&Plans/Plan/PlanCreation/PlanCreationView.swift",
 				"Features/Main/Folders&Plans/Plan/PlanCreation/PlanCreationViewModel.swift",
 				"Features/Main/Folders&Plans/Plan/PlansView/Components/CreationPlanCard.swift",
@@ -121,6 +126,7 @@
 				CEB48612302B945400FC1F1E /* FirebaseAnalytics in Frameworks */,
 				CEB48618302B945400FC1F1E /* FirebaseCore in Frameworks */,
 				CEB48638302BD0EF00FC1F1E /* AuthLibrary in Frameworks */,
+				CECA5CC83035CFE1006E525A /* Kingfisher in Frameworks */,
 				CEB48614302B945400FC1F1E /* FirebaseAnalyticsCore in Frameworks */,
 				CEB4F8DE302B503200FC1F1E /* SpritePackage in Frameworks */,
 				CEB4861C302B945400FC1F1E /* FirebaseStorage in Frameworks */,
@@ -173,6 +179,7 @@
 				CEB48619302B945400FC1F1E /* FirebaseFirestore */,
 				CEB4861B302B945400FC1F1E /* FirebaseStorage */,
 				CEB48637302BD0EF00FC1F1E /* AuthLibrary */,
+				CECA5CC73035CFE1006E525A /* Kingfisher */,
 			);
 			productName = Folovers;
 			productReference = CEB4CC36302A4E7300FC1F1E /* Folovers.app */;
@@ -206,6 +213,7 @@
 				CEB4F8DC302B503200FC1F1E /* XCLocalSwiftPackageReference "Folovers/Packages/SpritePackage" */,
 				CEB48610302B945400FC1F1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				CEB48636302BD0EF00FC1F1E /* XCLocalSwiftPackageReference "../AuthLibrary" */,
+				CECA5CC63035CFE1006E525A /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CEB4CC37302A4E7300FC1F1E /* Products */;
@@ -482,6 +490,14 @@
 				minimumVersion = 12.17.0;
 			};
 		};
+		CECA5CC63035CFE1006E525A /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.11.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -523,6 +539,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CEB4F8DC302B503200FC1F1E /* XCLocalSwiftPackageReference "Folovers/Packages/SpritePackage" */;
 			productName = SpritePackage;
+		};
+		CECA5CC73035CFE1006E525A /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CECA5CC63035CFE1006E525A /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -9,6 +9,8 @@ import SwiftUI
 
 struct LocationSelectionView: View {
   @Environment(\.theme) var theme
+  let planLocation: PlanLocation?
+  let onPress: () -> ()
     var body: some View {
 		VStack{
 		  HStack{
@@ -28,11 +30,29 @@ struct LocationSelectionView: View {
 		  .font(.headline.weight(.bold))
 		  .padding(5)
 		  
-		  Image(systemName: "plus.circle")
-			 .font(.largeTitle)
-			 .frame(maxWidth: .infinity)
-			 .padding(.vertical, 50)
-			 .border()
+		  Button{
+			 withAnimation {
+				onPress()
+			 }
+		  }label:{
+			 if let planLocation{
+				VStack{
+				  MapFrameView(location: planLocation)
+					 .clipShape(.rect(cornerRadius: 15))
+					 .border(1)
+				  Text(planLocation.name)
+					 .font(.caption)
+					 .multilineTextAlignment(.center)
+				}
+				.aspectRatio(1.3, contentMode: .fit)
+			 }else{
+				Image(systemName: "plus.circle")
+				  .font(.largeTitle)
+				  .frame(maxWidth: .infinity)
+				  .padding(.vertical, 50)
+				  .border()
+			 }
+		  }
 		  
 		  
 		}
@@ -42,6 +62,6 @@ struct LocationSelectionView: View {
 }
 
 #Preview {
-    LocationSelectionView()
+  LocationSelectionView(planLocation: nil){}
 	 .environment(\.theme, .basic)
 }

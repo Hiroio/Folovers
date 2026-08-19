@@ -11,7 +11,7 @@ import UIKit
 final class StorageManager{
 
 
-  private let fileManager = Filemanager()
+  private let fileManager = FMmanager()
   private let fireStorage = FireStorageManager.shared
 
 
@@ -42,5 +42,46 @@ extension StorageManager{
 	 }
 
 	 return attachments
+  }
+
+  func uploadPhotos(_ photos: [PhotoAttachment], folderId: String) async -> [PhotoAttachment] {
+	 await fireStorage.uploadPhotos(photos, folderId: folderId)
+  }
+}
+
+extension StorageManager{
+  func reconcilePhotos(original: [PhotoAttachment], current: [PhotoAttachment], newImages: [UIImage], folderId: String) async -> [PhotoAttachment] {
+
+	 let currentIds = Set(current.map(\.id))
+	 let removed = original.filter{ !currentIds.contains($0.id) }
+
+	 for photo in removed{
+		await deletePhoto(photo, folderId: folderId)
+	 }
+
+	 guard !newImages.isEmpty else { return current }
+
+	 let newAttachments = createAttachments(from: newImages)
+	 let uploaded = await uploadPhotos(newAttachments, folderId: folderId)
+
+	 return current + uploaded
+  }
+
+  private func deletePhoto(_ photo: PhotoAttachment, folderId: String) async {
+	 if photo.remoteUrl != nil{
+		do{
+		  try await fireStorage.deleteFile(photo: photo, folderId: folderId)
+		}catch{
+		  print("DEBUG: Failed to delete photo from storage: \(error)")
+		}
+	 }
+
+	 if let localPath = photo.localPath, fileManager.checkIfExist(path: localPath){
+		do{
+		  try fileManager.deleteImageFromFM(path: localPath)
+		}catch{
+		  print("DEBUG: Failed to delete local photo: \(error)")
+		}
+	 }
   }
 }

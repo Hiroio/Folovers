@@ -41,8 +41,9 @@ struct PlanHeader: View {
 			 }label: {
 				Text(actionText)
 				  .font(.headline)
-				  .opacity(ableToCreate ? 1 : 0.6)
 			 }
+			 .disabled(!ableToCreate)
+			 .opacity(ableToCreate ? 1 : 0.5)
 		  }
 		  .frame(maxHeight: .infinity, alignment: .center)
 		}
