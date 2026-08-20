@@ -14,13 +14,13 @@ struct SpriteView: View {
 
   init(
 	 action: SpriteActions,
-	 config: CharacterConfig = .default,
+	 config: CharacterConfig = .standart,
 	 controller: CharacterController? = nil,
 	 step: Binding<Int>? = nil
   ){
 	 self._vm = State(
 		wrappedValue: SpriteViewModel(
-		  config: .default,
+		  config: .standart,
 		  action: action,
 		  controller: controller
 		)

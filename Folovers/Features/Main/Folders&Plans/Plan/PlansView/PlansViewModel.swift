@@ -20,15 +20,28 @@ final class PlansViewModel{
   }
   
   private let planManager = PlanManager()
+  private let storageManager = StorageManager.shared
   
   func fetchAllPlans(){
 	 Task{
 		do{
 		  let fetchedPlans = try await planManager.fetchPlans(folderId: folderId)
 		  self.plans = fetchedPlans
+		  self.filterPlansForUnUploaded(plans: fetchedPlans)
 		}catch{
 		  print("DEBUG: Failed To Fetch plans")
 		}
+	 }
+  }
+  
+}
+
+extension PlansViewModel{
+  func filterPlansForUnUploaded(plans: [PlanCard]){
+	 let filtered = plans.filter({$0.photos.contains(where: {$0.status == .failed})})
+	 
+	 if !filtered.isEmpty{
+		storageManager.startReloadingTask(plans: filtered)
 	 }
   }
 }

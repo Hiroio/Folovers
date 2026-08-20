@@ -20,6 +20,7 @@ enum StartNavigationFlow{
 enum MainNavigationFlow: String, Identifiable, CaseIterable{
   case home
   case folders
+  case connections
   case profile
   
   
@@ -33,6 +34,8 @@ enum MainNavigationFlow: String, Identifiable, CaseIterable{
 		"house"
 	 case .folders:
 		"folder"
+	 case .connections:
+		"person.line.dotted.person"
 	 case .profile:
 		"person"
 	 }

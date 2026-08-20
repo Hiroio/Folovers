@@ -12,12 +12,18 @@ public final class FirestoreService {
 
 	 init() {}
 
-	 public static func request<T>(_ endpoint: FirestoreEndpoint) async throws -> T where T: Codable {
+	 public static func request<T>(_ endpoint: FirestoreEndpoint, cacheFirst: Bool = false) async throws -> T where T: FirestoreIdentifiable {
 		  guard let ref = endpoint.path as? DocumentReference else {
 				throw FirestoreError.documentNotFound
 		  }
 		  switch endpoint.method {
 		  case .get:
+				if cacheFirst,
+					let cachedSnapshot = try? await ref.getDocument(source: .cache),
+					let cachedData = cachedSnapshot.data() {
+					 return try FirestoreParser.parse(cachedData, type: T.self)
+				}
+
 				guard let documentSnapshot = try? await ref.getDocument() else {
 					 throw FirestoreError.invalidPath
 				}

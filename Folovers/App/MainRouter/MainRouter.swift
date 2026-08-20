@@ -25,7 +25,7 @@ struct MainRouter: View {
 		}
 		
 		if let plan = navigationManager.plan{
-		  
+//		  TODO: PLAN CARD VIEW
 		}
 
 		if let third = navigationManager.thirdScreen{

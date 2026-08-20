@@ -29,7 +29,7 @@ final class PlanCreationViewModel{
   private var planBinding: Binding<PlanCard>?
 
   private let planManager = PlanManager()
-  private let storageManager = StorageManager()
+  private let storageManager = StorageManager.shared
 
   init(folderId: String = "", plan: Binding<PlanCard>? = nil){
 	 if let plan{

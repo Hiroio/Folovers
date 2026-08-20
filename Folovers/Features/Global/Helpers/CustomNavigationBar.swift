@@ -23,9 +23,13 @@ struct CustomNavigationBar: View {
 			 }
 		  }
 		}
-		.padding(3)
-		.card()
-		.aspectRatio(contentMode: .fit)
+		.padding(15)
+		.padding(.bottom)
+		.background(
+		  UnevenRoundedRectangle(cornerRadii: .init(topLeading: 15, bottomLeading: 0, bottomTrailing: 0, topTrailing: 15))
+			 .fill(theme.background)
+			 .shadow(radius: 5, y: -3)
+		)
     }
 }
 
@@ -39,24 +43,24 @@ struct CustomNavigationBar: View {
 extension CustomNavigationBar{
   @ViewBuilder
   func BarItem(item: MainNavigationFlow) -> some View{
-	 ZStack{
+	 ZStack(alignment: .bottom){
 		let selected = navigationManager.mainState == item
 		if selected{
 		  ZStack{
 			 RoundedRectangle(cornerRadius: 15)
 				.fill(theme.primaryDark.opacity(0.5))
-			 RoundedRectangle(cornerRadius: 15)
-				.stroke(theme.primaryDark, lineWidth: 2)
+				.frame(height: 5)
+				.padding(.horizontal)
+				.shadow(color: theme.primary, radius: 5, y: -3)
 		  }
 		  .matchedGeometryEffect(id: "nav", in: navNamespace)
 		}
-		Image(systemName: item.icon)
+		Image(systemName: "\(item.icon)\(selected ? ".fill" : "")")
 		  .font(.headline.weight(.semibold))
 		  .padding(10)
-		  .foregroundStyle(selected ? theme.background : theme.primaryDark)
+		  .foregroundStyle(theme.primaryDark)
 		
 	 }
-	 .padding(.horizontal, 20)
-	 .containerRelativeFrame(.horizontal, count: 3, spacing: 30)
+	 .frame(maxWidth: .infinity)
   }
 }

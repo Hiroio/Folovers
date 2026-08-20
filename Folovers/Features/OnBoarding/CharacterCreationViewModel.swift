@@ -10,7 +10,7 @@ import SpritePackage
 
 @Observable
 final class CharacterCreationViewModel{
-  var character: CharacterConfig = .default {
+  var character: CharacterConfig = .standart {
 	 didSet {
 		characterController.updateOutfit(character)
 	 }
@@ -22,7 +22,7 @@ final class CharacterCreationViewModel{
   var characterController: CharacterController
   
   init(){
-	 let controller = CharacterController(config: .default, sceneSize: CGSize(width: 96, height: 96))
+	 let controller = CharacterController(config: .standart, sceneSize: CGSize(width: 96, height: 96))
 	 self.characterController = controller
   }
  
