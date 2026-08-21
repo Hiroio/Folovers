@@ -9,16 +9,18 @@ import SwiftUI
 
 struct ConnectionsView: View {
   @Environment(\.theme) var theme
+  @State private var vm = ConnectionViewModel()
     var body: some View {
 		VStack{
 		  ConnectionsHeader
+			 .padding(.bottom)
 		  
-		  Text("Connections")
-			 .font(.largeTitle)
-			 .foregroundStyle(theme.primary)
-			 .frame(maxHeight: .infinity)
+		  ConnectionPicker(status: $vm.connectionsView)
+		  
+		  ConnectionSceneView(vm: vm)
 		}
 		.fontDesign(.monospaced)
+		.padding()
     }
 }
 
@@ -49,4 +51,5 @@ extension ConnectionsView{
 		  .foregroundStyle(theme.primaryDark)
 	 }
   }
+  
 }

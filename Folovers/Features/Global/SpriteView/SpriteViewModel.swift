@@ -43,6 +43,8 @@ final class SpriteViewModel {
 		startLoadingAnimation()
 	 case .idleLoading:
 		startIdleAnimation()
+	 case .preview:
+		controller.showPreview()
 	 }
   }
   

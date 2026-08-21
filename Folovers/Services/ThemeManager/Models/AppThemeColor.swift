@@ -10,7 +10,7 @@ import SwiftUI
 
 
 enum AppThemeColor: String, CaseIterable, Codable {
-	 case red, blue
+	 case red, blue, green, yellow
 
 	 var palette: ThemePalette {
 		ThemePalette(

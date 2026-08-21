@@ -13,3 +13,10 @@ struct UserDocument: FirestoreIdentifiable{
   var displayName: String
   var characterConfig: SpritePackage.CharacterConfig
 }
+
+
+extension UserDocument{
+  static func placeholder(id: String) -> UserDocument{
+	 UserDocument(id: id, displayName: "User\(id.suffix(4))", characterConfig: .standart)
+  }
+}

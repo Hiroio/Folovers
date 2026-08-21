@@ -9,7 +9,7 @@ import Foundation
 
 
 enum SpriteActions{
-  case idle, walk, jump, loading, idleLoading
+  case idle, walk, jump, loading, idleLoading, preview
   
   
   var sprites: Int {
@@ -23,6 +23,8 @@ enum SpriteActions{
 	 case .loading:
 		8
 	 case .idleLoading:
+		0
+	 case .preview:
 		0
 	 }
   }
@@ -39,6 +41,8 @@ enum SpriteActions{
 		0.6
 	 case .idleLoading:
 		1
+	 case .preview:
+		0
 	 }
   }
   
@@ -60,6 +64,8 @@ enum SpriteActions{
 		let value = Double(half / Double(sprites))
 		return CGFloat(start + Double(step) * value)
 	 case .idleLoading:
+		return half
+	 case .preview:
 		return half
 	 }
   }

@@ -14,9 +14,13 @@ final class ConnectionViewModel{
 	 connectionManager.profiles
   }
   var error: FirestoreError? = nil
+  var connectionsView: ConnectionStatus = .accepted
   
   private let connectionManager = ConnectionManager.shared
   
+  init(){
+	 fetchConnections()
+  }
   
   var activeConnections:  [ConnectionModel] {
 	 connections.filter({ $0.status == .accepted})
@@ -72,11 +76,56 @@ extension ConnectionViewModel{
   }
   
   
-  func mapError(_ error: Error) {
+  @discardableResult
+  func mapError(_ error: Error) -> FirestoreError{
 	 guard let error = error as? FirestoreError else {
 		self.error = .unknownError
-		return
+		return .unknownError
 	 }
 	 self.error = error
+	 return error
+  }
+}
+
+
+
+enum ConnectionsState: Equatable {
+  case empty
+  case error(error: FirestoreError)
+  case pendingEmpty
+  
+  
+  
+  var image: String{
+	 switch self {
+	 case .empty:
+		"NoConnections"
+	 case .error(_):
+		"FailedToLoad"
+	 case .pendingEmpty:
+		"PendingEmpty"
+	 }
+  }
+  
+  var text: String{
+	 switch self {
+	 case .empty:
+		"No connections yet!"
+	 case .error(_):
+		"Failed to load Connections"
+	 case .pendingEmpty:
+		"No any requests"
+	 }
+  }
+  
+  var actionBtn: String{
+	 switch self {
+	 case .empty:
+		"Create Connections"
+	 case .error(_):
+		"Try Again"
+	 case .pendingEmpty:
+		""
+	 }
   }
 }

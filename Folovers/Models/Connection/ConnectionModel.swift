@@ -17,8 +17,23 @@ struct ConnectionModel: FirestoreIdentifiable{
 
 
 
+extension ConnectionModel{
+  static func conncetion(id: String) -> ConnectionModel{
+	 .init(id: id, users: [id, "qw#4e2r"], status: .accepted, requestedBy: id, createdAt: .now)
+  }
+}
 
-
-enum ConnectionStatus: Codable{
-  case pending, accepted
+enum ConnectionStatus: Codable, CaseIterable{
+  case accepted, pending
+  
+  
+  
+  var title: String{
+	 switch self {
+	 case .pending:
+		"Pending"
+	 case .accepted:
+		"Connected"
+	 }
+  }
 }

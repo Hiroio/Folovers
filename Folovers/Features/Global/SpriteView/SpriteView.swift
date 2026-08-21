@@ -20,7 +20,7 @@ struct SpriteView: View {
   ){
 	 self._vm = State(
 		wrappedValue: SpriteViewModel(
-		  config: .standart,
+		  config: config,
 		  action: action,
 		  controller: controller
 		)

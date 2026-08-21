@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MainRouter: View {
+  @Environment(\.theme) var theme
   @Environment(NavigationManager.self) var navigationManager
   
   init() {
@@ -15,6 +16,8 @@ struct MainRouter: View {
   }
   var body: some View {
 	 ZStack(){
+		theme.background.ignoresSafeArea()
+		
 		MainScreens()
 		
 		if let secondary = navigationManager.secondaryView.last{

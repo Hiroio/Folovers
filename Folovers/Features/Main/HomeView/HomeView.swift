@@ -16,7 +16,9 @@ struct HomeView: View {
 		  Text("Hello there")
 			 .font(.largeTitle)
 			 .foregroundStyle(theme.primary)
+			 .frame(maxHeight: .infinity)
 		}
+		.padding()
 		.fontDesign(.monospaced)
     }
 }
