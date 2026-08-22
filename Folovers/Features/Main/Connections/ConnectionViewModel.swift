@@ -9,17 +9,23 @@ import Foundation
 
 @Observable
 final class ConnectionViewModel{
-  var connections: [ConnectionModel] = []
+  var connections: [ConnectionModel] {
+	 connectionManager.connections
+  }
   var profiles: [String: UserDocument] {
 	 connectionManager.profiles
   }
-  var error: FirestoreError? = nil
+  var connectionsError: FirestoreError? {
+	 connectionManager.connectionsError
+  }
+  var requestError: FirestoreError? {
+	 connectionManager.requestError
+  }
   var connectionsView: ConnectionStatus = .accepted
-  
+
   private let connectionManager = ConnectionManager.shared
-  
+
   init(){
-	 fetchConnections()
   }
   
   var activeConnections:  [ConnectionModel] {
@@ -36,54 +42,26 @@ final class ConnectionViewModel{
 extension ConnectionViewModel{
   func fetchConnections(){
 	 Task{
-		do{
-		  let connections = try await connectionManager.getConnections()
-		  self.connections = connections
-		}catch{
-		  mapError(error)
-		}
+		await connectionManager.getConnections()
 	 }
   }
-  
+
   func createConnection(connection: ConnectionModel){
 	 Task{
-		do{
-		  try await connectionManager.createConnection(connection)
-		}catch{
-		  mapError(error)
-		}
+		await connectionManager.createConnection(connection)
 	 }
   }
-  
+
   func updateConnection(connection: ConnectionModel){
 	 Task{
-		do{
-		  try await connectionManager.update(connection)
-		}catch{
-		  mapError(error)
-		}
+		await connectionManager.update(connection)
 	 }
   }
-  
+
   func deleteConnection(connection: ConnectionModel){
 	 Task{
-		do{
-		  try await connectionManager.delete(connection)
-		}catch{
-		  mapError(error)
-		}
+		await connectionManager.delete(connection)
 	 }
-  }
-  
-  
-  @discardableResult
-  func mapError(_ error: Error) -> FirestoreError{
-	 guard let error = error as? FirestoreError else {
-		self.error = .unknownError
-		return .unknownError
-	 }
-	 self.error = error
-	 return error
   }
 }
 

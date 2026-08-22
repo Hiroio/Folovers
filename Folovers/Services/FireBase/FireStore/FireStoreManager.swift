@@ -53,7 +53,7 @@ public final class FirestoreService {
 					 response.append(data)
 				}
 				return response
-		  case .post, .put, .delete:
+		  case .post, .put, .delete, .listener:
 				throw FirestoreError.operationNotSupported
 		  }
 	 }
@@ -63,7 +63,7 @@ public final class FirestoreService {
 				throw FirestoreError.documentNotFound
 		  }
 		  switch endpoint.method {
-		  case .get:
+		  case .get, .listener:
 				throw FirestoreError.invalidRequest
 		  case .post(var model):
 				model.id = ref.documentID
@@ -74,4 +74,45 @@ public final class FirestoreService {
 				try await ref.delete()
 		  }
 	 }
+  
+  
+  public static func stream<T>(_ endpoint: FirestoreEndpoint) -> AsyncThrowingStream<[T], Error> where T: FirestoreIdentifiable{
+	 AsyncThrowingStream { continuation in
+				guard let ref = endpoint.path as? Query else {
+					 continuation.finish(throwing: FirestoreError.collectionNotFound)
+					 return
+				}
+				
+				guard endpoint.method == .listener else {
+					 continuation.finish(throwing: FirestoreError.operationNotSupported)
+					 return
+				}
+				
+				let listener = ref.addSnapshotListener { querySnapshot, error in
+					 if let error = error {
+						  continuation.finish(throwing: error)
+						  return
+					 }
+					 
+					 guard let querySnapshot = querySnapshot else { return }
+
+//					 A broken document is skipped, the stream stays alive
+					 let response: [T] = querySnapshot.documents.compactMap { document in
+						  do {
+								return try FirestoreParser.parse(document.data(), type: T.self)
+						  } catch {
+								print("DEBUG: Skipped \(T.self) \(document.documentID): \(error)")
+								return nil
+						  }
+					 }
+
+					 continuation.yield(response)
+				}
+				
+				continuation.onTermination = { _ in
+					 listener.remove()
+				}
+		  }
+	 }
+
 }

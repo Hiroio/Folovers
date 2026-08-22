@@ -31,11 +31,6 @@ struct MainRouter: View {
 //		  TODO: PLAN CARD VIEW
 		}
 
-		if let third = navigationManager.thirdScreen{
-		  ThirdScreen(screen: third)
-			 .transition(third.transition)
-			 .zIndex(2)
-		}
 	 }
 	 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
   }

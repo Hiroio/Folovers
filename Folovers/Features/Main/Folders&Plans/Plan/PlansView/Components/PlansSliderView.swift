@@ -43,7 +43,7 @@ struct PlansSliderView: View {
 				  .gesture(index == currentIndex ? dragGesture : nil)
 				  .onTapGesture {
 					 withAnimation {
-						NavigationManager.shared.thirdScreen = .plan(plan: plans[index])
+						NavigationManager.shared.plan = plans[index]
 					 }
 				  }
 		  }

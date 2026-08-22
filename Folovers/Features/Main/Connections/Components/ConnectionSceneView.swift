@@ -12,7 +12,7 @@ struct ConnectionSceneView: View {
   @Bindable var vm: ConnectionViewModel
     var body: some View {
 		ZStack{
-		  if let error = vm.error{
+		  if let error = vm.connectionsError{
 			 ConnectionsStateCard(state: .error(error: error))
 		  }else{
 			 switch vm.connectionsView {

@@ -33,11 +33,33 @@ public enum FirestorePath {
 
 // MARK: - FirestoreMethod
 
-public enum FirestoreMethod {
-	 case get
-	 case post(any FirestoreIdentifiable)
-	 case put(any FirestoreIdentifiable)
-	 case delete
+public enum FirestoreMethod: Identifiable, Equatable {
+  public static func == (lhs: FirestoreMethod, rhs: FirestoreMethod) -> Bool {
+	 lhs.id == rhs.id
+  }
+  
+  case get
+  case post(any FirestoreIdentifiable)
+  case put(any FirestoreIdentifiable)
+  case listener
+  case delete
+  
+  public var id: String{
+	 switch self {
+	 case .get:
+		"get"
+	 case .post(let firestoreIdentifiable):
+		"post"
+	 case .put(let firestoreIdentifiable):
+		"put"
+	 case .listener:
+		"listener"
+	 case .delete:
+		"delete"
+	 }
+  }
+  
+  
 }
 
 

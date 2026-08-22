@@ -63,22 +63,6 @@ enum SecondaryViewsEnum: Identifiable{
 }
 
 
-
-
-enum ThirdTypeScreenEnum: Identifiable{
-  case plan(plan: PlanCard)
-
-  var id: Int{
-	 switch self {
-	 case .plan(_):
-		1
-	 }
-  }
-
-  var transition: AnyTransition{
-	 switch self {
-	 case .plan(_):
-		  .move(edge: .bottom).combined(with: .opacity)
-	 }
-  }
+enum NavigationPopUp {
+  case user, userSearch
 }

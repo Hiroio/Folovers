@@ -13,12 +13,13 @@ struct BorderViewModifier: ViewModifier{
   let padding: CGFloat
   let lineWidth: CGFloat
   let dashed: Bool
+  let color: Color?
   func body(content: Content) -> some View {
 	 content
 		.padding(padding)
 		.background(
 		  RoundedRectangle(cornerRadius: 15)
-			 .stroke(theme.primary, style: .init(lineWidth: lineWidth, lineCap: .round, lineJoin: .round, dash: [10]))
+			 .stroke(color ?? theme.primary, style: .init(lineWidth: lineWidth, lineCap: .round, lineJoin: .round, dash: [dashed ? 10 : 1]))
 		)
   }
 }
@@ -41,8 +42,8 @@ struct CardViewModifier: ViewModifier{
 
 
 extension View{
-  func border(_ padding: CGFloat = 0, lineWidth: CGFloat = 2, dashed: Bool = false) -> some View{
-	 modifier(BorderViewModifier(padding: padding, lineWidth: lineWidth, dashed: dashed))
+  func border(_ padding: CGFloat = 0, lineWidth: CGFloat = 2, dashed: Bool = false, color: Color? = nil) -> some View{
+	 modifier(BorderViewModifier(padding: padding, lineWidth: lineWidth, dashed: dashed, color: color))
   }
   
   func card(_ padding: CGFloat = 0, lineWidth: CGFloat = 2, dashed: Bool = false) -> some View{

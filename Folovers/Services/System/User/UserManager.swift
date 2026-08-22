@@ -44,7 +44,7 @@ final class UserManager{
 	 
 	 Task{
 		do{
-		  let user = UserDocument(id: id, displayName: displayName, characterConfig: character)
+		  let user = UserDocument(id: id, displayName: displayName, characterConfig: character, createdAt: .now)
 		  let endpoint = UserEndpoint.postItem(item: user)
 		  
 		  try await FirestoreService.request(endpoint)
@@ -60,6 +60,11 @@ final class UserManager{
 		  }
 		}
 	 }
+  }
+  
+  func logOut(){
+	 self.currentUser = nil
+	 self.isInitialized = false
   }
 }
 

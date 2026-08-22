@@ -14,7 +14,10 @@ final class AuthManager{
   static let shared = AuthManager()
   var currentUser: AuthUser? = nil{
 	 didSet{
-		UserManager.shared.tryToFetchUser(with: currentUser?.uid)
+		if let currentUser{
+		  UserManager.shared.tryToFetchUser(with: currentUser.uid)
+		  ConnectionManager.shared.startListener()
+		}
 	 }
   }
   var error: AuthError? = nil
@@ -39,6 +42,9 @@ final class AuthManager{
   func logOut(){
 	 do {
 		try service.logout()
+		currentUser = nil
+		UserManager.shared.logOut()
+		ConnectionManager.shared.stopListener()
 	 }catch{
 		print("failed")
 	 }

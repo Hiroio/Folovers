@@ -12,6 +12,7 @@ import FirebaseFirestore
 struct ConnectionEndpoint: FirestoreEndpoint {
   enum Action {
 	 case fetchAll(userId: String)
+	 case listener(userId: String)
 	 case fetchOne(connectionID: String)
 	 case create(ConnectionModel)
 	 case update(ConnectionModel)
@@ -23,6 +24,8 @@ struct ConnectionEndpoint: FirestoreEndpoint {
   var path: FirestoreReference {
 	 switch action {
 	 case .fetchAll(let userId):
+		firestore.collection("Connections").whereField("users", arrayContains: userId)
+	 case .listener(let userId):
 		firestore.collection("Connections").whereField("users", arrayContains: userId)
 	 case .fetchOne(let connectionId):
 		firestore.collection("Connections").document(connectionId)
@@ -36,6 +39,7 @@ struct ConnectionEndpoint: FirestoreEndpoint {
   var method: FirestoreMethod {
 	 switch action {
 	 case .fetchAll, .fetchOne: .get
+	 case .listener: .listener
 	 case .create(let model): .post(model)
 	 case .update(let model): .put(model)
 	 case .delete: .delete

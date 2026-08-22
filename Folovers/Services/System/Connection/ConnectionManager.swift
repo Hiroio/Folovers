@@ -12,7 +12,13 @@ import Foundation
 final class ConnectionManager{
   static let shared = ConnectionManager()
   
+  var connections: [ConnectionModel] = []
   var profiles: [String: UserDocument] = [:]
+
+//  Loading the list itself
+  var connectionsError: FirestoreError? = nil
+//  Creating / updating / deleting a single connection
+  var requestError: FirestoreError? = nil
 
   @ObservationIgnored
   private var inFlight: Set<String> = []
@@ -20,42 +26,94 @@ final class ConnectionManager{
   @ObservationIgnored
   private let maxConcurrentProfileLoads = 15
 
+  @ObservationIgnored
+  private var task: Task<Void, Error>? = nil
 }
 
 
 // MARK: ---------- -=| Connections |=- ---------------------
 extension ConnectionManager{
 
-  func getConnections() async throws -> [ConnectionModel]{
-	 guard let id = AuthManager.shared.id else { throw FirestoreError.operationNotAllowed }
+  func getConnections() async {
+	 connectionsError = nil
 
-	 let endpoint = ConnectionEndpoint(action: .fetchAll(userId: id))
+	 guard let id = AuthManager.shared.id else {
+		connectionsError = .operationNotAllowed
+		return
+	 }
 
-	 let connections: [ConnectionModel] = try await FirestoreService.request(endpoint)
+	 do{
+		let endpoint = ConnectionEndpoint(action: .fetchAll(userId: id))
+		let connections: [ConnectionModel] = try await FirestoreService.request(endpoint)
 
-	 getUsersProfiles(connections: connections, uid: id)
-
-	 return connections
+		self.connections = connections
+		getUsersProfiles(connections: connections, uid: id)
+	 }catch{
+		connectionsError = mapError(error)
+	 }
+  }
+  
+  func createConnection(_ connection: ConnectionModel) async {
+	 await performRequest(action: .create(connection))
   }
 
-  func createConnection(_ connection: ConnectionModel) async throws {
-	 let endpoint = ConnectionEndpoint(action: .create(connection))
 
-	 try await FirestoreService.request(endpoint)
+  func update(_ connection: ConnectionModel) async {
+	 await performRequest(action: .update(connection))
   }
 
 
-  func update(_ connection: ConnectionModel) async throws {
-	 let endpoint = ConnectionEndpoint(action: .update(connection))
-
-	 try await FirestoreService.request(endpoint)
+  func delete(_ connection: ConnectionModel) async {
+	 await performRequest(action: .delete(connection))
   }
 
+  private func performRequest(action: ConnectionEndpoint.Action) async {
+	 requestError = nil
 
-  func delete(_ connection: ConnectionModel) async throws {
-	 let endpoint = ConnectionEndpoint(action: .delete(connection))
+	 do{
+		let endpoint = ConnectionEndpoint(action: action)
+		try await FirestoreService.request(endpoint)
+	 }catch{
+		requestError = mapError(error)
+	 }
+  }
+  
+  
+  func startListener() {
+	 guard task == nil else { return }
+	 connectionsError = nil
 
-	 try await FirestoreService.request(endpoint)
+	 guard let id = AuthManager.shared.id else {
+		connectionsError = .operationNotAllowed
+		return
+	 }
+	 
+	 self.task = Task{
+		do{
+		  let endpoint = ConnectionEndpoint(action: .listener(userId: id))
+		  
+		  for try await values: [ConnectionModel] in FirestoreService.stream(endpoint) {
+			 connections = values
+			 if !connections.isEmpty{
+				getUsersProfiles(connections: connections, uid: id)
+			 }
+		  }
+		}catch{
+		  let error = mapError(error)
+		  self.connectionsError = error
+		}
+	 }
+  }
+  
+  func stopListener(){
+	 self.task?.cancel()
+	 self.task = nil
+  }
+
+  @discardableResult
+  func mapError(_ error: Error) -> FirestoreError{
+	 guard let error = error as? FirestoreError else { return .unknownError }
+	 return error
   }
 }
 
