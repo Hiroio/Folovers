@@ -12,11 +12,11 @@ import AuthLibrary
 @Observable
 final class AuthManager{
   static let shared = AuthManager()
+  
   var currentUser: AuthUser? = nil{
 	 didSet{
 		if let currentUser{
 		  UserManager.shared.tryToFetchUser(with: currentUser.uid)
-		  ConnectionManager.shared.startListener()
 		}
 	 }
   }
@@ -33,6 +33,7 @@ final class AuthManager{
   }
   
   func initializeCheck() {
+	 print("AUTHMANAGER")
 	 if let user = service.getCurrentUser(){
 		self.currentUser = user
 	 }

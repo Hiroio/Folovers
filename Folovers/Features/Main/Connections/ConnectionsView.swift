@@ -17,7 +17,8 @@ struct ConnectionsView: View {
 		  
 		  ConnectionPicker(status: $vm.connectionsView)
 		  
-		  ConnectionSceneView(vm: vm)
+		  ConnectionSceneView()
+			 .environment(vm)
 		}
 		.fontDesign(.monospaced)
 		.padding()
@@ -46,9 +47,15 @@ extension ConnectionsView{
 		}
 		.frame(maxWidth: .infinity, alignment: .leading)
 		
-		Image(systemName: "plus")
-		  .font(.title2)
-		  .foregroundStyle(theme.primaryDark)
+		Button{
+		  withAnimation{
+			 NavigationManager.shared.addPopUp(.userSearch)
+		  }
+		}label: {
+		  Image(systemName: "plus")
+			 .font(.title2)
+			 .foregroundStyle(theme.primaryDark)
+		}
 	 }
   }
   

@@ -26,7 +26,7 @@ struct ProfileConnectView: View {
 		  }
 		  VStack{
 			 copyElement(item: "us-app.com/invite/8f9a2", link: true)
-			 copyElement(item: "a7f2c9e1", link: false)
+			 copyElement(item: "\(AuthManager.shared.id ?? "Cannot find Id")", link: false)
 		  }
 		}
 		.foregroundStyle(theme.primaryDark)
@@ -57,7 +57,8 @@ extension ProfileConnectView{
 				.fill(.white)
 		  )
 		Button{
-		  
+		  UIPasteboard.general.setValue(item, forPasteboardType: "public.plain-text")
+
 		}label:{
 		  Image(systemName: "rectangle.on.rectangle")
 			 .font(.title3.weight(.semibold))

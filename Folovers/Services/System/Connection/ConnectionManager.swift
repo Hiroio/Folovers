@@ -110,6 +110,12 @@ extension ConnectionManager{
 	 self.task = nil
   }
 
+//  Resubscribes from scratch. For "Try Again" and for rebinding to another uid
+  func restartListener(){
+	 stopListener()
+	 startListener()
+  }
+
   @discardableResult
   func mapError(_ error: Error) -> FirestoreError{
 	 guard let error = error as? FirestoreError else { return .unknownError }

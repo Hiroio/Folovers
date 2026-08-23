@@ -10,6 +10,7 @@ import SwiftUI
 struct ConnectionsStateCard: View {
   let state: ConnectionsState
   @Environment(\.theme) var theme
+  @Environment(ConnectionViewModel.self) var vm
   var body: some View {
 	 VStack{
 		VStack(){
@@ -31,7 +32,13 @@ struct ConnectionsStateCard: View {
 		.aspectRatio(1, contentMode: .fit)
 		
 		
-		Button{}label:{
+		Button{
+		  if state == .empty || state == .pendingEmpty{
+			 NavigationManager.shared.addPopUp(.userSearch)
+		  }else{
+			 ConnectionManager.shared.restartListener()
+		  }
+		}label:{
 		  actionBtn(state: state)
 		}
 	 }
@@ -41,6 +48,7 @@ struct ConnectionsStateCard: View {
 #Preview {
   ConnectionsStateCard(state: .empty)
 	 .environment(\.theme, .basic)
+	 .environment(ConnectionViewModel())
 	 .fontDesign(.monospaced)
 }
 

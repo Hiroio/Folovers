@@ -72,7 +72,11 @@ struct ProfileLinks: View {
 		  Divider()
 		  LinkRow(.privacy)
 		  Divider()
-		  LinkRow(.logout)
+		  Button{
+			 AuthManager.shared.logOut()
+		  }label:{
+			 LinkRow(.logout)
+		  }
 		}
 		.foregroundStyle(theme.primary)
 		.fontDesign(.monospaced)

@@ -13,7 +13,13 @@ import SpritePackage
 final class UserManager{
   static let shared = UserManager()
   
-  var currentUser: UserDocument? = nil
+  var currentUser: UserDocument? = nil{
+	 didSet{
+		if currentUser != nil{
+		  ConnectionManager.shared.startListener()
+		}
+	 }
+  }
   var isInitialized: Bool = false
   var error: FirestoreError? = nil
   
@@ -25,11 +31,9 @@ final class UserManager{
   
   func tryToFetchUser(with id: String?){
 	 guard let id else { return }
-	 print(id)
 	 Task{
 		do{
-		  let endpoint = UserEndpoint.getUser(id: id)
-		  self.currentUser = try await FirestoreService.request(endpoint)
+		  self.currentUser = try await getUser(id)
 		  print("DEBUG User successfully fetched")
 		}catch{
 		  print("DEBUG: -trying fetch user failed with error: \(error.localizedDescription)")
@@ -60,6 +64,12 @@ final class UserManager{
 		  }
 		}
 	 }
+  }
+  
+  func getUser(_ id: String) async throws -> UserDocument{
+	 let endpoint = UserEndpoint.getUser(id: id)
+	 
+	 return try await FirestoreService.request(endpoint)
   }
   
   func logOut(){

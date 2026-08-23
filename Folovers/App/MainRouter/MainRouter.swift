@@ -27,12 +27,30 @@ struct MainRouter: View {
 			 .allowsHitTesting(!navigationManager.secondaryView.isEmpty)
 		}
 		
-		if let plan = navigationManager.plan{
-//		  TODO: PLAN CARD VIEW
+		if let _ = navigationManager.plan{
+		  //		  TODO: PLAN CARD VIEW
 		}
-
+		
+		
+		ZStack{
+		  if !navigationManager.popUps.isEmpty{
+			 Color.black.ignoresSafeArea().opacity(0.4)
+				.onTapGesture {
+				  navigationManager.clearPopUps()
+				}
+		  }
+		  if let popUp = navigationManager.popUps.last{
+			 PopUpViews(popUp: popUp)
+				.transition(.scale.combined(with: .opacity))
+				.zIndex(2)
+		  }
+		}
+		.zIndex(1)
+		.allowsHitTesting(!navigationManager.popUps.isEmpty)
+		
 	 }
 	 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+	 .animation(.easeInOut, value: navigationManager.popUps.count)
   }
 }
 

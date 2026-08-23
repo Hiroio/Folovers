@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ConnectionSceneView: View {
   @Environment(\.theme) var theme
-  @Bindable var vm: ConnectionViewModel
+  @Environment(ConnectionViewModel.self) var vm
     var body: some View {
 		ZStack{
 		  if let error = vm.connectionsError{
@@ -30,7 +30,8 @@ struct ConnectionSceneView: View {
 }
 
 #Preview {
-  ConnectionSceneView(vm: ConnectionViewModel())
+  ConnectionSceneView()
 	 .environment(\.theme, .basic)
+	 .environment(ConnectionViewModel())
 }
 

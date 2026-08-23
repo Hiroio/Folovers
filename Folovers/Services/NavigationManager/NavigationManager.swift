@@ -39,7 +39,15 @@ extension NavigationManager{
 	 let _ = self.secondaryView.popLast()
   }
 
+  func addPopUp(_ destination: NavigationPopUp){
+	 self.popUps.append(destination)
+  }
+  
   func popPopUp(){
 	 let _ = self.popUps.popLast()
+  }
+  
+  func clearPopUps(){
+	 self.popUps = []
   }
 }

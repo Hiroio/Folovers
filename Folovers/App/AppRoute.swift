@@ -9,8 +9,8 @@ import SwiftUI
 
 struct AppRoute: View {
   @Environment(\.theme) var theme
-  @Environment(NavigationManager.self) var navigation
   @State private var authManager = AuthManager.shared
+  @State private var navigation = NavigationManager.shared
   var body: some View {
 	 ZStack{
 		theme.background.ignoresSafeArea()
@@ -37,11 +37,11 @@ struct AppRoute: View {
 	 .animation(.easeInOut(duration: 0.8), value: navigation.state)
 	 .animation(.easeInOut(duration: 0.5), value: theme.background)
 	 .environment(authManager)
+	 .environment(navigation)
   }
 }
 
 #Preview {
     AppRoute()
 	 .environment(\.theme, .basic)
-	 .environment(NavigationManager.shared)
 }

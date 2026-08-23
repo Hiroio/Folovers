@@ -40,24 +40,17 @@ final class ConnectionViewModel{
 
 
 extension ConnectionViewModel{
-  func fetchConnections(){
+
+//  Accept
+  func acceptConnection(connection: ConnectionModel){
+	 var connectionToAccept = connection
+	 connectionToAccept.status = .accepted
 	 Task{
-		await connectionManager.getConnections()
+		await connectionManager.update(connectionToAccept)
 	 }
   }
 
-  func createConnection(connection: ConnectionModel){
-	 Task{
-		await connectionManager.createConnection(connection)
-	 }
-  }
-
-  func updateConnection(connection: ConnectionModel){
-	 Task{
-		await connectionManager.update(connection)
-	 }
-  }
-
+//  DECLINE/Delete
   func deleteConnection(connection: ConnectionModel){
 	 Task{
 		await connectionManager.delete(connection)
@@ -103,7 +96,7 @@ enum ConnectionsState: Equatable {
 	 case .error(_):
 		"Try Again"
 	 case .pendingEmpty:
-		""
+		"Send an Request"
 	 }
   }
 }
