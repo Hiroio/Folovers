@@ -46,6 +46,7 @@ struct PlansSliderView: View {
 						NavigationManager.shared.plan = plans[index]
 					 }
 				  }
+				  
 		  }
 		}
 	 }

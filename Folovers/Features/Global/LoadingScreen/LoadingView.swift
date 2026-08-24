@@ -16,7 +16,7 @@ struct LoadingView: View {
 		GeometryReader { geo in
 		  VStack(spacing: 0){
 			 Spacer()
-			 Image(systemName: "heart.fill")
+			 Image(systemName: "heart")
 				.font(.largeTitle)
 				.foregroundStyle(.red)
 				.fontDesign(.monospaced)
@@ -24,9 +24,11 @@ struct LoadingView: View {
 			 
 			 SpriteView(action: action, step: $step)
 				.position(
-				  x: action.xPosition(step: step, containerWidth: geo.size.width, spriteWidth: SpriteViewModel.displaySize.width)
+				  x: action.xPosition(step: step, containerWidth: geo.size.width, spriteWidth: 96)
 				)
 				.animation(.easeInOut(duration: action.animationDuration), value: step)
+				.frame(height: 96)
+				.padding(.top, 46)
 			 
 			 Spacer()
 		  }

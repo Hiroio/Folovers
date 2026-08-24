@@ -22,7 +22,7 @@ final class CharacterCreationViewModel{
   var characterController: CharacterController
   
   init(){
-	 let controller = CharacterController(config: .standart, sceneSize: CGSize(width: 96, height: 96))
+	 let controller = CharacterController(config: .standart)
 	 self.characterController = controller
   }
  

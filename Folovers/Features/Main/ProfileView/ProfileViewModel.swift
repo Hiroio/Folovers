@@ -22,6 +22,6 @@ final class ProfileViewModel{
   
   var controller: CharacterController? {
 	 guard let config = userManager.currentUser?.characterConfig else {return nil}
-	 return CharacterController(config: config, sceneSize: CGSize(width: 96, height: 96))
+	 return CharacterController(config: config)
   }
 }

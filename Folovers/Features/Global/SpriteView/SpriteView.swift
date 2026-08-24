@@ -16,13 +16,15 @@ struct SpriteView: View {
 	 action: SpriteActions,
 	 config: CharacterConfig = .standart,
 	 controller: CharacterController? = nil,
-	 step: Binding<Int>? = nil
+	 step: Binding<Int>? = nil,
+	 size: CGSize? = nil
   ){
 	 self._vm = State(
 		wrappedValue: SpriteViewModel(
 		  config: config,
 		  action: action,
-		  controller: controller
+		  controller: controller,
+		  size: size
 		)
 	 )
 	 self.step = step
@@ -30,8 +32,7 @@ struct SpriteView: View {
 
   var body: some View {
 	 CharacterView(controller: vm.controller)
-		.scaleEffect(SpriteViewModel.displayScale)
-		.frame(width: SpriteViewModel.displaySize.width, height: SpriteViewModel.displaySize.height)
+		.frame(width: vm.size?.width ?? SpriteViewModel.displaySize.width, height: vm.size?.height ?? SpriteViewModel.displaySize.height)
 		.onChange(of: vm.number) { _, newValue in
 		  step?.wrappedValue = newValue
 		}

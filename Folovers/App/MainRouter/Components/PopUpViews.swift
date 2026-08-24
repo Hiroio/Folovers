@@ -17,6 +17,9 @@ struct PopUpViews: View {
 		case .user(let uid, let user):
 		  UserCardPopUp(uid: uid, user: user)
 			 .transition(.scale.combined(with: .opacity))
+		case .folderCreation:
+		  FolderCreationView()
+			 .transition(.scale.combined(with: .opacity))
 		}
     }
 }

@@ -59,13 +59,27 @@ extension FolderManager{
 	 Task{
 		do{
 		  try await FirestoreService.request(endpoint)
+		  fetchAllRelated()
 		}catch{
 		  mapError(error: error)
 		}
 	 }
   }
   
-  
+  func createDefaultFolder(folder: FolderModel){
+	 let endpoint = FolderEndpoint(action: .create(folder))
+	 
+	 Task{
+		do{
+		  try await FirestoreService.request(endpoint)
+		  fetchAllRelated()
+		}catch{
+		  mapError(error: error)
+		}
+	 }
+  }
+
+
   func updateFolder(folder: FolderModel){
 	 let endPoint = FolderEndpoint(action: .update(folder))
 	 

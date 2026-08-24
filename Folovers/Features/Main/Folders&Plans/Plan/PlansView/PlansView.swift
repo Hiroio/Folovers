@@ -14,49 +14,39 @@ struct PlansView: View {
 	 self._vm = State(wrappedValue: PlansViewModel(folderId: folderId))
   }
   
-    var body: some View {
-		VStack{
-		  PlansViewHeader
-		  
-		  PlanTypePickerView(planState: $vm.plansState)
-		  
-		  ZStack{
-			 switch vm.plansState {
-			 case .plans:
-				PlansSliderView(plans: vm.plans, state: .plans)
-				  .transition(PlanType.plans.transition)
-			 case .memories:
-				PlansSliderView(plans: PlanCard.plans(), state: .memories)
-				  .transition(PlanType.memories.transition)
-			 }
-		  }
-		  .frame(maxHeight: .infinity, alignment: .bottom)
-		  }
-		.contentShape(.rect)
-		.simultaneousGesture(
-		  DragGesture(minimumDistance: 20)
-			 .onChanged { value in
-				let horizontal = value.translation.width
-				guard abs(horizontal) > 50 else { return }
-				
-				let target: PlanType = horizontal < 0 ? .memories : .plans
-				if vm.plansState != target {
-				  withAnimation {
-					 vm.plansState = target
-				  }
+  var body: some View {
+	 VStack{
+		PlansViewHeader
+		
+		PlanTypePickerView(planState: $vm.plansState)
+		
+		PlanGridView(vm: vm)
+	 }
+	 .contentShape(.rect)
+	 .simultaneousGesture(
+		DragGesture(minimumDistance: 20)
+		  .onChanged { value in
+			 let horizontal = value.translation.width
+			 guard abs(horizontal) > 50 else { return }
+			 
+			 let target: PlanType = horizontal < 0 ? .memories : .plans
+			 if vm.plansState != target {
+				withAnimation {
+				  vm.plansState = target
 				}
 			 }
-		)
-		.fullScreenCover(isPresented: $vm.creationState) {
-		  ZStack{
-			 theme.background.ignoresSafeArea()
-			 PlanCreationView(folderId: vm.folderId){
-				vm.fetchAllPlans()
-			 }
-			 .ignoresSafeArea(edges: .bottom)
 		  }
+	 )
+	 .fullScreenCover(isPresented: $vm.creationState) {
+		ZStack{
+		  theme.background.ignoresSafeArea()
+		  PlanCreationView(folderId: vm.folderId){
+			 vm.fetchAllPlans()
+		  }
+		  .ignoresSafeArea(edges: .bottom)
 		}
-    }
+	 }
+  }
 }
 
 #Preview {

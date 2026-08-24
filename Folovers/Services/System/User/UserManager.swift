@@ -54,6 +54,9 @@ final class UserManager{
 		  try await FirestoreService.request(endpoint)
 		  
 		  self.currentUser = user
+		  
+		  let systemFolder = FolderModel.createPersonal(uid: id)
+		  FolderManager.shared.createDefaultFolder(folder: systemFolder)
 		  print("Created")
 		}catch{
 		  print("DEBUG: Failed to create USERFIRESTORE \(error.localizedDescription)")

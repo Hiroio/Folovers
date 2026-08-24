@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct PlanCreationView: View {
-  @Namespace private var nameSpace
   @Environment(\.dismiss) var dismiss
   @Environment(\.theme) var theme
   @State private var scrollPosition: String? = "NameSection"

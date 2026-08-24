@@ -14,8 +14,9 @@ struct FoldersView: View {
 		VStack{
 		  FoldersHeader
 		  
-		  FolderSliderView(folders: vm.folders.isEmpty ? [FolderModel.personal, FolderModel.personal2] : vm.folders)
+		  FolderSliderView(folders: vm.folders)
 			 .frame(maxWidth: .infinity)
+			
 		  
 		}
 		.padding()
@@ -42,9 +43,15 @@ extension FoldersView{
 		}
 		.frame(maxWidth: .infinity, alignment: .leading)
 		
-		Image(systemName: "plus")
-		  .font(.title2)
-		  .foregroundStyle(theme.primaryDark)
+		Button{
+		  withAnimation{
+			 NavigationManager.shared.addPopUp(.folderCreation)
+		  }
+		}label: {
+		  Image(systemName: "plus")
+			 .font(.title2)
+			 .foregroundStyle(theme.primaryDark)
+		}
 	 }
   }
   

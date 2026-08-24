@@ -22,3 +22,20 @@ final class FoldersViewModel{
 	 AuthManager.shared.id
   }
 }
+
+
+extension FoldersViewModel{
+  
+  
+  
+  
+  
+  
+  
+  
+//  func createSystem(){
+//	 guard let uid else {return}
+//	 let folder = FolderModel.createPersonal(uid: uid)
+//	 folderManager.createDefaultFolder(folder: folder)
+//  }
+}

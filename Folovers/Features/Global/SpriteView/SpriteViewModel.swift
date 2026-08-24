@@ -12,18 +12,20 @@ import SpritePackage
 final class SpriteViewModel {
   static let nativeSize = CGSize(width: 32, height: 32)
   static let displayScale: CGFloat = 3
-  static let displaySize = CGSize(width: nativeSize.width * displayScale, height: nativeSize.height * displayScale)
+  static let displaySize: CGSize = CGSize(width: nativeSize.width * displayScale, height: nativeSize.height * displayScale)
 
+  let size: CGSize?
   let controller: CharacterController
   var number: Int = 0
   var action: SpriteActions
 
-  init(config: CharacterConfig, action: SpriteActions, controller: CharacterController?){
+  init(config: CharacterConfig, action: SpriteActions, controller: CharacterController?, size: CGSize? = nil){
+	 self.size = size
 	 if let controller{
 		self.controller = controller
 		self.action = action
 	 }else{
-		self.controller = CharacterController(config: config, sceneSize: Self.displaySize)
+		self.controller = CharacterController(config: config)
 		self.action = action
 	 }
 	 initialize()

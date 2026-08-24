@@ -65,4 +65,5 @@ enum SecondaryViewsEnum: Identifiable{
 
 enum NavigationPopUp {
   case userSearch, user(uid: String, user: UserDocument?)
+  case folderCreation
 }

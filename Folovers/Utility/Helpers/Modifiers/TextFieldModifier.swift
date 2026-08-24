@@ -10,6 +10,7 @@ import SwiftUI
 
 struct TextFieldModifier: ViewModifier {
   @Environment(\.theme) var theme
+  let light: Bool
   func body(content: Content) -> some View {
 	 content
 		.foregroundStyle(theme.primary)
@@ -17,7 +18,7 @@ struct TextFieldModifier: ViewModifier {
 		.padding()
 		.background(
 		  RoundedRectangle(cornerRadius: 15)
-			 .fill(.gray.opacity(0.2))
+			 .fill((light ? Color.white : Color.gray).opacity(0.2))
 		)
 		.fontDesign(.monospaced)
   }
@@ -25,7 +26,7 @@ struct TextFieldModifier: ViewModifier {
 
 
 extension View{
-  func textFieldModifier() -> some View {
-	 modifier(TextFieldModifier())
+  func textFieldModifier(light: Bool = false) -> some View {
+	 modifier(TextFieldModifier(light: light))
   }
 }

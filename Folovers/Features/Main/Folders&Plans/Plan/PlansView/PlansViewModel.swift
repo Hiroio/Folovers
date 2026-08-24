@@ -14,13 +14,29 @@ final class PlansViewModel{
   let folderId: String
   var plansState: PlanType = .plans
   var creationState: Bool = false
+  var planGridState: Bool = false
+  var memoriesGridState: Bool = false
   
   init(folderId: String){
 	 self.folderId = folderId
   }
   
+  
+  
   private let planManager = PlanManager()
   private let storageManager = StorageManager.shared
+  
+  
+  var plansItems: [PlanCard]{
+	 plans.filter({!$0.isCompleted})
+  }
+  var memoriesItems: [PlanCard]{
+	 PlanCard.plans()
+  }
+}
+
+extension PlansViewModel{
+  
   
   func fetchAllPlans(){
 	 Task{
@@ -34,9 +50,6 @@ final class PlansViewModel{
 	 }
   }
   
-}
-
-extension PlansViewModel{
   func filterPlansForUnUploaded(plans: [PlanCard]){
 	 let filtered = plans.filter({$0.photos.contains(where: {$0.status == .failed})})
 	 

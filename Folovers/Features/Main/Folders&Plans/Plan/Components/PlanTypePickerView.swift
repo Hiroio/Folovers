@@ -28,7 +28,7 @@ struct PlanTypePickerView: View {
 		  }
 		}
 		.fontDesign(.monospaced)
-		.padding()
+		.padding(.horizontal)
 		.compositingGroup()
     }
 }

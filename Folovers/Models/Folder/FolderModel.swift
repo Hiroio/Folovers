@@ -18,6 +18,10 @@ struct FolderModel: FirestoreIdentifiable{
 }
 
 extension FolderModel{
+  static func createPersonal(uid: String) -> FolderModel{
+	 FolderModel(id: "", members: [uid], title: "Personal", subtitle: "Your personal folder", createdBy: "System", createdAt: .now)
+  }
+  
   static let personal = FolderModel(id: "", members: [], title: "Personal", subtitle: "Your personal folder", createdBy: "", createdAt: .now)
   static let personal2 = FolderModel(id: UUID().uuidString, members: [], title: "Personal2", subtitle: "Your personal folder", createdBy: "", createdAt: .now)
 }
