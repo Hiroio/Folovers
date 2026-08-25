@@ -63,7 +63,28 @@ enum SecondaryViewsEnum: Identifiable{
 }
 
 
-enum NavigationPopUp {
+enum NavigationPopUp: Identifiable, Equatable {
+  
+  
   case userSearch, user(uid: String, user: UserDocument?)
   case folderCreation
+  case photo(photoKF: String?, photoUI: UIImage?)
+  
+  
+  var id: String{
+	 switch self {
+	 case .userSearch:
+		"UserSearch"
+	 case .user(_, _):
+		"User"
+	 case .folderCreation:
+		"FolderCreation"
+	 case .photo(_, _):
+		"Photo"
+	 }
+  }
+  
+  static func == (lhs: NavigationPopUp, rhs: NavigationPopUp) -> Bool {
+	 return lhs.id == rhs.id
+  }
 }

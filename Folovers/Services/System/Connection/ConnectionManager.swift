@@ -136,6 +136,16 @@ extension ConnectionManager{
 	 }
   }
 
+//	 Cache first, network second. For any screen that needs one profile by uid
+  static func user(for uid: String) async -> UserDocument? {
+	 if uid == AuthManager.shared.id { return UserManager.shared.currentUser }
+
+	 if let cached = shared.profiles[uid] { return cached }
+
+	 await shared.loadProfileIfNeeded(uid: uid)
+	 return shared.profiles[uid]
+  }
+
 //	 Single profile for one row. Used by views that scrolled ahead of the prefetch
   func loadProfileIfNeeded(uid: String) async {
 	 guard profiles[uid] == nil, !inFlight.contains(uid) else { return }

@@ -13,6 +13,14 @@ struct PhotoSelection: View {
   @State private var photoSelectorActive: Bool = false
   @Binding var photos: [UIImage]
   @Binding var photoAttachments: [PhotoAttachment]
+  let creation: Bool
+  
+
+  init(photos: Binding<[UIImage]>, photoAttachments: Binding<[PhotoAttachment]>, creation: Bool = true) {
+	 self._photos = photos
+	 self._photoAttachments = photoAttachments
+	 self.creation = creation
+  }
   var body: some View {
 	 VStack{
 		HStack{
@@ -25,19 +33,58 @@ struct PhotoSelection: View {
 		.font(.headline.weight(.bold))
 		.padding(5)
 		
+		if !creation && photoAttachments.isEmpty{
+		  VStack{
+			 Image(systemName: "photo")
+				.font(.title2)
+			 Text("No photos attached")
+				.font(.headline)
+		  }
+		  .frame(maxWidth: .infinity, maxHeight: .infinity)
+		  .foregroundStyle(theme.primaryDark)
+		  .aspectRatio(4, contentMode: .fit)
+		  .card(5)
+		}else{
+		  PhotoSelectionGrid
+		}
+	 }
+	 .animation(.easeInOut, value: photos)
+	 .animation(.easeInOut, value: photoAttachments)
+	 .foregroundStyle(theme.primaryDark)
+	 .border(10)
+	 .sheet(isPresented: $photoSelectorActive) {
+		PhotoSelectorRepresentable { items in
+		  self.photos = items
+		}
+	 }
+  }
+}
+
+#Preview {
+  @Previewable @State var testPhotos = PhotoAttachment.example()
+  PhotoSelection(photos: .constant([]), photoAttachments: $testPhotos, creation: false)
+	 .environment(\.theme, .basic)
+}
+
+
+extension PhotoSelection{
+  @ViewBuilder
+  private var PhotoSelectionGrid: some View{
+	 ScrollView{
 		LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 3), spacing: 10){
-		  Button{
-			 photoSelectorActive = true
-		  }label:{
-			 actionBtn(image: "photo", text: "Library")
+		  if creation{
+			 Button{
+				photoSelectorActive = true
+			 }label:{
+				actionBtn(image: "photo", text: "Library")
+			 }
+			 
+			 Button{
+				photoSelectorActive = true
+			 }label:{
+				actionBtn(image: "camera", text: "Camera")
+			 }
 		  }
-		  
-		  Button{
-			 photoSelectorActive = true
-		  }label:{
-			 actionBtn(image: "camera", text: "Camera")
-		  }
-		  
 		  if !photos.isEmpty{
 			 ForEach(photos, id: \.self) { photo in
 				Image(uiImage: photo)
@@ -53,6 +100,11 @@ struct PhotoSelection: View {
 						Image(systemName: "minus.circle.fill")
 						  .font(.title)
 						  .foregroundStyle(theme.primary)
+					 }
+				  }
+				  .onTapGesture {
+					 withAnimation{
+						NavigationManager.shared.addPopUp(.photo(photoKF: nil, photoUI: photo))
 					 }
 				  }
 			 }
@@ -76,30 +128,23 @@ struct PhotoSelection: View {
 							 .font(.title)
 							 .foregroundStyle(theme.primary)
 						}
+						.opacity(creation ? 1 : 0)
+						.disabled(!creation)
+					 }
+					 .onTapGesture {
+						withAnimation{
+						  NavigationManager.shared.addPopUp(.photo(photoKF: stringUrl, photoUI: nil))
+						}
 					 }
 				}
 			 }
 		  }
 		}
-		.card(5)
-		
+		.padding(1)
 	 }
-	 .animation(.easeInOut, value: photos)
-	 .animation(.easeInOut, value: photoAttachments)
-	 .foregroundStyle(theme.primaryDark)
-	 .border(10)
-	 .sheet(isPresented: $photoSelectorActive) {
-		PhotoSelectorRepresentable { items in
-		  self.photos = items
-		}
-	 }
+	 .aspectRatio(1.5, contentMode: .fit)
+	 .card(5)
   }
-}
-
-#Preview {
-  @Previewable @State var testPhotos = PhotoAttachment.example()
-  PhotoSelection(photos: .constant([]), photoAttachments: $testPhotos)
-	 .environment(\.theme, .basic)
 }
 
 
@@ -127,3 +172,5 @@ extension PhotoSelection{
 		.card(15)
   }
 }
+
+

@@ -14,6 +14,7 @@ final class PlansViewModel{
   let folderId: String
   var plansState: PlanType = .plans
   var creationState: Bool = false
+  var creationType: PlanType = .plans
   var planGridState: Bool = false
   var memoriesGridState: Bool = false
   
@@ -31,11 +32,16 @@ final class PlansViewModel{
 	 plans.filter({!$0.isCompleted})
   }
   var memoriesItems: [PlanCard]{
-	 PlanCard.plans()
+	 plans.filter({ $0.isCompleted })
   }
 }
 
 extension PlansViewModel{
+  func startCreation(type: PlanType){
+	 creationType = type
+	 creationState = true
+  }
+
   
   
   func fetchAllPlans(){

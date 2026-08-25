@@ -31,25 +31,31 @@ final class PlanCreationViewModel{
   private let planManager = PlanManager()
   private let storageManager = StorageManager.shared
 
-  init(folderId: String = "", plan: Binding<PlanCard>? = nil){
+  init(folderId: String = "", plan: Binding<PlanCard>? = nil, planState: PlanType = .plans){
 	 if let plan{
 		self.plan = plan.wrappedValue
 		self.folderId = plan.wrappedValue.folderId
 		self.isEditing = true
 		self.originalPlan = plan.wrappedValue
 		self.planBinding = plan
+//		While editing the type comes from the plan itself, not from the caller
+		self.planState = plan.wrappedValue.isCompleted ? .memories : .plans
 	 }else{
-		let newPlan: PlanCard
+		var newPlan: PlanCard
 		if let uid = AuthManager.shared.id{
 		  newPlan = PlanCard(folderId: folderId, createdBy: uid)
 		}else{
 		  newPlan = PlanCard(folderId: folderId, createdBy: "")
 		}
+//		didSet does not fire inside init, so isCompleted is set by hand
+		newPlan.isCompleted = planState == .memories
+
 		self.plan = newPlan
 		self.folderId = folderId
 		self.isEditing = false
 		self.originalPlan = newPlan
 		self.planBinding = nil
+		self.planState = planState
 	 }
   }
 

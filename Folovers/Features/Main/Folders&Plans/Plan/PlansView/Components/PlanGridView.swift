@@ -15,13 +15,13 @@ struct PlanGridView: View {
 		  switch vm.plansState {
 		  case .plans:
 			 VStack{
-				gridStateView(total: vm.plans.count, type: .plans, state: vm.planGridState)
+				gridStateView(total: vm.plansItems.count, type: .plans, state: vm.planGridState)
 				
 				ZStack{
 				  if vm.planGridState{
-					 PlansListView(plans: vm.plans, state: .plans)
+					 PlansListView(plans: vm.plansItems, state: .plans)
 				  }else{
-					 PlansSliderView(plans: vm.plans, state: .plans)
+					 PlansSliderView(plans: vm.plansItems, state: .plans, onCreate: { vm.startCreation(type: .plans) })
 				  }
 				}
 				.frame(maxHeight: .infinity, alignment: .bottom)
@@ -29,14 +29,14 @@ struct PlanGridView: View {
 			 .transition(PlanType.plans.transition)
 		  case .memories:
 			 VStack{
-				gridStateView(total: PlanCard.plans().count, type: .memories, state: vm.memoriesGridState)
+				gridStateView(total: vm.memoriesItems.count, type: .memories, state: vm.memoriesGridState)
 				
 				ZStack{
 				  if vm.memoriesGridState{
 					 PlansListView(plans: vm.memoriesItems, state: .memories)
 						.transition(.move(edge: .top).combined(with: .opacity).combined(with: .scale))
 				  }else{
-					 PlansSliderView(plans: vm.memoriesItems, state: .memories)
+					 PlansSliderView(plans: vm.memoriesItems, state: .memories, onCreate: { vm.startCreation(type: .memories) })
 						.transition(.move(edge: .top).combined(with: .opacity).combined(with: .scale))
 				  }
 				}

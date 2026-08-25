@@ -11,6 +11,7 @@ struct PlansSliderView: View {
   @Environment(\.theme) var theme
   let plans: [PlanCard]
   let state: PlanType
+  var onCreate: () -> Void = {}
   @State private var currentIndex: Int = 0
   @State private var dragOffset: CGFloat = 0
 
@@ -23,39 +24,41 @@ struct PlansSliderView: View {
 
   var body: some View {
 	 ZStack() {
-		if plans.isEmpty{
-		  let position = effectivePosition(for: 0)
-		  CreationPlanCard()
-			 .scaleEffect(scale(for: position))
-			 .offset(y: offset(for: position))
-			 .opacity(opacity(for: position))
-			 .zIndex(Double(-position))
-		}else{
-		  ForEach(renderedIndices, id: \.self) { index in
-			 let position = effectivePosition(for: index)
+		ForEach(renderedIndices, id: \.self) { index in
+		  let position = effectivePosition(for: index)
 
+		  Group{
+//			 The last item in the stack is always the creation card
+			 if index < plans.count{
 				PlanCardView(plan: plans[index])
-				  .scaleEffect(scale(for: position))
-				  .offset(y: offset(for: position))
-				  .opacity(opacity(for: position))
-				  .zIndex(Double(-position))
-				  .allowsHitTesting(index == currentIndex)
-				  .gesture(index == currentIndex ? dragGesture : nil)
 				  .onTapGesture {
 					 withAnimation {
 						NavigationManager.shared.plan = plans[index]
 					 }
 				  }
-				  
+			 }else{
+				CreationPlanCard()
+				  .onTapGesture {
+					 withAnimation {
+						onCreate()
+					 }
+				  }
+			 }
 		  }
+		  .scaleEffect(scale(for: position))
+		  .offset(y: offset(for: position))
+		  .opacity(opacity(for: position))
+		  .zIndex(Double(-position))
+		  .allowsHitTesting(index == currentIndex)
+		  .gesture(index == currentIndex ? dragGesture : nil)
 		}
 	 }
 	 .padding(position, 40)
 	 .overlay(alignment: state == .plans ? .trailing : .leading) {
-		if plans.count > 1 {
-		  ScrubberView(count: plans.count, currentIndex: $currentIndex)
+		if itemCount > 1 {
+		  ScrubberView(count: itemCount, currentIndex: $currentIndex)
 			 .padding(position, 4)
-		}else if plans.count == 0 {
+		}else {
 		  Capsule()
 			 .fill(theme.primary)
 			 .frame(width: 6, height: 20)
@@ -88,10 +91,11 @@ struct PlansSliderView: View {
 
 private extension PlansSliderView {
 
+  var itemCount: Int { plans.count + 1 }
+
   var renderedIndices: [Int] {
-	 guard !plans.isEmpty else { return [] }
 	 let lower = max(currentIndex - 1, 0)
-	 let upper = min(currentIndex + visiblePeekCount + 1, plans.count - 1)
+	 let upper = min(currentIndex + visiblePeekCount + 1, itemCount - 1)
 	 guard lower <= upper else { return [] }
 	 return Array(lower...upper)
   }
@@ -132,13 +136,13 @@ private extension PlansSliderView {
 	 DragGesture()
 		.onChanged { value in
 		  let translation = value.translation.height
-		  let goingForwardPastEnd = translation > 0 && currentIndex >= plans.count - 1
+		  let goingForwardPastEnd = translation > 0 && currentIndex >= itemCount - 1
 		  let goingBackwardPastStart = translation < 0 && currentIndex <= 0
 		  dragOffset = (goingForwardPastEnd || goingBackwardPastStart) ? translation * rubberBand : translation
 		}
 		.onEnded { value in
 		  let translation = value.translation.height
-		  if translation > dragThreshold, currentIndex < plans.count - 1 {
+		  if translation > dragThreshold, currentIndex < itemCount - 1 {
 			 commit(direction: 1)
 		  } else if translation < -dragThreshold, currentIndex > 0 {
 			 commit(direction: -1)

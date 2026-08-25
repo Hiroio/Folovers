@@ -15,10 +15,10 @@ struct FolderItemView: View {
 		folderCardHeader
 		
 		VStack(spacing: 10){
-		  Image("BlankCharacter")
+		  Image("Folder")
 			 .resizable()
 			 .scaledToFit()
-			 .frame(width: 200, height: 220)
+			 .containerRelativeFrame(.horizontal, count: 2, spacing: 10)
 			 .padding(.vertical)
 		  Text(folder.title)
 			 .font(.title.weight(.semibold))
@@ -62,7 +62,7 @@ extension FolderItemView{
 		
 		.frame(maxWidth: .infinity, alignment: .leading)
 		
-		Text(Date.now.formatted(.dateTime.year().month()))
+		Text(folder.createdAt.formatted(.dateTime.year().month()))
 	 }
 	 .foregroundStyle(theme.primary)
 	 .font(.subheadline.weight(.semibold))

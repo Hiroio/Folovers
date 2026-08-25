@@ -17,6 +17,7 @@ final class UserManager{
 	 didSet{
 		if currentUser != nil{
 		  ConnectionManager.shared.startListener()
+		  FolderManager.shared.fetchAllRelated()
 		}
 	 }
   }

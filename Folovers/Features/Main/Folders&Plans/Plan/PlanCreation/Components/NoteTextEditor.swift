@@ -9,10 +9,11 @@ import SwiftUI
 
 struct NoteTextEditor: View {
   @Environment(\.theme) var theme
-  init(){
+  init(noteText: Binding<String>){
 	 UITextView.appearance().backgroundColor = .clear
+	 self._noteText = noteText
   }
-  @State private var noteText: String = "Чисто для тесту щоб знати як воно виглядає треба багато тексту в пару ліній"
+  @Binding var noteText: String
     var body: some View {
 		VStack{
 		  HStack{
@@ -25,9 +26,10 @@ struct NoteTextEditor: View {
 		  .padding(5)
 		  TextEditor(text: $noteText)
 			 .scrollContentBackground(.hidden)
-			 .font(.subheadline)
+			 .font(.subheadline.weight(.bold))
 			 .lineSpacing(5)
-			 .foregroundStyle(theme.text)
+			 .foregroundStyle(theme.primaryDark)
+			 .padding(5)
 		}
 		  .padding(5)
 		  .background(
@@ -46,7 +48,7 @@ struct NoteTextEditor: View {
   ZStack{
 	 ThemePalette.basic.background.ignoresSafeArea()
 	 ThemePalette.basic.surface.ignoresSafeArea()
-	 NoteTextEditor()
+	 NoteTextEditor(noteText: .constant("QWeqwe qwe qwe qwe wqe qw"))
 		.environment(\.theme, .basic)
 		.foregroundStyle(ThemePalette.basic.primary)
   }

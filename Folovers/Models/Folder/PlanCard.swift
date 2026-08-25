@@ -12,7 +12,7 @@ struct PlanCard: FirestoreIdentifiable {
   var id: String
   var folderId: String       
   var title: String
-  var note: String?
+  var note: String
   var date: Date?
   var location: PlanLocation?
   var photos: [PhotoAttachment]
@@ -37,7 +37,20 @@ extension PlanCard{
   
   static func plans() -> [PlanCard]{
 	 let planstitles: [String] = ["Some plan to traver", "Some food to try", "Some places to visit", "Some people to meet"]
-	 return planstitles.map({PlanCard(id: UUID().uuidString, folderId: "", title: $0, photos: [], isCompleted: false, createdBy: "", createdAt: .now)})
+	 return planstitles.map(
+		{
+		  PlanCard(
+			 id: UUID().uuidString,
+			 folderId: "",
+			 title: $0,
+			 note: "Qwerty ewrty qwe rewty trewgrt",
+			 location: PlanLocation(name: "Thasos", latitude: 40.77817574240125, longitude: 24.703826622423545),
+			 photos: [],
+			 isCompleted: false,
+			 createdBy: "",
+			 createdAt: .now
+		  )
+		})
   }
 }
 

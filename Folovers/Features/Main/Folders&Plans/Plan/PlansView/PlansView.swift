@@ -40,7 +40,7 @@ struct PlansView: View {
 	 .fullScreenCover(isPresented: $vm.creationState) {
 		ZStack{
 		  theme.background.ignoresSafeArea()
-		  PlanCreationView(folderId: vm.folderId){
+		  PlanCreationView(folderId: vm.folderId, planState: vm.creationType){
 			 vm.fetchAllPlans()
 		  }
 		  .ignoresSafeArea(edges: .bottom)
@@ -79,7 +79,7 @@ extension PlansView{
 		
 		Button{
 		  withAnimation {
-			 vm.creationState = true
+			 vm.startCreation(type: vm.plansState)
 		  }
 		}label:{
 		  Image(systemName: "plus")

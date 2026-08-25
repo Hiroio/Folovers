@@ -16,7 +16,9 @@ struct PlansListView: View {
 		  let isPlan = state == .plans
 		  LazyVStack(spacing: 10){
 			 ForEach(plans){item in
-				Button{}label:{
+				Button{
+				  NavigationManager.shared.plan = item
+				}label:{
 				  HStack{
 					 if !isPlan{
 						Image(systemName: "chevron.left")

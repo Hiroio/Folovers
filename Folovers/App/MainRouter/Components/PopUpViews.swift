@@ -20,6 +20,9 @@ struct PopUpViews: View {
 		case .folderCreation:
 		  FolderCreationView()
 			 .transition(.scale.combined(with: .opacity))
+		case .photo(let photoKF, let photo):
+		  PhotoPreviewView(photo: photo, photoURL: photoKF)
+			 .transition(.move(edge: .bottom))
 		}
     }
 }

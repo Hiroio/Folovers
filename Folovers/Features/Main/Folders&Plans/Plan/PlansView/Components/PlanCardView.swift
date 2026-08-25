@@ -49,7 +49,7 @@ struct PlanCardView: View {
 }
 
 #Preview {
-  PlanCardView(plan: .init(id: "", folderId: "", title: "Some sort of plan", date: .distantFuture, photos: [], isCompleted: false, createdBy: "", createdAt: .now))
+  PlanCardView(plan: .init(id: "", folderId: "", title: "Some sort of plan", note: "", date: .distantFuture, photos: [], isCompleted: false, createdBy: "", createdAt: .now))
 	 .environment(\.theme, .basic)
 }
 

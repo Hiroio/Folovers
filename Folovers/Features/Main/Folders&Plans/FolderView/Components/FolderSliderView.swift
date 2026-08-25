@@ -29,6 +29,15 @@ struct FolderSliderView: View {
 				  .containerRelativeFrame(.horizontal, count: 1, spacing: 20)
 			 }
 		  }
+		  
+		  Button{
+			 withAnimation {
+				NavigationManager.shared.addPopUp(.folderCreation)
+			 }
+		  }label: {
+			 CreateFolderItem()
+				.containerRelativeFrame(.horizontal, count: 1, spacing: 20)
+		  }
 		}
 		.scrollTargetLayout()
 	 }

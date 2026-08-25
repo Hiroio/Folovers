@@ -52,7 +52,7 @@ struct PlanHeader: View {
     }
   
   private var actionText: String{
-	 creation ? "Create" : "Edit"
+	 creation ? "Create" : "Submit"
   }
 }
 

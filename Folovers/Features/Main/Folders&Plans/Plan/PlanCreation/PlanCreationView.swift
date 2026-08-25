@@ -12,21 +12,22 @@ struct PlanCreationView: View {
   @Environment(\.theme) var theme
   @State private var scrollPosition: String? = "NameSection"
   let onSubmit: () -> ()
-  init(folderId: String, onCreate: @escaping() -> ()){
-	 self._vm = State(wrappedValue: PlanCreationViewModel(folderId: folderId))
+  init(folderId: String, planState: PlanType = .plans, onCreate: @escaping() -> ()){
+	 self._vm = State(wrappedValue: PlanCreationViewModel(folderId: folderId, planState: planState))
 	 self.onSubmit = onCreate
   }
-
+  
   
   @State private var vm: PlanCreationViewModel
-    var body: some View {
+  var body: some View {
+	 ZStack{
 		VStack{
 		  PlanHeader(title: vm.headerText, creation: !vm.isEditing, ableToCreate: !vm.plan.title.isEmpty){
 			 vm.submitAction()
 			 onSubmit()
 			 dismiss()
 		  }
-			 .padding(.horizontal)
+		  .padding()
 		  
 		  VStack{
 			 if scrollPosition == "NameSection"{
@@ -58,7 +59,7 @@ struct PlanCreationView: View {
 				  .padding(.vertical)
 				  
 				  
-				  NoteTextEditor()
+				  NoteTextEditor(noteText: $vm.plan.note)
 					 .frame(maxWidth: .infinity)
 					 .aspectRatio(1, contentMode: .fit)
 					 .id("NoteSection")
@@ -87,10 +88,28 @@ struct PlanCreationView: View {
 		  LocationSelectionSheet(){ location in
 			 vm.plan.location = location
 		  }
-			 .presentationDetents([.medium, .large])
+		  .presentationDetents([.medium, .large])
 		}
 		.animation(.easeInOut, value: scrollPosition)
-    }
+		
+		if let photoPreview = NavigationManager.shared.popUps.last{
+		  ZStack{
+			 Color.black.opacity(0.3).ignoresSafeArea()
+				.onTapGesture {
+				  NavigationManager.shared.popPopUp()
+				}
+			 switch photoPreview {
+			 case .photo(let photoKF, let photoUI):
+				PhotoPreviewView(photo: photoUI, photoURL: photoKF)
+				  .transition(.move(edge: .bottom))
+			 default:
+				EmptyView()
+			 }
+		  }
+		}
+	 }
+	 .animation(.easeInOut, value: NavigationManager.shared.popUps.count)
+  }
 }
 
 

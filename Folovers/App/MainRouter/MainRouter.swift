@@ -27,8 +27,13 @@ struct MainRouter: View {
 			 .allowsHitTesting(!navigationManager.secondaryView.isEmpty)
 		}
 		
-		if let _ = navigationManager.plan{
-		  //		  TODO: PLAN CARD VIEW
+		if let plan = navigationManager.plan{
+		  ZStack{
+			 theme.background.ignoresSafeArea()
+			 
+			 PlanDetailView(plan: plan)	
+		  }.zIndex(1)
+			 .transition(.move(edge: .bottom))
 		}
 		
 		
@@ -42,7 +47,7 @@ struct MainRouter: View {
 		  if let popUp = navigationManager.popUps.last{
 			 PopUpViews(popUp: popUp)
 				.transition(.scale.combined(with: .opacity))
-				.zIndex(2)
+				.zIndex(1)
 		  }
 		}
 		.zIndex(1)
