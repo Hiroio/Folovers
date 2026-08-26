@@ -13,10 +13,21 @@ struct HomeView: View {
 		VStack{
 		  HomeHeader
 		  
-		  Text("Hello there")
-			 .font(.largeTitle)
-			 .foregroundStyle(theme.primary)
-			 .frame(maxHeight: .infinity)
+		  VStack{
+			 Text("Hello there")
+				.font(.largeTitle.weight(.bold))
+				.foregroundStyle(theme.primaryDark)
+			 
+			 SpriteView(action: .idle, size: CGSize(width: 128, height: 128))
+		  }
+		  .frame(maxHeight: .infinity, alignment: .top)
+		}
+		.frame(maxHeight: .infinity)
+		.overlay(alignment: .bottomTrailing){
+		  Image("EnvelopeSealed")
+			 .resizable()
+			 .scaledToFit()
+			 .containerRelativeFrame(.horizontal, count: 4, spacing: 30)
 		}
 		.padding()
 		.fontDesign(.monospaced)
@@ -24,8 +35,11 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
-	 .environment(\.theme, .basic)
+  ZStack{
+	 ThemePalette.basic.background.ignoresSafeArea()
+	 HomeView()
+		.environment(\.theme, .basic)
+  }
 }
 
 extension HomeView{

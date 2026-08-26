@@ -34,7 +34,7 @@ struct CustomAnimationForBtn: ButtonStyle{
   func makeBody(configuration: Configuration) -> some View {
 	 configuration.label
 	 .offset(y: configuration.isPressed ? 5 : 0)
-	 .shadow(color: configuration.isPressed ? .clear : (light ? theme.primary.opacity(0.6) : theme.primaryDark), radius: 2, y: 3)
+	 .shadow(color: configuration.isPressed ? .clear : (light ? theme.primary.opacity(0.6) : theme.primaryDark), radius: 1, y: 2)
   }
 }
 

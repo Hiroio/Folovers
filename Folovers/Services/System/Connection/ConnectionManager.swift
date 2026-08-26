@@ -136,6 +136,13 @@ extension ConnectionManager{
 	 }
   }
 
+//	 Self or a connection we already hold. Anyone else stays "Unknown User" - no network at all
+  static func knownUser(for uid: String) -> UserDocument {
+	 if uid == AuthManager.shared.id, let me = UserManager.shared.currentUser { return me }
+
+	 return shared.profiles[uid] ?? .unknown(id: uid)
+  }
+
 //	 Cache first, network second. For any screen that needs one profile by uid
   static func user(for uid: String) async -> UserDocument? {
 	 if uid == AuthManager.shared.id { return UserManager.shared.currentUser }

@@ -14,15 +14,30 @@ struct PopUpViews: View {
 		case .userSearch:
 		  SearchingUserPopUp()
 			 .transition(.scale.combined(with: .opacity))
+		  
 		case .user(let uid, let user):
 		  UserCardPopUp(uid: uid, user: user)
 			 .transition(.scale.combined(with: .opacity))
+		  
 		case .folderCreation:
 		  FolderCreationView()
 			 .transition(.scale.combined(with: .opacity))
+		  
 		case .photo(let photoKF, let photo):
 		  PhotoPreviewView(photo: photo, photoURL: photoKF)
 			 .transition(.move(edge: .bottom))
+		  
+		case .letterCreation(let to):
+		  LetterCreationView(uid: to)
+			 .transition(.opacity)
+		  
+		case .mailBox:
+		  MailView()
+			 .transition(.move(edge: .bottom))
+		  
+		case .letter(let letter):
+		  LetterView(letter: letter)
+			 .transition(.scale.combined(with: .opacity))
 		}
     }
 }
