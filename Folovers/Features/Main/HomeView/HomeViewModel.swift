@@ -14,5 +14,10 @@ final class HomeViewModel{
   }
   
   private let userManager = UserManager.shared
-//  private let mailManager =
+  private let mailManager = MailManager.shared
+  
+  
+  var unReadMessages: Int{
+	 mailManager.mails.filter({$0.status == .sent}).count
+  }
 }

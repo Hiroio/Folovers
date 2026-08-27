@@ -39,7 +39,7 @@ struct AuthView: View {
 		
 		
 		Button{
-		  ThemeManager.shared.selectedColor = .blue
+		  vm.logInWithEmail()
 		}label: {
 		  Text("Continue")
 			 .frame(maxWidth: .infinity)
@@ -47,6 +47,18 @@ struct AuthView: View {
 		.buttonStyle(ButtonStyleBorder())
 		.disabled(!vm.isValid)
 		.opacity(vm.isValid ? 1 : 0.5)
+		
+		
+		if let error = vm.error{
+		  Text(error)
+			 .font(.caption)
+			 .foregroundStyle(theme.primary)
+			 .transition(.move(edge: .top).combined(with: .opacity))
+			 .task {
+				try? await Task.sleep(for: .seconds(2))
+				vm.clearError()
+			 }
+		}
 		
 		Spacer()
 		SSOView
@@ -56,8 +68,8 @@ struct AuthView: View {
 }
 
 #Preview {
-//  @Previewable @Namespace var previewNM
   AuthView()
+	 .environment(\.theme, .basic)
 }
 
 

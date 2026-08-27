@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
   @Environment(\.theme) var theme
+  @State private var vm = HomeViewModel()
     var body: some View {
 		VStack{
 		  HomeHeader
@@ -24,10 +25,27 @@ struct HomeView: View {
 		}
 		.frame(maxHeight: .infinity)
 		.overlay(alignment: .bottomTrailing){
-		  Image("EnvelopeSealed")
-			 .resizable()
-			 .scaledToFit()
-			 .containerRelativeFrame(.horizontal, count: 4, spacing: 30)
+		  Button{
+			 NavigationManager.shared.addPopUp(.mailBox)
+		  }label:{
+			 let image = vm.unReadMessages > 0 ? "EnvelopeSealed" : "EnvelopeOpen"
+			 Image(image)
+				.resizable()
+				.scaledToFit()
+				.containerRelativeFrame(.horizontal, count: 4, spacing: 30)
+				.overlay(alignment: .topLeading){
+				  Text("\(vm.unReadMessages)")
+					 .foregroundStyle(.white)
+					 .font(.headline.weight(.bold))
+					 .padding(8)
+					 .background(
+						Circle()
+						  .fill(theme.primary)
+					 )
+					 .opacity(vm.unReadMessages > 0 ? 1 : 0)
+					 .offset(x: -1, y: -10)
+				}
+		  }
 		}
 		.padding()
 		.fontDesign(.monospaced)

@@ -45,7 +45,20 @@ struct UserCardPopUp: View {
 				  .foregroundStyle(theme.secondaryText)
 			 }
 
-			 actionSection
+			 VStack(spacing: 8){
+				actionSection
+
+				if let errorText = vm.errorText{
+				  HStack(spacing: 5){
+					 Image(systemName: "exclamationmark.circle")
+					 Text(errorText)
+				  }
+				  .font(.caption)
+				  .foregroundStyle(.red)
+				  .transition(.move(edge: .top).combined(with: .opacity))
+				}
+			 }
+			 .animation(.easeInOut, value: vm.errorText)
 		  }
 		  .padding(10)
 		}

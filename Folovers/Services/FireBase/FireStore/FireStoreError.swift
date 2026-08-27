@@ -12,6 +12,8 @@ import Foundation
 
 public enum FirestoreError: Error {
 	 case invalidPath
+//	 The request itself did not go through - network, permissions, offline
+	 case requestFailed
 	 case invalidType
 	 case collectionNotFound
 	 case documentNotFound

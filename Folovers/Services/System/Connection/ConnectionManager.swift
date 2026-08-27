@@ -19,6 +19,11 @@ final class ConnectionManager{
   var connectionsError: FirestoreError? = nil
 //  Creating / updating / deleting a single connection
   var requestError: FirestoreError? = nil
+  
+  
+  var pendingRequests: Int{
+	 connections.filter({ $0.status == .pending && $0.requestedBy != AuthManager.shared.id}).count
+  }
 
   @ObservationIgnored
   private var inFlight: Set<String> = []
@@ -28,6 +33,9 @@ final class ConnectionManager{
 
   @ObservationIgnored
   private var task: Task<Void, Error>? = nil
+
+  @ObservationIgnored
+  private var receivedFirstSnapshot = false
 }
 
 
@@ -75,6 +83,7 @@ extension ConnectionManager{
 		try await FirestoreService.request(endpoint)
 	 }catch{
 		requestError = mapError(error)
+		NavigationManager.shared.addSystemUp(.get(.error, "Could not update the connection"))
 	 }
   }
   
@@ -93,7 +102,15 @@ extension ConnectionManager{
 		  let endpoint = ConnectionEndpoint(action: .listener(userId: id))
 		  
 		  for try await values: [ConnectionModel] in FirestoreService.stream(endpoint) {
+			 let previousPending = pendingRequests
 			 connections = values
+
+//			 Notify on a new request only, never on the first load
+			 if receivedFirstSnapshot, pendingRequests > previousPending{
+				NavigationManager.shared.addSystemUp(.get(.info, "Someone wants to connect with you"))
+			 }
+			 receivedFirstSnapshot = true
+
 			 if !connections.isEmpty{
 				getUsersProfiles(connections: connections, uid: id)
 			 }
@@ -108,6 +125,7 @@ extension ConnectionManager{
   func stopListener(){
 	 self.task?.cancel()
 	 self.task = nil
+	 self.receivedFirstSnapshot = false
   }
 
 //  Resubscribes from scratch. For "Try Again" and for rebinding to another uid

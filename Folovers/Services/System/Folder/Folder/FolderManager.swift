@@ -62,6 +62,7 @@ extension FolderManager{
 		  fetchAllRelated()
 		}catch{
 		  mapError(error: error)
+		  NavigationManager.shared.addSystemUp(.get(.error, "Could not create the folder"))
 		}
 	 }
   }
@@ -88,6 +89,7 @@ extension FolderManager{
 		  try await FirestoreService.request(endPoint)
 		}catch{
 		  mapError(error: error)
+		  NavigationManager.shared.addSystemUp(.get(.error, "Could not save the folder"))
 		}
 	 }
   }
@@ -100,6 +102,7 @@ extension FolderManager{
 		  try await FirestoreService.request(endPoint)
 		}catch{
 		  mapError(error: error)
+		  NavigationManager.shared.addSystemUp(.get(.error, "Could not delete the folder"))
 		}
 	 }
   }

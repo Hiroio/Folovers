@@ -33,7 +33,6 @@ final class AuthManager{
   }
   
   func initializeCheck() {
-	 print("AUTHMANAGER")
 	 if let user = service.getCurrentUser(){
 		self.currentUser = user
 	 }

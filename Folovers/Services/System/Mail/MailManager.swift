@@ -13,7 +13,13 @@ import Foundation
 final class MailManager{
   static let shared = MailManager()
   
-  var mails: [MailModel] = []
+  var mails: [MailModel] = [] {
+	 didSet{
+		if mails.filter({$0.status == .sent}).count > 0{
+		  NavigationManager.shared.addSystemUp(.get(.info, "You have received some letters"))
+		}
+	 }
+  }
   var sentMails: [MailModel] = []
   
   var mailErrors: FirestoreError? = nil
@@ -53,6 +59,7 @@ extension MailManager{
   
 //  Create
   func createMail(mail: MailModel){
+	 mailErrors = nil
 	 let endPoint = MailEndpoint(action: .create(mail))
 	 
 	 Task{
@@ -90,6 +97,7 @@ extension MailManager{
 		  try await FirestoreService.request(endPoint)
 		}catch{
 		  self.mailErrors = mapError(error)
+		  NavigationManager.shared.addSystemUp(.get(.error, "Could not delete the letter"))
 		}
 	 }
   }

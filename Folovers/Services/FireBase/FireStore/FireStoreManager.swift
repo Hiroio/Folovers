@@ -24,12 +24,16 @@ public final class FirestoreService {
 					 return try FirestoreParser.parse(cachedData, type: T.self)
 				}
 
-				guard let documentSnapshot = try? await ref.getDocument() else {
-					 throw FirestoreError.invalidPath
+				let documentSnapshot: DocumentSnapshot
+				do {
+					 documentSnapshot = try await ref.getDocument()
+				} catch {
+					 print("DEBUG: Firestore request failed: \(error)")
+					 throw FirestoreError.requestFailed
 				}
 
-				guard let documentData = documentSnapshot.data() else {
-					 throw FirestoreError.parseError
+				guard documentSnapshot.exists, let documentData = documentSnapshot.data() else {
+					 throw FirestoreError.documentNotFound
 				}
 
 				let singleResponse = try FirestoreParser.parse(documentData, type: T.self)

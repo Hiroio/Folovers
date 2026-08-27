@@ -37,10 +37,18 @@ final class UserManager{
 		do{
 		  self.currentUser = try await getUser(id)
 		  print("DEBUG User successfully fetched")
+		}catch FirestoreError.documentNotFound{
+//		  Authenticated but no profile yet - onboarding is exactly where this user belongs
+		  print("DEBUG: no user document yet, going to onboarding")
 		}catch{
+//		  The request itself failed. Keeping the session would send the user
+//		  to onboarding and make them build their character again
 		  print("DEBUG: -trying fetch user failed with error: \(error.localizedDescription)")
+		  NavigationManager.shared.addSystemUp(.get(.error, "Could not load your profile"))
+		  AuthManager.shared.logOut()
+		  return
 		}
-		isInitialized.toggle()
+		isInitialized = true
 	 }
   }
   
@@ -67,6 +75,7 @@ final class UserManager{
 		  }else{
 			 self.error = .unknownError
 		  }
+		  NavigationManager.shared.addSystemUp(.get(.error, "Could not create your profile"))
 		}
 	 }
   }

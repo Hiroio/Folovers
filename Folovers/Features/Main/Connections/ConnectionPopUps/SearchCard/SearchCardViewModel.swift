@@ -40,6 +40,8 @@ final class SearchCardViewModel{
 		do{
 		  let user = try await userManager.getUser(text)
 		  NavigationManager.shared.popUps.append(.user(uid: user.id, user: user))
+		}catch FirestoreError.requestFailed{
+		  invalidUser(message: "Check your connection")
 		}catch{
 		  invalidUser()
 		}

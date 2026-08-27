@@ -14,8 +14,22 @@ final class AuthViewModel{
   
   var passwordIsVisible: Bool = false
   
+  var error: String? {
+	 manager.error?.localizedDescription
+  }
   
   var isValid: Bool {
-	 email.isEmpty == false && password.isEmpty == false
+	 email.contains("@") && password.isEmpty == false
+  }
+  
+  
+  private let manager = AuthManager.shared
+  
+  func clearError(){
+	 manager.error = nil
+  }
+  
+  func logInWithEmail(){
+	 manager.emailLogin(email: email, password: password)
   }
 }

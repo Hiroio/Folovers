@@ -101,6 +101,7 @@ extension PlanCreationViewModel{
 		  try await planManager.createPlan(planToUpload)
 		}catch{
 		  print("DEBUG: Failed to create Plan")
+		  NavigationManager.shared.addSystemUp(.get(.error, "Could not create it"))
 		}
 	 }
   }
@@ -126,6 +127,7 @@ extension PlanCreationViewModel{
 		  selectedPhotos = []
 		}catch{
 		  print("DEBUG: Failed to edit Plan")
+		  NavigationManager.shared.addSystemUp(.get(.error, "Could not save the changes"))
 		}
 	 }
   }

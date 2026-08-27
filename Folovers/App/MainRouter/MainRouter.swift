@@ -49,6 +49,8 @@ struct MainRouter: View {
 				.transition(.scale.combined(with: .opacity))
 				.zIndex(1)
 		  }
+		  
+		  SystemPopUpsView()
 		}
 		.zIndex(1)
 		.allowsHitTesting(!navigationManager.popUps.isEmpty)

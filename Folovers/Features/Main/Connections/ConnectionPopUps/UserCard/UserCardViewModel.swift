@@ -14,6 +14,7 @@ final class UserCardViewModel{
   var user: UserDocument?
   var loading: Bool = false
   var userLoading: Bool = false
+  var errorText: String? = nil
   
   private let manager = ConnectionManager.shared
   private let userManager = UserManager.shared
@@ -111,8 +112,7 @@ extension UserCardViewModel{
 			 let user = try await userManager.getUser(uid)
 			 self.user = user
 		  }catch{
-			 NavigationManager.shared.popPopUp()
-//			 Maybe in future add global systemPopUps for errors
+			 errorText = "Something went wrong"
 		  }
 		}
 	 }

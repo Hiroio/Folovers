@@ -48,7 +48,18 @@ struct LetterCreationView: View {
 		  }
 		  .buttonStyle(CustomAnimationForBtn(light: true))
 		  .disabled(!vm.ableToSend)
+
+		  if vm.mailErrors != nil{
+			 HStack(spacing: 5){
+				Image(systemName: "exclamationmark.circle")
+				Text("Could not send the letter")
+			 }
+			 .font(.caption)
+			 .foregroundStyle(.red)
+			 .transition(.move(edge: .top).combined(with: .opacity))
+		  }
 		}
+		.animation(.easeInOut, value: vm.mailErrors)
 		.padding()
 		.foregroundStyle(theme.primaryDark)
 		.frame(maxWidth: .infinity)
