@@ -18,12 +18,20 @@ final class CharacterCreationViewModel{
   var characterName: String = ""
  
   var nameIsGiven: Bool = false
+  var user: UserDocument? = nil
+  var isEditing: Bool = false
   
   var characterController: CharacterController
   
-  init(){
-	 let controller = CharacterController(config: .standart)
+  init(user: UserDocument? = nil){
+	 self.isEditing = user != nil
+	 self.nameIsGiven = user != nil
+	 let controller = CharacterController(config: user?.characterConfig ?? .standart)
 	 self.characterController = controller
+	 self.character = user?.characterConfig ?? .standart
+	 self.user = user
+	 self.characterName = user?.displayName ?? ""
+	 
   }
  
   private let manager = UserManager.shared
@@ -53,7 +61,15 @@ extension CharacterCreationViewModel{
   
   
   func createDocument(){
-	 print("Creating")
 	 manager.createUserDocument(character: character, displayName: characterName)
+  }
+  
+  func updateUserDocument() async -> Bool{
+	 guard let user else {return true}
+	 var userToUpdate = user
+	 userToUpdate.displayName = characterName
+	 userToUpdate.characterConfig = character
+	 
+	 return await manager.updateUser(user: userToUpdate)
   }
 }

@@ -30,12 +30,12 @@ struct ItemsSelection<T: SpritePackage.Styles>: View {
 				  Button{
 					 action(item)
 				  }label: {
-					 itemCard(item: item.id)
-						.overlay{
+					 itemCard(item: "\(T.category)_\(item.id)")
+						.overlay(alignment: .top){
 						  ZStack{
 							 if selected{
 								Image(systemName: "checkmark.circle")
-								  .font(.title)
+								  .font(.title.weight(.semibold))
 								  .foregroundStyle(theme.primary)
 							 }
 						  }
@@ -50,20 +50,24 @@ struct ItemsSelection<T: SpritePackage.Styles>: View {
 }
 
 #Preview {
-  ItemsSelection<BottomStyle>(selectedItem: BottomStyle.bottom){ _ in}
+  ItemsSelection<BottomStyle>(selectedItem: BottomStyle.item1){ _ in}
 	 .environment(\.theme, .basic)
 }
 
 extension ItemsSelection{
   @ViewBuilder
   func itemCard(item: String) -> some View{
-	 Text(item)
-		.font(.title2)
-		.frame(maxWidth: .infinity, maxHeight: .infinity)
-		.aspectRatio(1, contentMode: .fit)
-		.card(20)
-		.containerRelativeFrame(.horizontal, count: 3, spacing: 12)
-		.padding(1)
-		.foregroundStyle(theme.primary)
+	 ZStack{
+		Image("BlankCharacter")
+		  .resizable()
+		Image(item)
+		  .resizable()
+		  .frame(maxWidth: .infinity, maxHeight: .infinity)
+		  
+	 }
+	 .scaledToFit()
+	 .card(20)
+	 .containerRelativeFrame(.horizontal, count: 3, spacing: 30)
+	 .padding(5)
   }
 }

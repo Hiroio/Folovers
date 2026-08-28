@@ -17,9 +17,11 @@ struct ProfileConnectView: View {
 			 .font(.title)
 		  
 		  VStack(spacing: 15){
-			 SpriteView(action: .idle, controller: vm.controller)
-				.matchedGeometryEffect(id: "Sprite", in: nameSpace)
-			 
+			 if let controller = vm.controller{
+				SpriteView(action: .idle, controller: controller)
+				  .matchedGeometryEffect(id: "Sprite", in: nameSpace)
+			 }
+
 			 Text(vm.currentUser?.displayName ?? "Character")
 				.font(.title2)
 				.matchedGeometryEffect(id: "Name", in: nameSpace)

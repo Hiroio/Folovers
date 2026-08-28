@@ -15,7 +15,7 @@ final class UserManager{
   
   var currentUser: UserDocument? = nil{
 	 didSet{
-		if currentUser != nil{
+		if let currentUser, oldValue?.id != currentUser.id{
 		  ConnectionManager.shared.startListener()
 		  MailManager.shared.initializeManager()
 		  FolderManager.shared.fetchAllRelated()
@@ -84,6 +84,21 @@ final class UserManager{
 	 let endpoint = UserEndpoint.getUser(id: id)
 	 
 	 return try await FirestoreService.request(endpoint)
+  }
+  
+  func updateUser(user: UserDocument) async -> Bool {
+	 guard user != currentUser else { return true }
+	 let endpoint = UserEndpoint.updateItem(item: user)
+
+	 do{
+		try await FirestoreService.request(endpoint)
+		self.currentUser = user
+		return true
+	 }catch{
+		self.error = error as? FirestoreError ?? .unknownError
+		NavigationManager.shared.addSystemUp(.get(.error, "Could not save your profile"))
+		return false
+	 }
   }
   
   func logOut(){

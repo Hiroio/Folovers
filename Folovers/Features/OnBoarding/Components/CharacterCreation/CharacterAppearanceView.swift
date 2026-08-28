@@ -9,27 +9,44 @@ import SwiftUI
 import SpritePackage
 
 struct CharacterAppearanceView: View {
+  @Environment(\.dismiss) var dismiss
   @Environment(\.theme) var theme
-  @State private var vm = CharacterCreationViewModel()
+  @State private var vm: CharacterCreationViewModel
+  init(user: UserDocument? = nil){
+	 self._vm = State(initialValue: CharacterCreationViewModel(user: user))
+  }
+  
   var body: some View {
 	 VStack{
 		
 		VStack(spacing: 20){
-		  genderSelection
+		  if !vm.isEditing{
+			 genderSelection
+		  }
 		  
 		  SpriteView(action: .idle, controller: vm.characterController)
 			 .frame(maxWidth: .infinity)
 		  
-		  if vm.nameIsGiven{
-			 VStack{
-				Text("Give me a name")
-				  .font(.title.weight(.semibold))
-				
-				TextField("", text: $vm.characterName, prompt: Text("Your Name"))
-				  .textFieldModifier()
+		  ScrollView{
+			 if vm.nameIsGiven{
+				VStack{
+				  Text("Give me a name")
+					 .font(.title2.weight(.semibold))
+				  
+				  TextField("", text: $vm.characterName, prompt: Text("Your Name"))
+					 .textFieldModifier()
+				}
+				.foregroundStyle(theme.primary)
+			 }else{
+				HStack{
+				  Text("My name is:")
+					 .font(.title3.weight(.semibold))
+				  
+				  TextField("", text: $vm.characterName, prompt: Text("Your Name"))
+					 .textFieldModifier()
+				}
 			 }
-			 .foregroundStyle(theme.primary)
-		  }else{
+			 
 			 ItemsSelection(selectedItem: vm.character.hair, action: vm.changeHairStyle)
 			 
 			 ItemsSelection(selectedItem: vm.character.top, action: vm.changeTop)
@@ -41,14 +58,22 @@ struct CharacterAppearanceView: View {
 		
 		Button{
 		  if vm.nameIsGiven{
-			 vm.createDocument()
+			 if vm.isEditing{
+				Task{
+				  if await vm.updateUserDocument() {
+					 dismiss()
+				  }
+				}
+			 }else{
+				vm.createDocument()
+			 }
 		  }else{
 			 withAnimation(.bouncy(duration: 0.6)){
 				vm.nameIsGiven.toggle()
 			 }
 		  }
 		}label: {
-		  Text("Continue")
+		  Text(vm.isEditing ? "Save" : "Continue")
 			 .frame(maxWidth: .infinity)
 		}
 		.buttonStyle(ButtonStyleBorder())

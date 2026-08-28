@@ -38,6 +38,12 @@ struct ProfileView: View {
 		}
 	 }
 	 .fontDesign(.monospaced)
+	 .sheet(isPresented: $vm.showProfileEditing){
+		CharacterAppearanceView(user: vm.currentUser)
+	 }
+	 .onChange(of: vm.currentUser?.characterConfig, { _, _ in
+		vm.syncCharacter()
+	 })
 	 .environment(vm)
   }
 }

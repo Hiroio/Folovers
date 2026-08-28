@@ -8,11 +8,22 @@
 import Foundation
 import SpritePackage
 
-struct UserDocument: FirestoreIdentifiable{
+struct UserDocument: FirestoreIdentifiable, Equatable{
   var id: String
   var displayName: String
   var characterConfig: SpritePackage.CharacterConfig
   var createdAt: Date
+  
+  
+  static func ==(lhs: UserDocument, rhs: UserDocument) -> Bool{
+	 return lhs.id == rhs.id &&
+	 lhs.characterConfig.bottom == rhs.characterConfig.bottom &&
+	 lhs.characterConfig.top == rhs.characterConfig.top &&
+	 lhs.characterConfig.hair == rhs.characterConfig.hair &&
+	 lhs.characterConfig.gender == rhs.characterConfig.gender &&
+	 lhs.displayName == rhs.displayName
+	 
+  }
 }
 
 

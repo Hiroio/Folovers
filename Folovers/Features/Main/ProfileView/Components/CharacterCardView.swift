@@ -13,8 +13,10 @@ struct CharacterCardView: View {
   @Environment(ProfileViewModel.self) var vm
     var body: some View {
 		VStack(spacing: 15){
-			 SpriteView(action: .idle, controller: vm.controller)
-			 .matchedGeometryEffect(id: "Sprite", in: profileNameSpace)
+			 if let controller = vm.controller{
+				SpriteView(action: .idle, controller: controller)
+				  .matchedGeometryEffect(id: "Sprite", in: profileNameSpace)
+			 }
 		  Text(vm.currentUser?.displayName ?? "Characte Name")
 				.font(.headline.weight(.semibold))
 				.foregroundStyle(theme.primaryDark)
@@ -24,11 +26,15 @@ struct CharacterCardView: View {
 		  .card(20)
 		  .matchedGeometryEffect(id: "Connect", in: profileNameSpace)
 		  .overlay(alignment: .topTrailing) {
-			 Image(systemName: "pencil")
-				.font(.headline.weight(.bold))
-				.foregroundStyle(theme.primary)
-				.card(10)
-				.padding(5)
+			 Button{
+				vm.showProfileEditing = true
+			 }label:{
+				Image(systemName: "pencil")
+				  .font(.headline.weight(.bold))
+				  .foregroundStyle(theme.primary)
+				  .card(10)
+				  .padding(5)
+			 }
 		  }
 		  .fontDesign(.monospaced)
     }
