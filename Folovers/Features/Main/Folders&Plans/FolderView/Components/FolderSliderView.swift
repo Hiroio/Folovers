@@ -21,7 +21,7 @@ struct FolderSliderView: View {
 		  ForEach(folders) {folder in
 			 Button{
 				withAnimation(.easeInOut){
-				  NavigationManager.shared.secondaryView.append(.plans(folderId: folder.id))
+				  NavigationManager.shared.secondaryView.append(.plans(folder: folder))
 				}
 			 }label: {
 				FolderItemView(folder: folder)

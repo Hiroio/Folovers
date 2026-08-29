@@ -46,8 +46,15 @@ final class FolderCreationViewModel{
 	 let folder = FolderModel(
 		id: "",
 		members: members,
-		title: title.trimmingCharacters(in: .whitespacesAndNewlines),
-		subtitle: caption.trimmingCharacters(in: .whitespacesAndNewlines),
+		title: title
+		  .trimmingCharacters(
+			 in: .whitespacesAndNewlines
+		  ),
+		subtitle: caption
+		  .trimmingCharacters(
+			 in: .whitespacesAndNewlines
+		  ),
+		folderColor: .red,
 		createdBy: uid,
 		createdAt: .now
 	 )

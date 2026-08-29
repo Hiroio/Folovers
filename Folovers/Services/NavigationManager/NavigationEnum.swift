@@ -44,7 +44,7 @@ enum MainNavigationFlow: String, Identifiable, CaseIterable{
 
 
 enum SecondaryViewsEnum: Identifiable{
-  case plans(folderId: String)
+  case plans(folder: FolderModel)
 
   var id: Int{
 	 switch self {

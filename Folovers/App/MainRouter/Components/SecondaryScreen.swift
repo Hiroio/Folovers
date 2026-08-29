@@ -14,8 +14,8 @@ struct SecondaryScreen: View {
 		ZStack{
 		  theme.background.ignoresSafeArea()
 		  switch screen {
-		  case .plans(let folderId):
-			 PlansView(folderId: folderId)
+		  case .plans(let folder):
+			 PlansView(folder: folder)
 				.transition(screen.transition)
 		  
 		  }
@@ -25,5 +25,5 @@ struct SecondaryScreen: View {
 }
 
 #Preview {
-  SecondaryScreen(screen: .plans(folderId: ""))
+  SecondaryScreen(screen: .plans(folder: .personal))
 }

@@ -2,41 +2,61 @@
 //  PlansView.swift
 //  Folovers
 //
-//  Created by user on 16.08.2026.
+//  Created by user on 29.08.2026.
 //
 
 import SwiftUI
 
 struct PlansView: View {
+  @Namespace var nm
   @Environment(\.theme) var theme
   @State private var vm: PlansViewModel
-  init(folderId: String){
-	 self._vm = State(wrappedValue: PlansViewModel(folderId: folderId))
+  init(folder: FolderModel){
+	 self._vm = State(wrappedValue: PlansViewModel(folder: folder))
   }
-  
   var body: some View {
 	 VStack{
-		PlansViewHeader
+		Header
 		
-		PlanTypePickerView(planState: $vm.plansState)
-		
-		PlanGridView(vm: vm)
-	 }
-	 .contentShape(.rect)
-	 .simultaneousGesture(
-		DragGesture(minimumDistance: 20)
-		  .onChanged { value in
-			 let horizontal = value.translation.width
-			 guard abs(horizontal) > 50 else { return }
-			 
-			 let target: PlanType = horizontal < 0 ? .memories : .plans
-			 if vm.plansState != target {
-				withAnimation {
-				  vm.plansState = target
+		VStack(alignment: .leading, spacing: 0){
+		  ZStack(alignment: .bottom){
+			 ForEach(PlanType.allCases) {type in
+				let active = vm.plansState == type
+				Button{
+				  withAnimation(.easeInOut(duration: 0.3)){
+					 vm.plansState = type
+				  }
+				}label: {
+				  TabHeader(title: type.title)
+					 .foregroundStyle(theme.primaryDark)
+					 .opacity(active ? 1 : 0.7)
+					 .scaleEffect(active ? 1.1 : 0.9)
 				}
+				.compositingGroup()
+				.shadow(color: .black.opacity(0.25), radius: 3, x: 3, y: -4)
+				.frame(maxWidth: .infinity, alignment: type.alignment)
 			 }
 		  }
-	 )
+		  .zIndex(1)
+		  Group{
+			 switch vm.plansState {
+			 case .plans:
+				PlansGridView(vm: vm, plans: PlanCard.plans())
+				  .transition(.asymmetric(insertion: .scale(scale: 0.7, anchor: .topLeading).combined(with: .opacity), removal: .opacity))
+			 case .memories:
+				PlansGridView(vm: vm, plans: PlanCard.plans())
+				  .transition(.asymmetric(insertion: .scale(scale: 0.7, anchor: .topTrailing).combined(with: .opacity), removal: .opacity))
+				  
+			 }
+		  }
+		  .background(
+			 vm.folder.folderColor.palette.background
+		  )
+		  .shadow(color: .black.opacity(0.05), radius: 0, y: -1)
+			 
+		}
+		.compositingGroup()
+	 }
 	 .fullScreenCover(isPresented: $vm.creationState) {
 		ZStack{
 		  theme.background.ignoresSafeArea()
@@ -46,48 +66,65 @@ struct PlansView: View {
 		  .ignoresSafeArea(edges: .bottom)
 		}
 	 }
+	 .fontDesign(.monospaced)
   }
 }
 
 #Preview {
-  PlansView(folderId: "")
-	 .environment(\.theme, .basic)
+  ZStack{
+	 ThemePalette.basic.background.ignoresSafeArea()
+	 PlansView(folder: .personal)
+		.environment(\.theme, .basic)
+  }
 }
 
-
 extension PlansView{
-  private var PlansViewHeader: some View{
-	 HStack(spacing: 15){
+  private var Header: some View{
+	 HStack{
 		Button{
-		  withAnimation {
+		  withAnimation{
 			 NavigationManager.shared.popSecondary()
 		  }
 		}label:{
 		  Image(systemName: "chevron.left")
-			 .font(.title2)
-			 .foregroundStyle(theme.primaryDark)
-		}
-		VStack(alignment: .leading){
-		  Text("Plans")
-			 .font(.title2)
+			 .font(.title3)
 			 .foregroundStyle(theme.text)
-		  Text("Your plans & memories")
-			 .font(.caption)
-			 .foregroundStyle(theme.secondaryText)
 		}
-		.frame(maxWidth: .infinity, alignment: .leading)
+		Text(vm.folder.title)
+		  .font(.title2)
+		  .frame(maxWidth: .infinity, alignment: .leading)
 		
-		Button{
-		  withAnimation {
-			 vm.startCreation(type: vm.plansState)
+		
+		HStack{
+		  ForEach(PlanGridViewEnum.allCases, id: \.self){item in
+			 let active = item == vm.gridView
+			 Button{
+				withAnimation {
+				  vm.gridView = item
+				}
+			 }label:{
+				Image(systemName: "\(item.icon)\(active ? ".fill" : "")")
+				  .foregroundStyle(active ? theme.primary : theme.secondaryText)
+				  .padding(10)
+			 }
 		  }
-		}label:{
-		  Image(systemName: "plus")
-			 .font(.title2)
-			 .foregroundStyle(theme.primaryDark)
 		}
+		.border(color: theme.secondaryText)
 	 }
-	 .padding(.horizontal)
-	 .fontDesign(.monospaced)
+	 .padding()
+  }
+  
+  
+  
+  private func TabHeader(title: String) -> some View{
+	 Text(title)
+		.fontWeight(.bold)
+		.frame(width: 100, alignment: .leading)
+		.padding(10)
+		.padding(.horizontal)
+		.background(
+		  TabShape()
+			 .fill(vm.folder.folderColor.palette.background)
+		)
   }
 }

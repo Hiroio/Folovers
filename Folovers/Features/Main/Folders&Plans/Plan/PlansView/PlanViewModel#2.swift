@@ -1,8 +1,8 @@
 //
-//  PlanViewModel.swift
+//  PlanViewModel#2.swift
 //  Folovers
 //
-//  Created by user on 16.08.2026.
+//  Created by user on 29.08.2026.
 //
 
 import Foundation
@@ -11,16 +11,17 @@ import Foundation
 @Observable
 final class PlansViewModel{
   var plans: [PlanCard] = []
-  let folderId: String
+  let folder: FolderModel
   var plansState: PlanType = .plans
   var creationState: Bool = false
   var creationType: PlanType = .plans
-  var planGridState: Bool = false
+  var gridView: PlanGridViewEnum = .three
   var memoriesGridState: Bool = false
   
-  init(folderId: String){
-	 self.folderId = folderId
+  init(folder: FolderModel){
+	 self.folder = folder
   }
+  
   
   
   
@@ -31,8 +32,12 @@ final class PlansViewModel{
   var plansItems: [PlanCard]{
 	 plans.filter({!$0.isCompleted})
   }
+  
   var memoriesItems: [PlanCard]{
 	 plans.filter({ $0.isCompleted })
+  }
+  var folderId: String {
+	 self.folder.id
   }
 }
 
@@ -61,6 +66,37 @@ extension PlansViewModel{
 	 
 	 if !filtered.isEmpty{
 		storageManager.startReloadingTask(plans: filtered)
+	 }
+  }
+}
+
+
+
+enum PlanGridViewEnum: Int,Identifiable, CaseIterable{
+  case three = 3
+  case two = 2
+  
+  
+  var id: Int{
+	 self.rawValue
+  }
+  
+  var ratio: CGFloat{
+	 switch self {
+	 case .three:
+		1/2
+	 case .two:
+		1/1.5
+	 }
+  }
+  
+  
+  var icon: String{
+	 switch self {
+	 case .three:
+		"rectangle.grid.3x2"
+	 case .two:
+		"rectangle.grid.2x2"
 	 }
   }
 }

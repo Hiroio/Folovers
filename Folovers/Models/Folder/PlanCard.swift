@@ -17,6 +17,7 @@ struct PlanCard: FirestoreIdentifiable {
   var location: PlanLocation?
   var photos: [PhotoAttachment]
   var isCompleted: Bool
+  var cardAccent: AppThemeColor
   var createdBy: String
   var createdAt: Date
 }
@@ -30,6 +31,7 @@ extension PlanCard{
 	 self.note = ""
 	 self.photos = []
 	 self.isCompleted = false
+	 self.cardAccent = .red
 	 self.createdBy = createdBy
 	 self.createdAt = .now
   }
@@ -44,9 +46,10 @@ extension PlanCard{
 			 folderId: "",
 			 title: $0,
 			 note: "Qwerty ewrty qwe rewty trewgrt",
-			 location: PlanLocation(name: "Thasos", latitude: 40.77817574240125, longitude: 24.703826622423545),
+			 location: PlanLocation(name: "Thasos, qwefe eqwe,w wqeqwe 4", latitude: 40.77817574240125, longitude: 24.703826622423545),
 			 photos: [],
 			 isCompleted: false,
+			 cardAccent: AppThemeColor.allCases.randomElement()!,
 			 createdBy: "",
 			 createdAt: .now
 		  )
