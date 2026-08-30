@@ -11,9 +11,11 @@ import SpritePackage
 struct PlanDetailView: View {
   @Environment(\.theme) var theme
   @State private var vm: PlanDetailViewModel
+  let plan: PlanCard
   
   init(plan: PlanCard){
 	 self._vm = State(wrappedValue: PlanDetailViewModel(plan: plan))
+	 self.plan = plan
   }
   
   var body: some View {
@@ -58,9 +60,10 @@ struct PlanDetailView: View {
 						.font(.subheadline.weight(.bold))
 					 Spacer()
 					 Text(vm.plan.location?.name ?? "None")
+						.lineLimit(1)
 					 
 					 if vm.locationIsAble{
-						Image(systemName: "chevron.up")
+						Image(systemName: "chevron.down")
 						  .rotationEffect(Angle(degrees: vm.locationExtended ? -180 : 0))
 					 }
 					 
@@ -84,13 +87,23 @@ struct PlanDetailView: View {
 			 
 			 NoteTextEditor(noteText: .constant(vm.plan.note))
 				.frame(maxWidth: .infinity, maxHeight: .infinity)
-				.scaledToFit()
 				.disabled(true)
 		  }
 		  .padding(1)
 		}
 		.padding()
 		createdBy
+	 }
+	 .task{
+		try? await Task.sleep(for: .seconds(0.5))
+		withAnimation(.bouncy){
+		  self.vm.plan = plan
+		}
+		
+		try? await Task.sleep(for: .seconds(0.1))
+		withAnimation {
+		  vm.locationExtended = true
+		}
 	 }
 	 .foregroundStyle(theme.primaryDark)
 	 .fontDesign(.monospaced)

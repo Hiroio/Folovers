@@ -32,6 +32,7 @@ struct NoteTextEditor: View {
 			 .padding(5)
 		}
 		  .padding(5)
+		  .padding(.bottom)
 		  .background(
 			 NoteBorder()
 				.fill(theme.background)

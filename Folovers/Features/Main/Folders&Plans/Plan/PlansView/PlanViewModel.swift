@@ -17,6 +17,8 @@ final class PlansViewModel{
   var creationType: PlanType = .plans
   var gridView: PlanGridViewEnum = .three
   var memoriesGridState: Bool = false
+  var showMenu: Bool = false
+  var editingState: Bool = false
   
   init(folder: FolderModel){
 	 self.folder = folder

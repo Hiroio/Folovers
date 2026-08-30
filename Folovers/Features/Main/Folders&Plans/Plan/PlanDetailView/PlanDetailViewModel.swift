@@ -15,7 +15,7 @@ final class PlanDetailViewModel{
   var creator: UserDocument? = nil
 
   init(plan: PlanCard){
-	 self.plan = plan
+	 self.plan = .init(folderId: "", createdBy: "")
 	 getCreator()
   }
 

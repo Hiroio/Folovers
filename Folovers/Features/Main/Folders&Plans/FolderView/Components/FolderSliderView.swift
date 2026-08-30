@@ -32,7 +32,7 @@ struct FolderSliderView: View {
 		  
 		  Button{
 			 withAnimation {
-				NavigationManager.shared.addPopUp(.folderCreation)
+				NavigationManager.shared.addPopUp(.folderCreation(with: nil))
 			 }
 		  }label: {
 			 CreateFolderItem()

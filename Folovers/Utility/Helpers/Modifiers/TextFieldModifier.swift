@@ -13,7 +13,6 @@ struct TextFieldModifier: ViewModifier {
   let light: Bool
   func body(content: Content) -> some View {
 	 content
-		.foregroundStyle(theme.primary)
 		.frame(maxWidth: .infinity)
 		.padding()
 		.background(

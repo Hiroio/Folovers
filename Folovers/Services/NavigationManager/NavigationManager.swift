@@ -42,6 +42,10 @@ final class NavigationManager {
 
 
 extension NavigationManager{
+  func addSecondary(_ type: SecondaryViewsEnum){
+	 self.secondaryView.append(type)
+  }
+  
   func popSecondary() {
 	 let _ = self.secondaryView.popLast()
   }

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PlansGridView: View {
+  @Environment(\.theme) var theme
   @Bindable var vm: PlansViewModel
   let plans: [PlanCard]
     var body: some View {
@@ -28,9 +29,18 @@ struct PlansGridView: View {
 				  .border(color: color)
 				  
 			 }
+			 .zIndex(1)
 			 
 			 ForEach(plans){plan in
+				Button{
+				  withAnimation{
+					 NavigationManager.shared.plan = plan
+				  }
+				}label:{
 				  PlanGridCard(plan: plan)
+					 .foregroundStyle(theme.text)
+				}
+				.zIndex(1)
 			 }
 			 
 		  }
@@ -45,6 +55,7 @@ struct PlansGridView: View {
 	 ThemePalette.basic.background.ignoresSafeArea()
 	 PlansGridView(vm: .init(folder: .personal), plans: PlanCard.plans())
   }
+  .environment(\.theme, .basic)
 }
 
 extension PlansGridView{

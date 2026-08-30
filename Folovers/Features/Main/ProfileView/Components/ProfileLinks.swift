@@ -66,7 +66,15 @@ struct ProfileLinks: View {
 				}
 			 }
 			 if appearenceView{
-				themeSelection
+				ColorSelectionBar(color: Binding(get: {
+				  ThemeManager.shared.selectedColor
+				}, set: { color in
+				  withAnimation {
+					 ThemeManager.shared.selectedColor = color
+				  }
+				}))
+				.padding(.horizontal)
+				.transition(.opacity.combined(with: .scale(0.2, anchor: .topLeading)))
 			 }
 		  }
 		  Divider()

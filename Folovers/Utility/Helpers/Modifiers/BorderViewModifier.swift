@@ -29,14 +29,16 @@ struct CardViewModifier: ViewModifier{
   let padding: CGFloat
   let lineWidth: CGFloat
   let dashed: Bool
+  let themePalette: ThemePalette?
   func body(content: Content) -> some View {
+	 let pallete = themePalette ?? theme
 	 content
 		.padding(padding)
 		.background(
 		  RoundedRectangle(cornerRadius: 15)
-			 .fill(theme.surface)
+			 .fill(pallete.surface)
 		)
-		.border(lineWidth: lineWidth, dashed: dashed)
+		.border(lineWidth: lineWidth, dashed: dashed, color: pallete.primary)
   }
 }
 
@@ -46,7 +48,7 @@ extension View{
 	 modifier(BorderViewModifier(padding: padding, lineWidth: lineWidth, dashed: dashed, color: color))
   }
   
-  func card(_ padding: CGFloat = 0, lineWidth: CGFloat = 2, dashed: Bool = false) -> some View{
-	 modifier(CardViewModifier(padding: padding, lineWidth: lineWidth, dashed: dashed))
+  func card(_ padding: CGFloat = 0, lineWidth: CGFloat = 2, dashed: Bool = false, palette: ThemePalette? = nil) -> some View{
+	 modifier(CardViewModifier(padding: padding, lineWidth: lineWidth, dashed: dashed, themePalette: palette))
   }
 }

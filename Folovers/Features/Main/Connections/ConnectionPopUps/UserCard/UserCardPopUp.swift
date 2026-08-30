@@ -18,49 +18,57 @@ struct UserCardPopUp: View {
 	 var body: some View {
 		let user = vm.user ?? .placeholder(id: vm.uid)
 
-		VStack(spacing: 15){
-		  Button{
-			 NavigationManager.shared.popPopUp()
-		  }label: {
-			 Image(systemName: "xmark")
-				.font(.headline.weight(.semibold))
-				.foregroundStyle(theme.primaryDark)
-				.padding(5)
-		  }
-		  .frame(maxWidth: .infinity,alignment: .trailing)
-
-		  VStack(spacing: 25){
-			 SpriteView(action: .idle, config: user.characterConfig)
-				.frame(maxWidth: .infinity)
-				.padding()
-				.border(lineWidth: 2)
-				.padding(.horizontal)
-
-			 Text(user.displayName)
-				.font(.title2.weight(.bold))
-				.redacted(reason: vm.user == nil ? .placeholder : [])
-
-			 if let user = vm.user{
-				Text("Joined: \(user.createdAt.formatted(.dateTime.day(.defaultDigits).month(.abbreviated).year()))")
-				  .foregroundStyle(theme.secondaryText)
-			 }
-
-			 VStack(spacing: 8){
-				actionSection
-
-				if let errorText = vm.errorText{
-				  HStack(spacing: 5){
-					 Image(systemName: "exclamationmark.circle")
-					 Text(errorText)
-				  }
-				  .font(.caption)
-				  .foregroundStyle(.red)
-				  .transition(.move(edge: .top).combined(with: .opacity))
+		ZStack{
+		  VStack(spacing: 15){
+			 Header
+			 
+			 VStack(spacing: 25){
+				SpriteView(action: .idle, config: user.characterConfig)
+				  .frame(maxWidth: .infinity)
+				  .padding()
+				  .border(lineWidth: 2)
+				  .padding(.horizontal)
+				
+				Text(user.displayName)
+				  .font(.title2.weight(.bold))
+				  .redacted(reason: vm.user == nil ? .placeholder : [])
+				
+				if let user = vm.user{
+				  Text("Joined: \(user.createdAt.formatted(.dateTime.day(.defaultDigits).month(.abbreviated).year()))")
+					 .foregroundStyle(theme.secondaryText)
 				}
+				
+				VStack(spacing: 8){
+				  actionSection
+				  if let errorText = vm.errorText{
+					 HStack(spacing: 5){
+						Image(systemName: "exclamationmark.circle")
+						Text(errorText)
+					 }
+					 .font(.caption)
+					 .foregroundStyle(.red)
+					 .transition(.move(edge: .top).combined(with: .opacity))
+					 .onAppear{
+						Task{
+						  try? await Task.sleep(for: .seconds(1.5))
+						  vm.errorText = nil
+						}
+					 }
+				  }
+				}
+				.animation(.easeInOut, value: vm.errorText)
 			 }
-			 .animation(.easeInOut, value: vm.errorText)
+			 .zIndex(-1)
+			 .padding(10)
 		  }
-		  .padding(10)
+			 Color.black.opacity(0.0001)
+				.scaledToFit()
+				.onTapGesture {
+				  vm.menuIsActive = false
+				}
+				.zIndex(-1)
+				.allowsHitTesting(vm.menuIsActive)
+		  
 		}
 		.fontDesign(.monospaced)
 		.card(15, lineWidth: 5, dashed: true)
@@ -87,7 +95,7 @@ extension UserCardPopUp{
 		}label: {
 		  Text("Send Request")
 			 .foregroundStyle(theme.primaryDark)
-			 .border(15, dashed: true)
+			 .border(15)
 		}
 		.disabled(vm.loading)
 
@@ -139,10 +147,99 @@ extension UserCardPopUp{
 		}
 
 	 case .connected:
-		Text("Already connected")
-		  .font(.headline.weight(.semibold))
-		  .foregroundStyle(theme.primaryDark)
-		  .border(15)
+		Button{
+		  if let userId = vm.user?.id{
+			 NavigationManager.shared.addPopUp(.letterCreation(to: userId))
+		  }
+		}label:{
+		  Text("Send a letter")
+			 .foregroundStyle(theme.primary)
+			 .card(15, lineWidth: 2)
+			 .compositingGroup()
+		}
+		.buttonStyle(CustomAnimationForBtn(light: false))
 	 }
   }
+  
+  
+  private var Header: some View{
+	 HStack{
+		Button{
+		  NavigationManager.shared.popPopUp()
+		}label: {
+		  Image(systemName: "xmark")
+			 .foregroundStyle(theme.primaryDark)
+			 .padding(5)
+		}
+		Spacer()
+		
+		Button{
+		  withAnimation{
+			 vm.menuIsActive = true
+		  }
+		}label:{
+		  Image(systemName: "ellipsis")
+			 .foregroundStyle(theme.primaryDark)
+		}
+		.overlay(alignment: .topTrailing){
+		  MenuSection
+			 .fixedSize()
+			 .zIndex(2)
+			 .scaleEffect(vm.menuIsActive ? 1.1 : 0, anchor: .topTrailing)
+			 .allowsHitTesting(vm.menuIsActive)
+		}
+	 }
+	 .font(.title2)
+	 .frame(maxWidth: .infinity, alignment: .trailing)
+  }
+  
+  private var MenuSection: some View{
+	 VStack(alignment: .leading, spacing: 15){
+		Button{
+		  withAnimation{
+			 vm.goToFolder()
+		  }
+		}label:{
+		  HStack{
+			 Text("Go to Folder")
+			 Image(systemName: "folder")
+		  }
+		}
+		.disabled(vm.sharedFolder == nil)
+		.opacity(vm.sharedFolder == nil ? 0.4 : 1)
+		
+		Divider()
+		
+		Button{
+		  withAnimation{
+			 vm.createFolder()
+		  }
+		}label:{
+		  HStack{
+			 Text("Create Folder")
+			Image(systemName: "plus.app")
+		  }
+		}
+		.disabled(vm.sharedFolder != nil)
+		.opacity(vm.sharedFolder != nil ? 0.4 : 1)
+		
+		Divider()
+		
+		Button{
+		  vm.deleteConnection()
+		}label:{
+		  HStack{
+			 Text("Remove")
+			 Image(systemName: "trash")
+		  }
+		}
+	 }
+	 .card(10)
+	 .font(.footnote)
+	 .foregroundStyle(theme.primaryDark)
+	 .zIndex(1)
+  }
 }
+
+
+

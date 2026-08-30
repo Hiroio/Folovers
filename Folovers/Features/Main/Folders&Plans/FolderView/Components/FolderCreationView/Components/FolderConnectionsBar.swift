@@ -13,6 +13,7 @@ struct FolderConnectionsBar: View {
   let selected: [UserDocument]
   @Binding var sheetIsActive: Bool
   var onRemove: (UserDocument) -> Void
+  let selectedColor: ThemePalette
     var body: some View {
 		HStack{
 		  if selected.isEmpty{
@@ -38,17 +39,17 @@ struct FolderConnectionsBar: View {
 			 }
 		  }label:{
 			 Image(systemName: "plus")
-				.border(10)
+				.border(10, color: selectedColor.primary)
 		  }
 		}
 		.frame(maxWidth: .infinity)
-		.foregroundStyle(theme.primaryDark)
-		.border(5)
+		.foregroundStyle(selectedColor.primaryDark)
+		.border(5, color: selectedColor.primary)
     }
 }
 
 #Preview {
-  FolderConnectionsBar(selected: [.placeholder(id: "qwe"), .placeholder(id: "ewq"), .placeholder(id: "wqe"), .placeholder(id: "eqw")], sheetIsActive: .constant(false), onRemove: { _ in })
+  FolderConnectionsBar(selected: [.placeholder(id: "qwe"), .placeholder(id: "ewq"), .placeholder(id: "wqe"), .placeholder(id: "eqw")], sheetIsActive: .constant(false), onRemove: { _ in }, selectedColor: .basic)
 	 .environment(\.theme, .basic)
 }
 

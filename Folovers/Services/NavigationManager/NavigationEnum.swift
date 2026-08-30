@@ -67,7 +67,7 @@ enum NavigationPopUp: Identifiable, Equatable {
   
   
   case userSearch, user(uid: String, user: UserDocument?)
-  case folderCreation
+  case folderCreation(with: UserDocument?)
   case letterCreation(to: String)
   case letter(MailModel)
   case mailBox

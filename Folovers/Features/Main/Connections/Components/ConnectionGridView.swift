@@ -33,7 +33,7 @@ struct ConnectionGridView: View {
 				  }
 				}
 			 }
-			 .padding(1)
+			 .padding(5)
 		  }
 		}else{
 		  ConnectionsStateCard(state: state == .accepted ? .empty : .pendingEmpty)

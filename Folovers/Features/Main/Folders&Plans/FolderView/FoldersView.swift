@@ -45,7 +45,7 @@ extension FoldersView{
 		
 		Button{
 		  withAnimation{
-			 NavigationManager.shared.addPopUp(.folderCreation)
+			 NavigationManager.shared.addPopUp(.folderCreation(with: nil))
 		  }
 		}label: {
 		  Image(systemName: "plus")

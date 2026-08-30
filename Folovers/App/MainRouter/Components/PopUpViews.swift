@@ -19,8 +19,8 @@ struct PopUpViews: View {
 		  UserCardPopUp(uid: uid, user: user)
 			 .transition(.scale.combined(with: .opacity))
 		  
-		case .folderCreation:
-		  FolderCreationView()
+		case .folderCreation(let user):
+		  FolderCreationView(preselected: user)
 			 .transition(.scale.combined(with: .opacity))
 		  
 		case .photo(let photoKF, let photo):

@@ -40,7 +40,8 @@ struct FolderConnectionSheet: View {
 		)
 		.textFieldModifier()
 		.border()
-
+		
+		
 		ScrollView(showsIndicators: false){
 		  ForEach(filteredConnections){item in
 			 Button{
