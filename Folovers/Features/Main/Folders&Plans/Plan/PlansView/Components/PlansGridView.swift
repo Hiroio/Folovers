@@ -33,14 +33,28 @@ struct PlansGridView: View {
 			 
 			 ForEach(plans){plan in
 				Button{
-				  withAnimation{
-					 NavigationManager.shared.plan = plan
+				  if vm.editingState{
+					 withAnimation {
+						vm.selectPlan(plan: plan)
+					 }
+				  }else{
+					 withAnimation{
+						NavigationManager.shared.plan = plan
+					 }
 				  }
 				}label:{
 				  PlanGridCard(plan: plan)
 					 .foregroundStyle(theme.text)
+					 .overlay(alignment: .topTrailing) {
+						let selected = vm.selected.contains(where: {$0.id == plan.id})
+						Image(systemName: selected ? "checkmark.circle.fill" : "circle")
+						  .foregroundStyle(vm.folder.folderColor.palette.primary)
+						  .opacity(vm.editingState ? 1 : 0)
+						  .padding(3)
+					 }
 				}
 				.zIndex(1)
+				.buttonStyle(.plain)
 			 }
 			 
 		  }

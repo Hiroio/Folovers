@@ -9,7 +9,7 @@ import Foundation
 
 
 enum SpriteActions{
-  case idle, walk, jump, loading, idleLoading, preview
+  case idle, walk, jump, loading, idleLoading, preview, angry, sad, happy, awkward
   
   
   var sprites: Int {
@@ -26,31 +26,35 @@ enum SpriteActions{
 		0
 	 case .preview:
 		0
+	 case .angry:
+		8
+	 case .sad:
+		4
+	 case .happy:
+		6
+	 case .awkward:
+		10
 	 }
   }
   
   var animationDuration: Double{
 	 switch self {
-	 case .idle:
-		0.6
-	 case .walk:
-		0.6
 	 case .jump:
 		0.85
-	 case .loading:
-		0.6
 	 case .idleLoading:
 		1
 	 case .preview:
 		0
+	 case .happy:
+		0.85
+	 default:
+		0.6
 	 }
   }
   
   func xPosition(step: Int, containerWidth: CGFloat, spriteWidth: CGFloat) -> CGFloat {
 	 let half = containerWidth / 2 + 96
 	 switch self {
-	 case .idle:
-		return half
 	 case .walk:
 		let start = 0.0
 		let value = (containerWidth + 96) / Double(sprites)
@@ -63,9 +67,12 @@ enum SpriteActions{
 		let start = -96.0
 		let value = Double(half / Double(sprites))
 		return CGFloat(start + Double(step) * value)
-	 case .idleLoading:
-		return half
-	 case .preview:
+	 case .happy:
+		let start = half
+		let value = containerWidth / Double(sprites)
+		return CGFloat(start + (value * Double(step - sprites / 2)))
+		
+	 default:
 		return half
 	 }
   }

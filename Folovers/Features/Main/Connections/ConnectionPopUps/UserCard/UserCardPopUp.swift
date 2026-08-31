@@ -188,6 +188,7 @@ extension UserCardPopUp{
 			 .scaleEffect(vm.menuIsActive ? 1.1 : 0, anchor: .topTrailing)
 			 .allowsHitTesting(vm.menuIsActive)
 		}
+		.opacity(vm.btnStatus == .connected ? 1 : 0)
 	 }
 	 .font(.title2)
 	 .frame(maxWidth: .infinity, alignment: .trailing)

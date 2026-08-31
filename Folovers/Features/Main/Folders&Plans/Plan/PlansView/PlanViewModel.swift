@@ -18,7 +18,12 @@ final class PlansViewModel{
   var gridView: PlanGridViewEnum = .three
   var memoriesGridState: Bool = false
   var showMenu: Bool = false
-  var editingState: Bool = false
+  var editingState: Bool = false {didSet{
+	 if editingState == false{
+		selected.removeAll() 
+	 }
+  }}
+  var selected: [PlanCard] = []
   
   init(folder: FolderModel){
 	 self.folder = folder
@@ -40,6 +45,15 @@ final class PlansViewModel{
   }
   var folderId: String {
 	 self.folder.id
+  }
+  
+  
+  func selectPlan(plan: PlanCard){
+	 if selected.contains(where: {$0.id == plan.id}){
+		selected.removeAll(where: {$0.id == plan.id})
+	 }else{
+		selected.append(plan)
+	 }
   }
 }
 

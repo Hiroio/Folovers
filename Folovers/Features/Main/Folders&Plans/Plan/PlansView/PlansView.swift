@@ -60,6 +60,18 @@ struct PlansView: View {
 		  .zIndex(-2)
 		  .compositingGroup()
 		}
+		.overlay(alignment: .bottom){
+			 Button{}label:{
+				Text("Delete: \(vm.selected.count)")
+				  .frame(maxWidth: .infinity)
+				  .border(15, dashed: true, color: vm.folder.folderColor.palette.primary)
+				  .foregroundStyle(vm.folder.folderColor.palette.primary)
+				  .padding(.horizontal, 20)
+				  .contentShape(.rect)
+			 }
+			 .buttonStyle(CustomAnimationForBtn(light: false))
+			 .scaleEffect(vm.editingState ? 1 : 0,anchor: .bottom)
+		}
 		
 		
 		

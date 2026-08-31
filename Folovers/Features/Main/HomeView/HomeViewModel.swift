@@ -12,6 +12,15 @@ final class HomeViewModel{
   var user: UserDocument?{
 	 userManager.currentUser
   }
+
+  var mood: CharacterMood? = nil
+  
+  var calendarActive: Bool = false
+  var calendarSheet: Bool = false
+
+  var spriteAction: SpriteActions{
+	 mood?.actions ?? .idle
+  }
   
   private let userManager = UserManager.shared
   private let mailManager = MailManager.shared

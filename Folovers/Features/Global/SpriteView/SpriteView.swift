@@ -11,6 +11,7 @@ import SpritePackage
 struct SpriteView: View {
   @State private var vm: SpriteViewModel
   private var step: Binding<Int>?
+  private let action: SpriteActions
 
   init(
 	 action: SpriteActions,
@@ -28,13 +29,18 @@ struct SpriteView: View {
 		)
 	 )
 	 self.step = step
+	 self.action = action
   }
 
   var body: some View {
 	 CharacterView(controller: vm.controller)
 		.frame(width: vm.size?.width ?? SpriteViewModel.displaySize.width, height: vm.size?.height ?? SpriteViewModel.displaySize.height)
+		.offset(x: vm.offsetX)
 		.onChange(of: vm.number) { _, newValue in
 		  step?.wrappedValue = newValue
+		}
+		.onChange(of: action) { _, newValue in
+		  vm.play(newValue)
 		}
   }
 }
