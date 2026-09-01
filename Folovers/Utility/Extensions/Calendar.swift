@@ -95,6 +95,14 @@ extension Date {
 		  return formatter.string(from: self)
 	 }
   
+//  The seven days of the week this date falls in, starting on the locale's first weekday
+  var weekDays: [Date] {
+	 let calendar = Calendar.current
+	 guard let week = calendar.dateInterval(of: .weekOfYear, for: self) else { return [] }
+
+	 return (0..<7).compactMap({ calendar.date(byAdding: .day, value: $0, to: week.start) })
+  }
+  
   var inCurrentMonth: Bool{
 	 Calendar.current.isDate(self, equalTo: .now, toGranularity: .month)
   }

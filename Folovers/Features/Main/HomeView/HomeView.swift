@@ -48,12 +48,12 @@ struct HomeView: View {
 			 }
 			 
 			 if vm.calendarActive{
-				CalendarView(month: .constant(.now))
+				CalendarView(month: .constant(.now), selectedDay: .constant(.now))
 				  .transition(.scale(0, anchor: .bottom).combined(with: .opacity))
 				  .disabled(true)
 				
 				Button{
-				  vm.calendarSheet = true
+				  NavigationManager.shared.addSecondary(.calendar)
 				}label:{
 				  Text("Calendar")
 					 .foregroundStyle(theme.primary)
@@ -69,9 +69,6 @@ struct HomeView: View {
 	 }
 	 .frame(maxHeight: .infinity)
 	 .padding()
-	 .fullScreenCover(isPresented: $vm.calendarSheet) {
-		CalendarSheetView()
-	 }
 	 .fontDesign(.monospaced)
   }
 }

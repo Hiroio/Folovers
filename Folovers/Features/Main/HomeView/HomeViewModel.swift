@@ -14,9 +14,7 @@ final class HomeViewModel{
   }
 
   var mood: CharacterMood? = nil
-  
   var calendarActive: Bool = false
-  var calendarSheet: Bool = false
 
   var spriteAction: SpriteActions{
 	 mood?.actions ?? .idle

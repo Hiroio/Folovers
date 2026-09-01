@@ -45,17 +45,20 @@ enum MainNavigationFlow: String, Identifiable, CaseIterable{
 
 enum SecondaryViewsEnum: Identifiable{
   case plans(folder: FolderModel)
+  case calendar
 
   var id: Int{
 	 switch self {
 	 case .plans(_):
 		1
+	 case .calendar:
+		2
 	 }
   }
 
   var transition: AnyTransition{
 	 switch self {
-	 case .plans(_):
+	 default:
 		  .move(edge: .bottom).combined(with: .opacity)
 	 }
   }

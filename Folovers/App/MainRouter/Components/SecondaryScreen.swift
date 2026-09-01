@@ -17,7 +17,8 @@ struct SecondaryScreen: View {
 		  case .plans(let folder):
 			 PlansView(folder: folder)
 				.transition(screen.transition)
-		  
+		  case .calendar:
+			 CalendarSheetView()
 		  }
 		}
 		.animation(.easeInOut, value: screen.id)
