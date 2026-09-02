@@ -39,7 +39,7 @@ struct CalendarView: View {
 					 .padding(3)
 					 .background(
 						Circle()
-						  .fill(day == selectedDay ? theme.surface : .clear)
+						  .fill(Calendar.current.isDate(day, inSameDayAs: selectedDay) ? theme.surface : .clear)
 					 )
 				}
 			 }

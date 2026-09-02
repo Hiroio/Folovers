@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct TodoCreationSheet: View {
+  @Environment(\.dismiss) var dismiss
   @Environment(\.theme) var theme
   @Namespace var nm
   @State private var vm = TodoCreationViewModel()
   @State private var colorSelection: Bool = true
+  @FocusState var focusState: Bool
   var body: some View {
 	 ZStack{
 		let palette = vm.todoColor.palette
@@ -27,11 +29,29 @@ struct TodoCreationSheet: View {
 				  .background(
 					 RoundedRectangle(cornerRadius: 15)
 						.fill(palette.surface)
+						.shadow(radius: 1)
 				  )
+				  .border(color: palette.primary)
+				  .focused($focusState)
+				  .background(alignment: .topLeading){
+					 if focusState && !vm.similarTodos.isEmpty{
+						SimilarTodosList(todos: vm.similarTodos, palette: vm.todoColor.palette){item in
+						  focusState = false
+						  withAnimation{
+							 vm.getPreset(todo: item)
+						  }
+						}
+						.offset(y: focusState ? 45 : 0)
+						.transition(.scale(0, anchor: .topLeading))
+						.allowsHitTesting(focusState)
+					 }
+				  }
 				
 				NoteSection
+				  .zIndex(-1)
 				
 				DateSection
+				  .zIndex(-1)
 			 }
 			 
 			 VStack{
@@ -45,7 +65,10 @@ struct TodoCreationSheet: View {
 		  
 		  
 		  Spacer()
-		  Button{}label:{
+		  Button{
+			 vm.createTodo()
+			 dismiss()
+		  }label:{
 			 Text("Create")
 				.foregroundStyle(palette.primaryDark)
 				.frame(maxWidth: .infinity)
@@ -54,6 +77,7 @@ struct TodoCreationSheet: View {
 			 
 		  }
 		}
+		.animation(.easeInOut, value: focusState)
 		.frame(maxHeight: .infinity, alignment: .top)
 		.padding()
 		.background(
@@ -64,7 +88,7 @@ struct TodoCreationSheet: View {
 		.padding(1)
 		.fontDesign(.monospaced)
 	 }
-	
+	 
 	 .ignoresSafeArea(edges: .bottom)
   }
 }
@@ -85,7 +109,7 @@ extension TodoCreationSheet{
 		Text("Date")
 		  .font(.footnote.weight(.bold))
 		  .foregroundStyle(vm.todoColor.palette.text)
-
+		
 		if vm.date == nil{
 		  Button{
 			 withAnimation{
@@ -115,9 +139,9 @@ extension TodoCreationSheet{
 		  HStack{
 			 DatePicker("", selection: dateBinding, displayedComponents: [.date, .hourAndMinute])
 				.labelsHidden()
-
+			 
 			 Spacer()
-
+			 
 			 Button{
 				withAnimation{
 				  vm.date = nil
@@ -136,8 +160,8 @@ extension TodoCreationSheet{
 	 .foregroundStyle(vm.todoColor.palette.primaryDark)
 	 .tint(vm.todoColor.palette.primary)
   }
-
-
+  
+  
   private var dateBinding: Binding<Date>{
 	 Binding {
 		vm.date ?? .now
@@ -145,7 +169,7 @@ extension TodoCreationSheet{
 		vm.date = newValue
 	 }
   }
-
+  
   private var NoteSection: some View{
 	 VStack(alignment: .leading){
 		Text("Note")
@@ -224,7 +248,7 @@ extension TodoCreationSheet{
 					 Image(systemName: item.icon)
 						.foregroundStyle(active ? vm.todoColor.palette.primary : vm.todoColor.palette.secondaryText)
 				  }
-				 
+				  
 				}
 			 }
 		  }
@@ -237,4 +261,8 @@ extension TodoCreationSheet{
 		
 	 }
   }
+  
+  
+  
+  
 }

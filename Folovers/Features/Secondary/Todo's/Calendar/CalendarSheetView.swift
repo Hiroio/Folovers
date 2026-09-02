@@ -11,7 +11,6 @@ struct CalendarSheetView: View {
   @Environment(\.theme) var theme
   @State private var vm = TodosViewModel()
   @State var selectedMonth: Date = .now
-  @State var selectedDay: Date = .now
   @State private var isCollapsed: Bool = false
   @State private var isUserScrolling: Bool = false
 
@@ -23,7 +22,7 @@ struct CalendarSheetView: View {
 		VStack{
 		  Header
 		  
-		  CalendarView(month: $selectedMonth, selectedDay: $selectedDay ,isCollapsed: isCollapsed)
+		  CalendarView(month: $selectedMonth, selectedDay: $vm.selectedDay ,isCollapsed: isCollapsed)
 			 .padding(.vertical, 10)
 		  
 		  Slider
@@ -65,6 +64,7 @@ struct CalendarSheetView: View {
 	 }
 	 .sheet(isPresented: $vm.creationSheetActive){
 		TodoCreationSheet()
+		  .presentationDetents([.medium])
 	 }
 	 .ignoresSafeArea(edges: .bottom)
 	 .fontDesign(.monospaced)

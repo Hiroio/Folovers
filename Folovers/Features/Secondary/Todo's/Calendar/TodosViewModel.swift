@@ -18,13 +18,25 @@ final class TodosViewModel{
   private let manager = TodosManager.shared
   
   var selectedDayTodos: [TodoItem]{
+	 print(self.todos)
 	 let calendar = Calendar.current
 	 
-	 return todos.filter({ calendar.isDate($0.createdAt, inSameDayAs: selectedDay)})
+	 return todos.filter({ item in
+		if let date = item.date{
+		  return calendar.isDate(date, inSameDayAs: selectedDay)
+		}else{
+		  return item.date == nil && calendar.isDate(item.createdAt, inSameDayAs: selectedDay)
+		}
+	 }).sorted(by: { ($0.date ?? .distantFuture) < ($1.date ?? .distantFuture) })
   }
 }
 
 
 extension TodosViewModel{
-  
+  func completeTap(item: TodoItem){
+	 var todo = item
+	 todo.isDone = !todo.isDone
+	 
+	 manager.update(todo: todo)
+  }
 }

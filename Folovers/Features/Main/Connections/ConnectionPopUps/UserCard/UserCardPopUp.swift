@@ -16,51 +16,22 @@ struct UserCardPopUp: View {
   }
 
 	 var body: some View {
-		let user = vm.user ?? .placeholder(id: vm.uid)
-
-		ZStack{
-		  VStack(spacing: 15){
-			 Header
+		VStack{
+		  UserSegmentedPicker(state: $vm.popUpState)
 			 
-			 VStack(spacing: 25){
-				SpriteView(action: .idle, config: user.characterConfig)
-				  .frame(maxWidth: .infinity)
-				  .padding()
-				  .border(lineWidth: 2)
-				  .padding(.horizontal)
-				
-				Text(user.displayName)
-				  .font(.title2.weight(.bold))
-				  .redacted(reason: vm.user == nil ? .placeholder : [])
-				
-				if let user = vm.user{
-				  Text("Joined: \(user.createdAt.formatted(.dateTime.day(.defaultDigits).month(.abbreviated).year()))")
-					 .foregroundStyle(theme.secondaryText)
+		  ZStack{
+			 VStack(spacing: 15){
+				Header
+				if vm.popUpState == .user{
+				  UserCardView(vm: vm)
+					 .zIndex(-1)
+					 .transition(.blurReplace)
+				}else{
+				  UserTodoList(todos: vm.userTodos)
+					 .zIndex(-1)
+					 .transition(.blurReplace)
 				}
-				
-				VStack(spacing: 8){
-				  actionSection
-				  if let errorText = vm.errorText{
-					 HStack(spacing: 5){
-						Image(systemName: "exclamationmark.circle")
-						Text(errorText)
-					 }
-					 .font(.caption)
-					 .foregroundStyle(.red)
-					 .transition(.move(edge: .top).combined(with: .opacity))
-					 .onAppear{
-						Task{
-						  try? await Task.sleep(for: .seconds(1.5))
-						  vm.errorText = nil
-						}
-					 }
-				  }
-				}
-				.animation(.easeInOut, value: vm.errorText)
 			 }
-			 .zIndex(-1)
-			 .padding(10)
-		  }
 			 Color.black.opacity(0.0001)
 				.scaledToFit()
 				.onTapGesture {
@@ -68,14 +39,16 @@ struct UserCardPopUp: View {
 				}
 				.zIndex(-1)
 				.allowsHitTesting(vm.menuIsActive)
-		  
+		  }
+		  .frame(maxWidth: .infinity, maxHeight: .infinity)
+		  .aspectRatio(0.8, contentMode: .fit)
+		  .card(15, lineWidth: 5, dashed: true)
+		  .padding()
+		  .task{
+			 await vm.loadUser()
+		  }
 		}
 		.fontDesign(.monospaced)
-		.card(15, lineWidth: 5, dashed: true)
-		.padding()
-		.task{
-		  await vm.loadUser()
-		}
     }
 }
 
@@ -86,82 +59,6 @@ struct UserCardPopUp: View {
 
 
 extension UserCardPopUp{
-  @ViewBuilder
-  var actionSection: some View{
-	 switch vm.btnStatus {
-	 case .none:
-		Button{
-		  vm.sendConnectionRequest()
-		}label: {
-		  Text("Send Request")
-			 .foregroundStyle(theme.primaryDark)
-			 .border(15)
-		}
-		.disabled(vm.loading)
-
-	 case .incoming:
-		VStack(spacing: 15){
-		  HStack(spacing: 15){
-			 Button{
-				vm.deleteConnection()
-			 }label: {
-				Text("Decline")
-				  .frame(maxWidth: .infinity)
-				  .padding()
-				  .border(dashed: true)
-			 }
-
-			 Button{
-				vm.acceptRequest()
-			 }label:{
-				Text("Accept")
-				  .frame(maxWidth: .infinity)
-				  .padding()
-				  .border(dashed: true)
-			 }
-		  }
-		  .foregroundStyle(theme.primaryDark)
-		  .padding(.horizontal)
-		  .disabled(vm.loading)
-
-		  Text("User waiting for your answer")
-			 .font(.caption)
-			 .foregroundStyle(theme.secondaryText)
-		}
-
-	 case .outgoing:
-		VStack(spacing: 15){
-		  Text("Pending")
-			 .foregroundStyle(theme.secondaryText)
-			 .frame(maxWidth: .infinity)
-			 .border(15, dashed: true)
-
-		  Button{
-			 vm.deleteConnection()
-		  }label: {
-			 Text("Cancel request")
-				.font(.caption)
-				.foregroundStyle(theme.secondaryText)
-		  }
-		  .disabled(vm.loading)
-		}
-
-	 case .connected:
-		Button{
-		  if let userId = vm.user?.id{
-			 NavigationManager.shared.addPopUp(.letterCreation(to: userId))
-		  }
-		}label:{
-		  Text("Send a letter")
-			 .foregroundStyle(theme.primary)
-			 .card(15, lineWidth: 2)
-			 .compositingGroup()
-		}
-		.buttonStyle(CustomAnimationForBtn(light: false))
-	 }
-  }
-  
-  
   private var Header: some View{
 	 HStack{
 		Button{
@@ -193,6 +90,7 @@ extension UserCardPopUp{
 	 .font(.title2)
 	 .frame(maxWidth: .infinity, alignment: .trailing)
   }
+  
   
   private var MenuSection: some View{
 	 VStack(alignment: .leading, spacing: 15){
@@ -241,6 +139,3 @@ extension UserCardPopUp{
 	 .zIndex(1)
   }
 }
-
-
-

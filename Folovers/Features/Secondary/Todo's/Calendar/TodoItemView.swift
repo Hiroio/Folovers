@@ -77,7 +77,6 @@ struct TodoItemView: View {
 		}
 		.frame(maxHeight: .infinity, alignment: .bottom)
 		.fontDesign(.monospaced)
-		.scaledToFit()
     }
 }
 

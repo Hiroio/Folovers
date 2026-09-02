@@ -18,6 +18,7 @@ final class UserManager{
 		if let currentUser, oldValue?.id != currentUser.id{
 		  ConnectionManager.shared.startListener()
 		  MailManager.shared.initializeManager()
+		  TodosManager.shared.getTodos()
 		  FolderManager.shared.fetchAllRelated()
 		}
 	 }

@@ -14,8 +14,10 @@ final class UserCardViewModel{
   var user: UserDocument?
   var loading: Bool = false
   var userLoading: Bool = false
+  var popUpState: UserPopUpState = .user
   var errorText: String? = nil
   var menuIsActive: Bool = false
+  var userTodos: [TodoItem] = []
   
   private let manager = ConnectionManager.shared
   private let userManager = UserManager.shared
@@ -28,6 +30,7 @@ final class UserCardViewModel{
 		self.uid = uid
 		getUser(uid: uid)
 	 }
+	 fetchUserTodos(uid: uid)
   }
   
   var requestErrors: FirestoreError?{
@@ -142,6 +145,13 @@ extension UserCardViewModel{
 	 menuIsActive = false
 	 NavigationManager.shared.addPopUp(.folderCreation(with: user))
   }
+  
+  func fetchUserTodos(uid: String){
+	 Task{
+		let todos = try? await TodosManager.shared.getUserTodos(userId: uid)
+		self.userTodos = todos ?? []
+	 }
+  }
 }
 
 
@@ -151,4 +161,8 @@ enum ConnectionButtonState{
   case incoming
   case outgoing
   case connected
+}
+
+enum UserPopUpState: String, CaseIterable{
+  case user, plan
 }
