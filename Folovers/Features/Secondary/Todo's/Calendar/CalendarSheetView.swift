@@ -30,7 +30,13 @@ struct CalendarSheetView: View {
 		  ScrollView(showsIndicators: false){
 			 LazyVStack{
 				ForEach(vm.selectedDayTodos){item in
-				  TodoItemView(todoItem: item, onComplete: {})
+				  TodoItemView(todoItem: item, isEditing: vm.isEditing, onComplete: {
+					 vm.completeTap(item: item)
+				  }, onEdit: {
+					 vm.itemToEdit = item
+				  }, onDelete: {
+					 vm.deleteTodo(item: item)
+				  })
 					 .id(item.id)
 				}
 			 }
@@ -66,6 +72,10 @@ struct CalendarSheetView: View {
 		TodoCreationSheet()
 		  .presentationDetents([.medium])
 	 }
+	 .sheet(item: $vm.itemToEdit, content: { todo in
+		TodoCreationSheet(todo: todo)
+		  .presentationDetents([.medium])
+	 })
 	 .ignoresSafeArea(edges: .bottom)
 	 .fontDesign(.monospaced)
   }
@@ -96,6 +106,17 @@ extension CalendarSheetView{
 		  .font(.title2)
 		
 		Spacer()
+		
+		
+		Button{
+		  withAnimation{
+			 vm.isEditing.toggle()
+		  }
+		}label:{
+		  Image(systemName: vm.isEditing ? "pencil.slash" : "pencil")
+			 .foregroundStyle(theme.primary)
+			 .font(.title3.weight(.medium))
+		}
 		Button{
 		  vm.creationSheetActive = true
 		}label:{

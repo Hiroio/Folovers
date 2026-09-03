@@ -14,6 +14,9 @@ final class TodosViewModel{
 	 manager.todos
   }
   var selectedDay: Date = .now
+  var isEditing: Bool = false
+  var itemToEdit: TodoItem? = nil
+  
   
   private let manager = TodosManager.shared
   
@@ -38,5 +41,10 @@ extension TodosViewModel{
 	 todo.isDone = !todo.isDone
 	 
 	 manager.update(todo: todo)
+  }
+  
+  
+  func deleteTodo(item: TodoItem){
+	 manager.delete(todo: item)
   }
 }

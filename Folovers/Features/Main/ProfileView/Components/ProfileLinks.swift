@@ -60,9 +60,9 @@ struct ProfileLinks: View {
 			 }label: {
 				HStack{
 				  LinkRow(.appearence)
-				  Image(systemName: "chevron.down")
+				  Image(systemName: "chevron.right")
 					 .foregroundStyle(theme.secondaryText)
-					 .rotationEffect(.degrees(appearenceView ? 180 : 0))
+					 .rotationEffect(.degrees(appearenceView ? 90 : 0))
 				}
 			 }
 			 if appearenceView{

@@ -38,6 +38,10 @@ struct PopUpViews: View {
 		case .letter(let letter):
 		  LetterView(letter: letter)
 			 .transition(.scale.combined(with: .opacity))
+
+		case .confirmation(let model):
+		  ConfirmationPopUp(model: model)
+			 .transition(.scale.combined(with: .opacity))
 		}
     }
 }

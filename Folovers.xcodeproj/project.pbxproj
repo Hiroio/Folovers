@@ -35,6 +35,8 @@
 				Assets.xcassets,
 				Features/Global/AuthView/AuthView.swift,
 				Features/Global/AuthView/AuthViewModel.swift,
+				Features/Global/ConfirmationPopUp/ConfirmationPopUp.swift,
+				Features/Global/ConfirmationPopUp/ConfirmationPopUpModel.swift,
 				Features/Global/AuthView/Components/PasswordField.swift,
 				Features/Global/Helpers/ColorSelectionBar.swift,
 				Features/Global/Helpers/CustomNavigationBar.swift,

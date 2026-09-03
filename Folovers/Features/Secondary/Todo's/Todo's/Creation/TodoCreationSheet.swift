@@ -11,9 +11,14 @@ struct TodoCreationSheet: View {
   @Environment(\.dismiss) var dismiss
   @Environment(\.theme) var theme
   @Namespace var nm
-  @State private var vm = TodoCreationViewModel()
+  @State private var vm: TodoCreationViewModel
   @State private var colorSelection: Bool = true
   @FocusState var focusState: Bool
+
+  init(todo: TodoItem? = nil){
+	 self._vm = State(wrappedValue: TodoCreationViewModel(todo: todo))
+  }
+
   var body: some View {
 	 ZStack{
 		let palette = vm.todoColor.palette
@@ -66,10 +71,10 @@ struct TodoCreationSheet: View {
 		  
 		  Spacer()
 		  Button{
-			 vm.createTodo()
+			 vm.submitAction()
 			 dismiss()
 		  }label:{
-			 Text("Create")
+			 Text(vm.actionBtnName)
 				.foregroundStyle(palette.primaryDark)
 				.frame(maxWidth: .infinity)
 				.border(15,lineWidth: 3, color: palette.primary)
@@ -89,6 +94,11 @@ struct TodoCreationSheet: View {
 		.fontDesign(.monospaced)
 	 }
 	 
+	 .onAppear{
+	 	withAnimation(.easeInOut){
+	 	  vm.loadOriginTodo()
+	 	}
+	 }
 	 .ignoresSafeArea(edges: .bottom)
   }
 }

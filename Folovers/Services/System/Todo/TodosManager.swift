@@ -76,6 +76,7 @@ extension TodosManager{
 	 Task{
 		do{
 		  try await FirestoreService.request(endpoint)
+		  todos.removeAll(where: {$0.id == todo.id})
 		}catch{
 		  
 		}

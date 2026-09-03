@@ -10,7 +10,10 @@ import SwiftUI
 struct TodoItemView: View {
   @State private var extended: Bool = false
   let todoItem: TodoItem
+  let isEditing: Bool
   let onComplete: () -> ()
+  let onEdit: () -> ()
+  let onDelete: () -> ()
     var body: some View {
 		HStack(alignment: .bottom){
 		  let color = todoItem.colortheme.palette
@@ -65,14 +68,37 @@ struct TodoItemView: View {
 			 .fixedSize(horizontal: false, vertical: true)
 			 
 			 
-		  
-		  Button{
-			 onComplete()
-		  }label:{
-			 Image(systemName: todoItem.isDone ? "checkmark.circle.fill" : "circle")
-				.font(.title)
-				.foregroundStyle(todoItem.colortheme.palette.primary)
-				.offset(x: -5)
+		  if isEditing{
+			 HStack(spacing: 20){
+				Button{
+				  onEdit()
+				}label:{
+				  Image(systemName: "pencil")
+					 .foregroundStyle(color.primary)
+				}
+				Button{
+				  NavigationManager.shared.confirm("Delete \"\(todoItem.title)\"?"){
+					 onDelete()
+				  }
+				}label:{
+				  Image(systemName: "trash")
+					 .foregroundStyle(.red)
+				}
+			 }
+			 .font(.title3.weight(.semibold))
+			 .transition(.scale)
+			 .padding(.vertical, 5)
+		  }else{
+			 Button{
+				onComplete()
+			 }label:{
+				Image(systemName: todoItem.isDone ? "checkmark.circle.fill" : "circle")
+				  .font(.title)
+				  .foregroundStyle(todoItem.colortheme.palette.primary)
+				  .offset(x: -5)
+			 }
+			 .transition(.scale)
+			 .disabled(isEditing)
 		  }
 		}
 		.frame(maxHeight: .infinity, alignment: .bottom)
@@ -81,5 +107,5 @@ struct TodoItemView: View {
 }
 
 #Preview {
-  TodoItemView(todoItem: .preview(id: "412")){}
+  TodoItemView(todoItem: .preview(id: "412"), isEditing: true, onComplete: {}, onEdit: {}, onDelete: {})
 }

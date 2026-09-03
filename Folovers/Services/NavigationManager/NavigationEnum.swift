@@ -75,8 +75,9 @@ enum NavigationPopUp: Identifiable, Equatable {
   case letter(MailModel)
   case mailBox
   case photo(photoKF: String?, photoUI: UIImage?)
-  
-  
+  case confirmation(ConfirmationPopUpModel)
+
+
   var id: String{
 	 switch self {
 	 case .userSearch:
@@ -93,6 +94,8 @@ enum NavigationPopUp: Identifiable, Equatable {
 		"Photo"
 	 case .mailBox:
 		"mailBox"
+	 case .confirmation(_):
+		"confirmation"
 	 }
   }
   

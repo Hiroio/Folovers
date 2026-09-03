@@ -65,6 +65,10 @@ extension NavigationManager{
   func clearPopUps(){
 	 self.popUps = []
   }
+
+  func confirm(_ text: String, confirmText: String = "Delete", isDestructive: Bool = true, onConfirm: @escaping () -> Void){
+	 addPopUp(.confirmation(.init(text: text, confirmText: confirmText, isDestructive: isDestructive, onConfirm: onConfirm)))
+  }
 }
 
 

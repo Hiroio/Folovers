@@ -12,10 +12,20 @@ final class HomeViewModel{
   var user: UserDocument?{
 	 userManager.currentUser
   }
-
-  var mood: CharacterMood? = nil
+  
+//  No storage of its own - the profile is the source of truth. Writing to
+//  self here would just call this setter again
+  var mood: CharacterMood? {
+	 get{
+		userManager.currentUser?.mood
+	 }
+	 set{
+		guard let newValue, newValue != mood else { return }
+		changeMood(to: newValue)
+	 }
+  }
   var calendarActive: Bool = false
-
+  
   var spriteAction: SpriteActions{
 	 mood?.actions ?? .idle
   }
@@ -26,5 +36,17 @@ final class HomeViewModel{
   
   var unReadMessages: Int{
 	 mailManager.mails.filter({$0.status == .sent}).count
+  }
+}
+
+
+extension HomeViewModel{
+  func changeMood(to mood: CharacterMood){
+	 guard var userToUpdate = user else { return }
+	 userToUpdate.mood = mood
+
+	 Task{
+		let _ = await userManager.updateUser(user: userToUpdate)
+	 }
   }
 }

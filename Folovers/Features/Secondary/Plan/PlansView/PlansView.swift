@@ -43,10 +43,10 @@ struct PlansView: View {
 			 Group{
 				switch vm.plansState {
 				case .plans:
-				  PlansGridView(vm: vm, plans: PlanCard.plans())
+				  PlansGridView(vm: vm, plans: vm.plansItems)
 					 .transition(.asymmetric(insertion: .scale(scale: 0.7, anchor: .topLeading).combined(with: .opacity), removal: .opacity))
 				case .memories:
-				  PlansGridView(vm: vm, plans: PlanCard.plans())
+				  PlansGridView(vm: vm, plans: vm.memoriesItems)
 					 .transition(.asymmetric(insertion: .scale(scale: 0.7, anchor: .topTrailing).combined(with: .opacity), removal: .opacity))
 				  
 				}

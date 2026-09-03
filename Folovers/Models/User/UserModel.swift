@@ -11,6 +11,7 @@ import SpritePackage
 struct UserDocument: FirestoreIdentifiable, Equatable{
   var id: String
   var displayName: String
+  var mood: CharacterMood?
   var characterConfig: SpritePackage.CharacterConfig
   var createdAt: Date
   
