@@ -60,6 +60,7 @@ extension FolderManager{
 		do{
 		  try await FirestoreService.request(endpoint)
 		  fetchAllRelated()
+		  NavigationManager.shared.addSystemUp(.get(.success, "Folder created"))
 		}catch{
 		  mapError(error: error)
 		  NavigationManager.shared.addSystemUp(.get(.error, "Could not create the folder"))

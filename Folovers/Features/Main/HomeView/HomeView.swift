@@ -22,7 +22,11 @@ struct HomeView: View {
 				size: CGSize(width: 128, height: 128)
 			 )
 			 
-			 MoodBar(mood: $vm.mood)
+			 MoodBar(mood: vm.mood){ item in
+				withAnimation{
+				  vm.changeMood(to: item)
+				}
+			 }
 		  }
 		  
 		  Spacer()

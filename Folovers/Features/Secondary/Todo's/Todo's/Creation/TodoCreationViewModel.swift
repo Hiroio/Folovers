@@ -62,6 +62,7 @@ extension TodoCreationViewModel{
 	 Task{
 		do{
 		  try await manager.create(todo: todo)
+		  NavigationManager.shared.addSystemUp(.get(.success, "Todo created"))
 		}catch{
 
 		}

@@ -9,13 +9,14 @@ import SwiftUI
 
 struct MoodBar: View {
   @Environment(\.theme) var theme
-  @Binding var mood: CharacterMood?
+	let mood: CharacterMood?
+  let onChange: (CharacterMood) -> ()
   var body: some View {
 	 HStack{
 		ForEach(CharacterMood.allCases){item in
 		  let active = item == mood
 		  Button{
-			 mood = item
+			 onChange(item)
 		  }label:{
 			 Image(item.rawValue)
 				.resizable()
@@ -31,8 +32,7 @@ struct MoodBar: View {
 }
 
 #Preview {
-  @Previewable @State var mood: CharacterMood? = nil
-  MoodBar(mood: $mood)
+  MoodBar(mood: .happy){_ in}
 	 .environment(\.theme, .basic)
 }
 

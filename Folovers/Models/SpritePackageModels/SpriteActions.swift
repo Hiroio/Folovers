@@ -23,7 +23,7 @@ enum SpriteActions{
 	 case .loading:
 		8
 	 case .idleLoading:
-		0
+		6
 	 case .preview:
 		0
 	 case .angry:

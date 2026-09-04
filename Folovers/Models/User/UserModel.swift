@@ -22,6 +22,7 @@ struct UserDocument: FirestoreIdentifiable, Equatable{
 	 lhs.characterConfig.top == rhs.characterConfig.top &&
 	 lhs.characterConfig.hair == rhs.characterConfig.hair &&
 	 lhs.characterConfig.gender == rhs.characterConfig.gender &&
+	 lhs.mood == rhs.mood &&
 	 lhs.displayName == rhs.displayName
 	 
   }
@@ -36,5 +37,10 @@ extension UserDocument{
 //  Someone outside of our connections. We never fetch them, they just stay a mystery
   static func unknown(id: String) -> UserDocument{
 	 UserDocument(id: id, displayName: "Unknown User", characterConfig: .standart, createdAt: .distantPast)
+  }
+  
+  
+  var isMale: Bool {
+	 characterConfig.gender == .male
   }
 }

@@ -99,6 +99,7 @@ extension PlanCreationViewModel{
 		  planToUpload.photos = photoAttachments
 		  planToUpload.createdAt = .now
 		  try await planManager.createPlan(planToUpload)
+		  NavigationManager.shared.addSystemUp(.get(.success, "\(planState == .plans ? "Plan" : "Memorie") created"))
 		}catch{
 		  print("DEBUG: Failed to create Plan")
 		  NavigationManager.shared.addSystemUp(.get(.error, "Could not create it"))

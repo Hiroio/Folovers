@@ -60,7 +60,7 @@ final class SpriteViewModel {
 	 case .loading:
 		startLoadingAnimation()
 	 case .idleLoading:
-		startIdleAnimation()
+		startIdleLoadingAnimation()
 	 case .preview:
 		controller.showPreview()
 	 case .happy:
@@ -71,8 +71,6 @@ final class SpriteViewModel {
 		startSadAnimation()
 	 case .angry:
 		startAngryAnimation()
-	 default:
-		print("")
 	 }
   }
   
@@ -83,6 +81,8 @@ extension SpriteViewModel{
 	 controller.play(.idle)
   }
   
+//  LoadingView still positions the sprite off of `number` for this action via
+//  SpriteActions.xPosition, so the stepping stays exactly as it was
   func startLoadingAnimation(){
 	 Task{
 		controller.play(.walk(.right))
@@ -93,6 +93,31 @@ extension SpriteViewModel{
 		  number = i
 		  try? await Task.sleep(nanoseconds: 400_000_000)
 		}
+		controller.play(.idle)
+	 }
+  }
+
+//  idleLoading is never positioned off of `number` (SpriteActions.xPosition
+//  has no case for it), so this is free to just keep the legs moving for as
+//  long as StandartLoadingView's bar takes to cross - kept in sync with that
+//  view's travelDuration by hand, same as hop()/walkStep() are tuned to SpritePackage
+  func startIdleLoadingAnimation(){
+	 animationTask = Task{
+		let duration = 1.5
+		let cycle = AnimationTrigger.walk().duration
+		var elapsed = 0.0
+
+		while elapsed < duration{
+		  guard !Task.isCancelled else { return }
+
+		  controller.play(.walk(.right))
+
+		  let step = min(cycle, duration - elapsed)
+		  try? await Task.sleep(for: .seconds(step))
+		  elapsed += step
+		}
+
+		guard !Task.isCancelled else { return }
 		controller.play(.idle)
 	 }
   }
