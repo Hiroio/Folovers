@@ -20,6 +20,7 @@ struct ProfileView: View {
 		  
 		  ProfileLinks()
 			 .frame(maxHeight: .infinity, alignment: .top)
+			 .buttonStyle(.plain)
 		}
 		.padding()
 		

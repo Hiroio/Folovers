@@ -42,25 +42,6 @@ final class ConnectionManager{
 // MARK: ---------- -=| Connections |=- ---------------------
 extension ConnectionManager{
 
-  func getConnections() async {
-	 connectionsError = nil
-
-	 guard let id = AuthManager.shared.id else {
-		connectionsError = .operationNotAllowed
-		return
-	 }
-
-	 do{
-		let endpoint = ConnectionEndpoint(action: .fetchAll(userId: id))
-		let connections: [ConnectionModel] = try await FirestoreService.request(endpoint)
-
-		self.connections = connections
-		getUsersProfiles(connections: connections, uid: id)
-	 }catch{
-		connectionsError = mapError(error)
-	 }
-  }
-  
   func createConnection(_ connection: ConnectionModel) async {
 	 await performRequest(action: .create(connection))
   }

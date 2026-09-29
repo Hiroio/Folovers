@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5EBD0589C5CF0C7E3366C36B /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 8AADBB1C498246AF4314FE4B /* FirebaseMessaging */; };
 		CEB48612302B945400FC1F1E /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CEB48611302B945400FC1F1E /* FirebaseAnalytics */; };
 		CEB48614302B945400FC1F1E /* FirebaseAnalyticsCore in Frameworks */ = {isa = PBXBuildFile; productRef = CEB48613302B945400FC1F1E /* FirebaseAnalyticsCore */; };
 		CEB48616302B945400FC1F1E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CEB48615302B945400FC1F1E /* FirebaseAuth */; };
@@ -26,6 +27,7 @@
 		CEB48602302B56DA00FC1F1E /* Exceptions for "Folovers" folder in "Folovers" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				App/AppDelegate.swift,
 				App/AppRoute.swift,
 				App/FoloversApp.swift,
 				App/MainRouter/Components/MainScreens.swift,
@@ -76,6 +78,7 @@
 				Features/Main/HomeView/HomeView.swift,
 				Features/Main/HomeView/HomeViewModel.swift,
 				Features/Main/ProfileView/Components/CharacterCardView.swift,
+				Features/Main/ProfileView/Components/CustomToggle.swift,
 				Features/Main/ProfileView/Components/ProfileConnectView.swift,
 				Features/Main/ProfileView/Components/ProfileLinks.swift,
 				Features/Main/ProfileView/ProfileView.swift,
@@ -150,6 +153,7 @@
 				Services/System/Folder/Folder/FolderManager.swift,
 				Services/System/Folder/Plan/PlanManager.swift,
 				Services/System/Mail/MailManager.swift,
+				Services/System/PushNotification/PushNotificationManager.swift,
 				Services/System/Storage/StorageManager.swift,
 				Services/System/Todo/TodosManager.swift,
 				Services/System/User/UserManager.swift,
@@ -190,6 +194,7 @@
 				CEB4861C302B945400FC1F1E /* FirebaseStorage in Frameworks */,
 				CEB48616302B945400FC1F1E /* FirebaseAuth in Frameworks */,
 				CEB4861A302B945400FC1F1E /* FirebaseFirestore in Frameworks */,
+				5EBD0589C5CF0C7E3366C36B /* FirebaseMessaging in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +241,7 @@
 				CEB48617302B945400FC1F1E /* FirebaseCore */,
 				CEB48619302B945400FC1F1E /* FirebaseFirestore */,
 				CEB4861B302B945400FC1F1E /* FirebaseStorage */,
+				8AADBB1C498246AF4314FE4B /* FirebaseMessaging */,
 				CEB48637302BD0EF00FC1F1E /* AuthLibrary */,
 				CECA5CC73035CFE1006E525A /* Kingfisher */,
 			);
@@ -559,6 +565,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8AADBB1C498246AF4314FE4B /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEB48610302B945400FC1F1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
 		CEB48611302B945400FC1F1E /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CEB48610302B945400FC1F1E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

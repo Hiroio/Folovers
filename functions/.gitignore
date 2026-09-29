@@ -1,0 +1,7 @@
+node_modules/
+*.local
+*.log
+AuthKey_*.p8
+*key*.json
+*secret*
+.env

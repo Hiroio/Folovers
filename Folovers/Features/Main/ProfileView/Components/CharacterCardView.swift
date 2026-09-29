@@ -21,6 +21,22 @@ struct CharacterCardView: View {
 				.font(.headline.weight(.semibold))
 				.foregroundStyle(theme.primaryDark)
 				.matchedGeometryEffect(id: "Name", in: profileNameSpace)
+		  
+		  
+		  
+		  VStack(alignment: .leading){
+			 HStack{
+				HStack{
+				  Text("Folders: ") + Text("\(vm.folders)").font(.headline)
+				}.frame(maxWidth: .infinity, alignment: .leading)
+				HStack{
+				  Text("Connections: ") + Text("\(vm.connections)").font(.headline)
+				}.frame(maxWidth: .infinity, alignment: .trailing)
+			 }
+			 .font(.subheadline)
+			 .padding(.horizontal, 30)
+			 
+		  }
 		  }
 		  .frame(maxWidth: .infinity)
 		  .card(20)

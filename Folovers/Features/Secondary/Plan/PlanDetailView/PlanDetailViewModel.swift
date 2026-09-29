@@ -9,14 +9,20 @@ import Foundation
 
 @Observable
 final class PlanDetailViewModel{
-  var plan: PlanCard
+//  PlanDetailView holds off assigning the real plan for a reveal animation,
+//  so this only fires once actual data (and a real createdBy) lands
+  var plan: PlanCard{
+	 didSet{
+		guard plan.createdBy != oldValue.createdBy else { return }
+		getCreator()
+	 }
+  }
   var isEditing: Bool = false
   var locationExtended: Bool = false
   var creator: UserDocument? = nil
 
   init(plan: PlanCard){
 	 self.plan = .init(folderId: "", createdBy: "")
-	 getCreator()
   }
 
   var locationIsAble: Bool {
@@ -30,6 +36,10 @@ final class PlanDetailViewModel{
 }
 
 extension PlanDetailViewModel{
+//  Refetched per plan on purpose - a shared folder's plans can each have a
+//  different creator. ConnectionManager.user(for:) is cache first, so a
+//  creator already known (a connection, or seen on another plan) costs
+//  nothing beyond this dictionary lookup
   func getCreator(){
 //	 An empty uid would hit Firestore's document("") and raise, not throw
 	 guard !plan.createdBy.isEmpty else { return }

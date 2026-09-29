@@ -20,6 +20,9 @@ final class UserManager{
 		  MailManager.shared.initializeManager()
 		  TodosManager.shared.getTodos()
 		  FolderManager.shared.fetchAllRelated()
+		  //  Covers both login and a just-created user document - either way
+		  //  this is the moment a user first exists to attach a token to
+		  PushNotificationManager.shared.syncTokenIfNeeded()
 		}
 	 }
   }

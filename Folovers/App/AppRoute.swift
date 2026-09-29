@@ -38,6 +38,14 @@ struct AppRoute: View {
 	 .animation(.easeInOut(duration: 0.5), value: theme.background)
 	 .environment(authManager)
 	 .environment(navigation)
+	 .onChange(of: navigation.state){ _, newValue in
+//		Fires post-onboarding for a new user, or post-login for a returning
+//		one on a device that hasn't been asked yet. iOS won't re-prompt
+//		once the user has already answered
+		if newValue == .ready{
+		  PushNotificationManager.shared.requestAuthorization()
+		}
+	 }
   }
 }
 

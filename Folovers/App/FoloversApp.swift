@@ -6,16 +6,12 @@
 //
 
 import SwiftUI
-import FirebaseCore
 
 @main
 struct FoloversApp: App {
+  @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   @State private var themeManager = ThemeManager.shared
-  
-  init(){
-	 
-	 FirebaseApp.configure()
-  }
+
     var body: some Scene {
         WindowGroup {
 			 AppRoute()

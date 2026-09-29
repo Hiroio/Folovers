@@ -14,7 +14,9 @@ struct UserDocument: FirestoreIdentifiable, Equatable{
   var mood: CharacterMood?
   var characterConfig: SpritePackage.CharacterConfig
   var createdAt: Date
-  
+//  Optional so existing documents without one just decode as nil, no migration needed
+  var fcmToken: String? = nil
+
   
   static func ==(lhs: UserDocument, rhs: UserDocument) -> Bool{
 	 return lhs.id == rhs.id &&

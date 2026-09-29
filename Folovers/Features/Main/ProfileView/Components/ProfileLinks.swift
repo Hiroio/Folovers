@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum ProfileLinksEnum: String, Identifiable, CaseIterable{
-  case notification, appearence, privacy, logout
+  case notification, appearence, privacy, logout, mail
   
   var id: String {
 	 self.rawValue
@@ -33,6 +33,8 @@ enum ProfileLinksEnum: String, Identifiable, CaseIterable{
 		"lock"
 	 case .logout:
 		"rectangle.righthalf.inset.fill.arrow.right"
+	 case .mail:
+		"envelope"
 	 }
   }
 }
@@ -40,17 +42,44 @@ enum ProfileLinksEnum: String, Identifiable, CaseIterable{
 struct ProfileLinks: View {
   @Environment(\.theme) var theme
   @State private var appearenceView: Bool = false
+  @State private var notificationView: Bool = false
+  @State private var pushManager = PushNotificationManager.shared
+  @AppStorage("mailNotificationsEnabled") private var mailNotification: Bool = false
     var body: some View {
 		VStack{
 			 
-		  Button{}label: {
-			 HStack{
-				LinkRow(.notification)
-				Image(systemName: "chevron.right")
-				  .foregroundStyle(theme.secondaryText)
+		  VStack{
+			 Button{
+				withAnimation(){
+				  notificationView.toggle()
+				}
+			 }label: {
+				HStack{
+				  LinkRow(.notification)
+				  Image(systemName: "chevron.right")
+					 .foregroundStyle(theme.secondaryText)
+					 .rotationEffect(Angle(degrees: notificationView ? 90 : 0))
+				}
+			 }
+			 
+			 if notificationView{
+				HStack{
+				  Rectangle()
+					 .frame(width: 2)
+					 .fixedSize(horizontal: false, vertical: true)
+					 .padding(.leading, 5)
+				  VStack{
+					 HStack{
+						LinkRow(.mail)
+						CustomToggle(isOn: $mailNotification)
+						  .containerRelativeFrame(.horizontal, count: 5, spacing: 10)
+					 }
+				  }
+				  .frame(maxWidth: .infinity, alignment: .leading)
+				}
+				.padding(.horizontal)
 			 }
 		  }
-		  
 		  Divider()
 		  VStack{
 			 Button{
@@ -65,6 +94,7 @@ struct ProfileLinks: View {
 					 .rotationEffect(.degrees(appearenceView ? 90 : 0))
 				}
 			 }
+			 
 			 if appearenceView{
 				ColorSelectionBar(color: Binding(get: {
 				  ThemeManager.shared.selectedColor
@@ -77,6 +107,7 @@ struct ProfileLinks: View {
 				.transition(.opacity.combined(with: .scale(0.2, anchor: .topLeading)))
 			 }
 		  }
+		  
 		  Divider()
 		  LinkRow(.privacy)
 		  Divider()
@@ -88,6 +119,20 @@ struct ProfileLinks: View {
 		}
 		.foregroundStyle(theme.primary)
 		.fontDesign(.monospaced)
+		.onChange(of: pushManager.isAuthorized){ _, isAuthorized in
+//		  Saying yes to the system prompt should be enough - no reason to
+//		  also make them flip this switch by hand right after
+		  if isAuthorized{
+			 mailNotification = true
+		  }
+		}
+		.onChange(of: mailNotification){ _, isOn in
+		  if isOn{
+			 pushManager.syncTokenIfNeeded()
+		  }else{
+			 pushManager.clearToken()
+		  }
+		}
     }
 }
 

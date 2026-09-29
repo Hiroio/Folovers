@@ -1,3 +1,10 @@
 *.plist
 SpritePackage
 *GoogleService-Info*
+
+# Cloud Functions
+functions/node_modules/
+functions/*.log
+firebase-debug.log
+firebase-debug.*.log
+.firebase/
