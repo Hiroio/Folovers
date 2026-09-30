@@ -27,8 +27,8 @@ struct PopUpViews: View {
 		  PhotoPreviewView(photo: photo, photoURL: photoKF)
 			 .transition(.move(edge: .bottom))
 		  
-		case .letterCreation(let to):
-		  LetterCreationView(uid: to)
+		case .letterCreation(let to, let isReply):
+		  LetterCreationView(uid: to, isReply: isReply)
 			 .transition(.opacity)
 		  
 		case .mailBox:

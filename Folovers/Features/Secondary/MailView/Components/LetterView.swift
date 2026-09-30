@@ -58,7 +58,7 @@ struct LetterView: View {
 		  HStack(spacing: 10){
 			 if isIncoming{
 				Button{
-				  NavigationManager.shared.addPopUp(.letterCreation(to: letter.createdBy))
+				  NavigationManager.shared.addPopUp(.letterCreation(to: letter.createdBy, isReply: true))
 				}label:{
 				  Text("Reply")
 				  Image(systemName: "arrowshape.turn.up.left")

@@ -69,6 +69,6 @@ extension MailViewModel{
   }
 
   func reply(to userId: String){
-	 NavigationManager.shared.addPopUp(.letterCreation(to: userId))
+	 NavigationManager.shared.addPopUp(.letterCreation(to: userId, isReply: true))
   }
 }

@@ -66,8 +66,10 @@ extension MailManager{
 		do{
 		  try await FirestoreService.request(endPoint)
 		  sentMails.append(mail)
+		  NavigationManager.shared.addSystemUp(.get(.success, "Letter sent"))
 		}catch{
 		  self.mailErrors = mapError(error)
+		  NavigationManager.shared.addSystemUp(.get(.error, "Could not send the letter"))
 		}
 	 }
   }

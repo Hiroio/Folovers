@@ -27,8 +27,7 @@ struct ProfileConnectView: View {
 				.matchedGeometryEffect(id: "Name", in: nameSpace)
 		  }
 		  VStack{
-			 copyElement(item: "us-app.com/invite/8f9a2", link: true)
-			 copyElement(item: "\(AuthManager.shared.id ?? "Cannot find Id")", link: false)
+			 copyElement(item: "\(AuthManager.shared.id ?? "Cannot find Id")")
 		  }
 		}
 		.foregroundStyle(theme.primaryDark)
@@ -48,9 +47,9 @@ struct ProfileConnectView: View {
 
 extension ProfileConnectView{
   @ViewBuilder
-  func copyElement(item: String, link: Bool) -> some View{
+  func copyElement(item: String) -> some View{
 	 HStack(spacing: 15){
-		Text("\(link ? "" : "UID: ")\(item)")
+		Text("UID: \(item)")
 		  .font(.footnote)
 		  .frame(maxWidth: .infinity, alignment: .leading)
 		  .padding(15)

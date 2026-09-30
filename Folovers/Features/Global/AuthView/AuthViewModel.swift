@@ -19,7 +19,14 @@ final class AuthViewModel{
   }
   
   var isValid: Bool {
-	 email.contains("@") && password.isEmpty == false
+	 isValidEmail && password.isEmpty == false
+  }
+
+//  Standard shape check, not a guarantee the address exists - Firebase still
+//  has the final say and maps a truly bad one to AuthError.invalidEmail
+  private var isValidEmail: Bool {
+	 let pattern = #"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"#
+	 return email.range(of: pattern, options: .regularExpression) != nil
   }
   
   

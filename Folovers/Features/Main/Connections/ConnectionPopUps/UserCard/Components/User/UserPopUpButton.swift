@@ -72,7 +72,7 @@ struct UserPopUpButton: View {
 	 case .connected:
 		Button{
 		  if let userId = vm.user?.id{
-			 NavigationManager.shared.addPopUp(.letterCreation(to: userId))
+			 NavigationManager.shared.addPopUp(.letterCreation(to: userId, isReply: false))
 		  }
 		}label:{
 		  Text("Send a letter")

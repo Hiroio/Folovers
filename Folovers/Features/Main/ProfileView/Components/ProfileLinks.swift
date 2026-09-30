@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import AuthLibrary
 
 enum ProfileLinksEnum: String, Identifiable, CaseIterable{
-  case notification, appearence, privacy, logout, mail
+  case notification, appearence, privacy, logout, mail, account, password
   
   var id: String {
 	 self.rawValue
@@ -18,6 +19,8 @@ enum ProfileLinksEnum: String, Identifiable, CaseIterable{
 	 switch self {
 	 case .logout:
 		"Log Out"
+	 case .password:
+		"Resset password"
 	 default:
 		self.rawValue.capitalized
 	 }
@@ -35,6 +38,10 @@ enum ProfileLinksEnum: String, Identifiable, CaseIterable{
 		"rectangle.righthalf.inset.fill.arrow.right"
 	 case .mail:
 		"envelope"
+	 case .account:
+		"person"
+	 case .password:
+		"lock"
 	 }
   }
 }
@@ -43,6 +50,7 @@ struct ProfileLinks: View {
   @Environment(\.theme) var theme
   @State private var appearenceView: Bool = false
   @State private var notificationView: Bool = false
+  @State private var accountView: Bool = false
   @State private var pushManager = PushNotificationManager.shared
   @AppStorage("mailNotificationsEnabled") private var mailNotification: Bool = false
     var body: some View {
@@ -111,6 +119,32 @@ struct ProfileLinks: View {
 		  Divider()
 		  LinkRow(.privacy)
 		  Divider()
+		  VStack{
+			 Button{
+				withAnimation{
+				  accountView.toggle()
+				}
+			 }label:{
+				HStack{
+				  LinkRow(.account)
+				  Image(systemName: "chevron.right")
+					 .foregroundStyle(theme.secondaryText)
+					 .rotationEffect(.degrees(accountView ? 90 : 0))
+				}
+			 }
+			 
+			 if accountView{
+				LinkRow(.password)
+
+				VStack(spacing: 10){
+				  providerRow(.apple)
+				  providerRow(.google)
+				}
+				.padding(.horizontal)
+				.padding(.bottom, 10)
+			 }
+		  }
+		  Divider()
 		  Button{
 			 AuthManager.shared.logOut()
 		  }label:{
@@ -143,6 +177,32 @@ struct ProfileLinks: View {
 
 
 extension ProfileLinks{
+//  Firebase links providers onto the same uid, so this is just "is it in
+//  currentUser.types already" plus a link button when it isn't
+  @ViewBuilder
+  func providerRow(_ provider: AuthUserType) -> some View{
+	 let isLinked = AuthManager.shared.currentUser?.types.contains(provider) ?? false
+
+	 HStack{
+		Text(provider == .apple ? "Apple" : "Google")
+		  .font(.subheadline.weight(.semibold))
+
+		Spacer()
+
+		if isLinked{
+		  Label("Linked", systemImage: "checkmark.circle.fill")
+			 .font(.footnote.weight(.semibold))
+			 .foregroundStyle(.green)
+		}else if provider == .apple{
+		  AppleSignBtn(mode: .link, action: AuthManager.shared.continueWithSSO)
+			 .frame(height: 40)
+		}else{
+		  GoogleSignBtn(mode: .link, action: AuthManager.shared.continueWithSSO)
+			 .frame(height: 40)
+		}
+	 }
+  }
+
   func LinkRow(_ link: ProfileLinksEnum) -> some View{
 	 HStack{
 		Image(systemName: link.icon)

@@ -11,14 +11,18 @@ import Foundation
 @Observable
 final class LetterCreationViewModel{
   let uid: String
+//  Reply is stacked on top of the letter it answers - closing should drop
+//  both, not just come back to the letter as if nothing happened
+  let isReply: Bool
   var title: String = ""
   var body: String = ""
   var loading: Bool = false
 
   private let mailManager = MailManager.shared
 
-  init(uid: String){
+  init(uid: String, isReply: Bool){
 	 self.uid = uid
+	 self.isReply = isReply
   }
 
 //  Resolved without any network. Not a connection means "Unknown User"
@@ -64,5 +68,11 @@ extension LetterCreationViewModel{
 
   func close(){
 	 NavigationManager.shared.popPopUp()
+
+//	 Reply sits on top of the letter it answers - drop that too, landing back
+//	 on the mailbox instead of the letter as if nothing happened
+	 if isReply{
+		NavigationManager.shared.popPopUp()
+	 }
   }
 }

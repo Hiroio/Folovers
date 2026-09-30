@@ -34,7 +34,8 @@ struct CharacterCardView: View {
 				}.frame(maxWidth: .infinity, alignment: .trailing)
 			 }
 			 .font(.subheadline)
-			 .padding(.horizontal, 30)
+			 .padding(.horizontal, 10)
+			 .allowsTightening(true)
 			 
 		  }
 		  }

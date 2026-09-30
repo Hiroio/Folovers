@@ -11,8 +11,8 @@ struct LetterCreationView: View {
   @Environment(\.theme) var theme
   @State private var vm: LetterCreationViewModel
 
-  init(uid: String){
-	 self._vm = State(wrappedValue: LetterCreationViewModel(uid: uid))
+  init(uid: String, isReply: Bool){
+	 self._vm = State(wrappedValue: LetterCreationViewModel(uid: uid, isReply: isReply))
   }
 
 	 var body: some View {
@@ -48,18 +48,7 @@ struct LetterCreationView: View {
 		  }
 		  .buttonStyle(CustomAnimationForBtn(light: true))
 		  .disabled(!vm.ableToSend)
-
-		  if vm.mailErrors != nil{
-			 HStack(spacing: 5){
-				Image(systemName: "exclamationmark.circle")
-				Text("Could not send the letter")
-			 }
-			 .font(.caption)
-			 .foregroundStyle(.red)
-			 .transition(.move(edge: .top).combined(with: .opacity))
-		  }
 		}
-		.animation(.easeInOut, value: vm.mailErrors)
 		.padding()
 		.foregroundStyle(theme.primaryDark)
 		.frame(maxWidth: .infinity)
@@ -72,7 +61,7 @@ struct LetterCreationView: View {
 #Preview {
   ZStack{
 	 ThemePalette.basic.background.ignoresSafeArea()
-	 LetterCreationView(uid: "")
+	 LetterCreationView(uid: "", isReply: false)
 		.environment(\.theme, .basic)
   }
 }

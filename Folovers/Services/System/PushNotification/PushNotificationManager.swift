@@ -50,13 +50,14 @@ extension PushNotificationManager{
 	 Task{
 		guard let fcmToken, var user = userManager.currentUser, user.fcmToken != fcmToken else { return }
 		user.fcmToken = fcmToken
-		_ = await userManager.updateUser(user: user)
+		if await userManager.updateUser(user: user){
+		  print(user)
+		  print("User Updated")
+		}
 	 }
   }
 
-//  The device keeps its token in fcmToken above - only Firestore's copy is
-//  cleared, so sendMailNotification finds nothing to send to. Flipping the
-//  toggle back on is just syncTokenIfNeeded() again, no re-registration needed
+//  The device keeps its token in fcmToken above
   func clearToken(){
 	 Task{
 		guard var user = userManager.currentUser, user.fcmToken != nil else { return }
@@ -70,6 +71,7 @@ extension PushNotificationManager: MessagingDelegate{
   func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
 	 guard let fcmToken else { return }
 	 self.fcmToken = fcmToken
+	 print(fcmToken)
 	 syncTokenIfNeeded()
   }
 }

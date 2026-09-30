@@ -40,6 +40,7 @@ final class UserManager{
 	 Task{
 		do{
 		  self.currentUser = try await getUser(id)
+		  PushNotificationManager.shared.syncTokenIfNeeded()
 		  print("DEBUG User successfully fetched")
 		}catch FirestoreError.documentNotFound{
 //		  Authenticated but no profile yet - onboarding is exactly where this user belongs

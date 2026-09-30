@@ -14,7 +14,6 @@ struct UserDocument: FirestoreIdentifiable, Equatable{
   var mood: CharacterMood?
   var characterConfig: SpritePackage.CharacterConfig
   var createdAt: Date
-//  Optional so existing documents without one just decode as nil, no migration needed
   var fcmToken: String? = nil
 
   
@@ -25,8 +24,9 @@ struct UserDocument: FirestoreIdentifiable, Equatable{
 	 lhs.characterConfig.hair == rhs.characterConfig.hair &&
 	 lhs.characterConfig.gender == rhs.characterConfig.gender &&
 	 lhs.mood == rhs.mood &&
-	 lhs.displayName == rhs.displayName
-	 
+	 lhs.displayName == rhs.displayName &&
+	 lhs.fcmToken == rhs.fcmToken
+
   }
 }
 
