@@ -21,23 +21,15 @@ final class MailManager{
 	 }
   }
   var sentMails: [MailModel] = []
-  
-  var mailErrors: FirestoreError? = nil
-  
+
   @ObservationIgnored
   private var task: Task<Void, Error>? = nil
-  
-  
-  
+
+
+
   func initializeManager() {
 	 startListener()
 	 fetchSentLetters()
-  }
-  
-  @discardableResult
-  func mapError(_ error: Error) -> FirestoreError{
-	 guard let error = error as? FirestoreError else { return .unknownError }
-	 return error
   }
 }
 
@@ -59,7 +51,6 @@ extension MailManager{
   
 //  Create
   func createMail(mail: MailModel){
-	 mailErrors = nil
 	 let endPoint = MailEndpoint(action: .create(mail))
 	 
 	 Task{
@@ -68,7 +59,6 @@ extension MailManager{
 		  sentMails.append(mail)
 		  NavigationManager.shared.addSystemUp(.get(.success, "Letter sent"))
 		}catch{
-		  self.mailErrors = mapError(error)
 		  NavigationManager.shared.addSystemUp(.get(.error, "Could not send the letter"))
 		}
 	 }
@@ -84,7 +74,6 @@ extension MailManager{
 		do{
 		  try await FirestoreService.request(endPoint)
 		}catch{
-		  self.mailErrors = mapError(error)
 		}
 	 }
   }
@@ -98,7 +87,6 @@ extension MailManager{
 		do{
 		  try await FirestoreService.request(endPoint)
 		}catch{
-		  self.mailErrors = mapError(error)
 		  NavigationManager.shared.addSystemUp(.get(.error, "Could not delete the letter"))
 		}
 	 }
@@ -110,12 +98,8 @@ extension MailManager{
 extension MailManager{
   func startListener() {
 	 guard task == nil else { return }
-	 mailErrors = nil
 	 
-	 guard let id = AuthManager.shared.id else {
-		mailErrors = .operationNotAllowed
-		return
-	 }
+	 guard let id = AuthManager.shared.id else { return }
 	 
 	 self.task = Task{
 		do{
@@ -125,8 +109,6 @@ extension MailManager{
 			 mails = values
 		  }
 		}catch{
-		  let error = mapError(error)
-		  self.mailErrors = error
 		}
 	 }
   }

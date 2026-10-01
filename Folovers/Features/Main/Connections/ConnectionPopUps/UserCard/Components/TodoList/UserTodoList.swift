@@ -10,13 +10,15 @@ import SwiftUI
 struct UserTodoList: View {
   @Environment(\.theme) var theme
   let todos: [TodoItem]
+  let state: UserTodoListState
     var body: some View {
 		VStack{
 		  Text("Today")
 			 .font(.title2.weight(.semibold))
 			 .frame(maxWidth: .infinity, alignment: .leading)
 		  ZStack{
-			 if todos.isEmpty{
+			 switch state{
+			 case .open:
 				ScrollView(showsIndicators: false){
 				  LazyVStack(spacing: 15){
 					 ForEach(todos){todo in
@@ -24,12 +26,8 @@ struct UserTodoList: View {
 					 }
 				  }
 				}
-			 }else{
-				Text("User don't have plans for today")
-				  .font(.headline.weight(.bold))
-				  .frame(maxWidth: .infinity, maxHeight: .infinity)
-				  .foregroundStyle(theme.primaryDark)
-				  .card()
+			 case .empty, .closed:
+				UserTodoStateCard(state: state)
 			 }
 		  }
 		  .padding(25)
@@ -39,6 +37,6 @@ struct UserTodoList: View {
 }
 
 #Preview {
-  UserTodoList(todos: .todoItems)
+  UserTodoList(todos: .todoItems, state: .open)
 	 .environment(\.theme, .basic)
 }

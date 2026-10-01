@@ -13,17 +13,19 @@ struct ProfileView: View {
   @State private var vm = ProfileViewModel()
   var body: some View {
 	 ZStack{
-		VStack(spacing: 15){
-		  profileHeader
-		  
-		  CharacterCardView(profileNameSpace: profileNameSpace)
-		  
-		  ProfileLinks()
-			 .frame(maxHeight: .infinity, alignment: .top)
-			 .buttonStyle(.plain)
+		ScrollView{
+		  VStack(spacing: 15){
+			 profileHeader
+			 
+			 CharacterCardView(profileNameSpace: profileNameSpace)
+			 
+			 ProfileLinks()
+				.frame(maxHeight: .infinity, alignment: .top)
+				.buttonStyle(.plain)
+		  }
+		  .padding()
 		}
-		.padding()
-		
+		.scrollBounceBehavior(.basedOnSize)
 		if vm.showConnectPopUp{
 		  ZStack{
 			 Color.black.opacity(0.3).ignoresSafeArea()

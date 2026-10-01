@@ -46,9 +46,14 @@ final class UserCardViewModel{
 	 guard let connection else { return .none}
 	 guard connection.status != .accepted else { return .connected }
 	 guard uid != connection.requestedBy else { return .incoming}
-	 
+
 	 return .outgoing
-	 
+
+  }
+
+  var todoListState: UserTodoListState{
+	 guard user?.todoPrivacy != false else { return .closed }
+	 return userTodos.isEmpty ? .empty : .open
   }
 }
 
@@ -165,4 +170,24 @@ enum ConnectionButtonState{
 
 enum UserPopUpState: String, CaseIterable{
   case user, plan
+}
+
+enum UserTodoListState{
+  case open, empty, closed
+
+  var icon: String{
+	 switch self {
+	 case .open: ""
+	 case .empty: "person.badge.clock"
+	 case .closed: "lock.app.dashed"
+	 }
+  }
+
+  var text: String{
+	 switch self {
+	 case .open: ""
+	 case .empty: "No todos for today"
+	 case .closed: "This user's todo list is private"
+	 }
+  }
 }

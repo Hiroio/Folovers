@@ -13,23 +13,14 @@ import Foundation
 final class FolderManager{
   static let shared = FolderManager()
   var folders: [FolderModel] = []
-  var error: FirestoreError? = nil
-  
-  
+
+
   init(){
 	 fetchAllRelated()
   }
-  
+
   var uid: String? {
 	 AuthManager.shared.id
-  }
-  
-  func mapError(error: Error){
-	 if let error = error as? FirestoreError{
-		self.error = error
-	 }else{
-		self.error = .unknownError
-	 }
   }
 }
 
@@ -44,7 +35,6 @@ extension FolderManager{
 		  let fetchedFolders: [FolderModel] = try await FirestoreService.request(endpoint)
 		  self.folders = fetchedFolders
 		}catch{
-		  mapError(error: error)
 		}
 	 }
   }
@@ -62,7 +52,6 @@ extension FolderManager{
 		  fetchAllRelated()
 		  NavigationManager.shared.addSystemUp(.get(.success, "Folder created"))
 		}catch{
-		  mapError(error: error)
 		  NavigationManager.shared.addSystemUp(.get(.error, "Could not create the folder"))
 		}
 	 }
@@ -76,7 +65,6 @@ extension FolderManager{
 		  try await FirestoreService.request(endpoint)
 		  fetchAllRelated()
 		}catch{
-		  mapError(error: error)
 		}
 	 }
   }
@@ -89,7 +77,6 @@ extension FolderManager{
 		do{
 		  try await FirestoreService.request(endPoint)
 		}catch{
-		  mapError(error: error)
 		  NavigationManager.shared.addSystemUp(.get(.error, "Could not save the folder"))
 		}
 	 }
@@ -102,7 +89,6 @@ extension FolderManager{
 		do{
 		  try await FirestoreService.request(endPoint)
 		}catch{
-		  mapError(error: error)
 		  NavigationManager.shared.addSystemUp(.get(.error, "Could not delete the folder"))
 		}
 	 }

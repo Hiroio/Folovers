@@ -60,6 +60,20 @@ extension AuthManager{
 		self.error = failure
 	 }
   }
+
+//  Same SSO result as continueWithSSO, but for linking a provider onto an
+//  already-signed-in account - that happens from Profile, where nothing
+//  reads `error`, so it needs its own visible feedback
+  func linkSSO(_ result: Result<AuthUser, AuthError>) {
+	 switch result {
+	 case .success(let user):
+		self.currentUser = user
+		NavigationManager.shared.addSystemUp(.get(.success, "Account linked"))
+	 case .failure(let failure):
+		self.error = failure
+		NavigationManager.shared.addSystemUp(.get(.error, failure.localizedDescription))
+	 }
+  }
   
   func emailLogin(email: String, password: String) {
 	 error = nil
@@ -87,5 +101,24 @@ extension AuthManager{
 		return .somethingWentWrong
 	 }
 	 return authError
+  }
+
+//  Works for an email/password account and doubles as "set a password" for
+//  a Google/Apple-only one - Firebase sends the same reset link either way
+  func resetPassword(){
+	 guard let email = currentUser?.email else {
+		NavigationManager.shared.addSystemUp(.get(.error, "No email on this account"))
+		return
+	 }
+
+	 Task{
+		do{
+		  try await service.sendPasswordReset(email: email)
+		  NavigationManager.shared.addSystemUp(.get(.success, "Password reset email sent"))
+		}catch{
+		  self.error = getError(error: error)
+		  NavigationManager.shared.addSystemUp(.get(.error, getError(error: error).localizedDescription))
+		}
+	 }
   }
 }

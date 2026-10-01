@@ -18,8 +18,12 @@ service cloud.firestore {
       allow delete: if false;
 
       match /todos/{todoId} {
+        // A stranger sees it only if the todo itself is public AND the
+        // owner hasn't turned the whole list off (todoPrivacy, default visible)
         allow read: if isSignedIn() &&
-          (request.auth.uid == userId || resource.data.privacy == 'public');
+          (request.auth.uid == userId ||
+            (resource.data.privacy == 'public' &&
+             get(/databases/$(database)/documents/Users/$(userId)).data.get('todoPrivacy', true) != false));
         allow create, update, delete: if isSignedIn() && request.auth.uid == userId;
       }
     }

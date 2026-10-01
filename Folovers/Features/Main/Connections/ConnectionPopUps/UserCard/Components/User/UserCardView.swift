@@ -18,13 +18,16 @@ struct UserCardView: View {
 			 .frame(maxWidth: .infinity)
 			 .padding()
 			 .border(lineWidth: 2)
-			 .padding(.horizontal)
 			 .overlay(alignment: .topTrailing){
 				Image(vm.user?.mood?.rawValue ?? "")
 				  .resizable()
-				  .containerRelativeFrame(.horizontal, count: 6, spacing: 0)
-				  .padding()
+				  .frame(width: 55, height: 55)
+				  .scaledToFit()
+				  .card(5, lineWidth: 4)
+				  .padding(2)
 			 }
+			 .padding(.horizontal)
+			
 		  
 		  HStack{
 			 if user.isMale {

@@ -20,7 +20,7 @@ final class HomeViewModel{
   }
   
   var mood: CharacterMood? = nil
-  var calendarActive: Bool = false
+  var calendarActive: Bool = true
   
   var spriteAction: SpriteActions{
 	 mood?.actions ?? .idle

@@ -27,8 +27,7 @@ final class UserManager{
 	 }
   }
   var isInitialized: Bool = false
-  var error: FirestoreError? = nil
-  
+
   
   init(){
 	 
@@ -75,11 +74,6 @@ final class UserManager{
 		  print("Created")
 		}catch{
 		  print("DEBUG: Failed to create USERFIRESTORE \(error.localizedDescription)")
-		  if let error = error as? FirestoreError{
-			 self.error = error
-		  }else{
-			 self.error = .unknownError
-		  }
 		  NavigationManager.shared.addSystemUp(.get(.error, "Could not create your profile"))
 		}
 	 }
@@ -100,7 +94,6 @@ final class UserManager{
 		self.currentUser = user
 		return true
 	 }catch{
-		self.error = error as? FirestoreError ?? .unknownError
 		NavigationManager.shared.addSystemUp(.get(.error, "Could not save your profile"))
 		return false
 	 }

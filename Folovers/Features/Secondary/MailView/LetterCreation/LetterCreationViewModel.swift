@@ -41,9 +41,6 @@ final class LetterCreationViewModel{
 	 && !body.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
   }
 
-  var mailErrors: FirestoreError? {
-	 mailManager.mailErrors
-  }
 }
 
 extension LetterCreationViewModel{

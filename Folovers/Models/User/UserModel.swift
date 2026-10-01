@@ -15,8 +15,10 @@ struct UserDocument: FirestoreIdentifiable, Equatable{
   var characterConfig: SpritePackage.CharacterConfig
   var createdAt: Date
   var fcmToken: String? = nil
+//  nil behaves as visible - only an explicit false hides the list from others
+  var todoPrivacy: Bool? = nil
 
-  
+
   static func ==(lhs: UserDocument, rhs: UserDocument) -> Bool{
 	 return lhs.id == rhs.id &&
 	 lhs.characterConfig.bottom == rhs.characterConfig.bottom &&
@@ -25,7 +27,8 @@ struct UserDocument: FirestoreIdentifiable, Equatable{
 	 lhs.characterConfig.gender == rhs.characterConfig.gender &&
 	 lhs.mood == rhs.mood &&
 	 lhs.displayName == rhs.displayName &&
-	 lhs.fcmToken == rhs.fcmToken
+	 lhs.fcmToken == rhs.fcmToken &&
+	 lhs.todoPrivacy == rhs.todoPrivacy
 
   }
 }

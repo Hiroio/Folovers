@@ -50,10 +50,7 @@ extension PushNotificationManager{
 	 Task{
 		guard let fcmToken, var user = userManager.currentUser, user.fcmToken != fcmToken else { return }
 		user.fcmToken = fcmToken
-		if await userManager.updateUser(user: user){
-		  print(user)
-		  print("User Updated")
-		}
+		_ = await userManager.updateUser(user: user)
 	 }
   }
 
@@ -71,7 +68,6 @@ extension PushNotificationManager: MessagingDelegate{
   func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
 	 guard let fcmToken else { return }
 	 self.fcmToken = fcmToken
-	 print(fcmToken)
 	 syncTokenIfNeeded()
   }
 }
@@ -79,5 +75,11 @@ extension PushNotificationManager: MessagingDelegate{
 extension PushNotificationManager: UNUserNotificationCenterDelegate{
   func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions{
 	 [.banner, .sound, .badge]
+  }
+
+//  Tapping the notification itself - the only kind we send is mail, so it
+//  always opens the mailbox
+  func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+	 NavigationManager.shared.addPopUp(.mailBox)
   }
 }

@@ -27,7 +27,7 @@ struct UserCardPopUp: View {
 					 .zIndex(-1)
 					 .transition(.blurReplace)
 				}else{
-				  UserTodoList(todos: vm.userTodos)
+				  UserTodoList(todos: vm.userTodos, state: vm.todoListState)
 					 .zIndex(-1)
 					 .transition(.blurReplace)
 				}
